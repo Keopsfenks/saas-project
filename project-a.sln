@@ -1,8 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{ABC69DAA-413C-4E83-AFD3-CEFBB0A11BAA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "srcs", "srcs", "{249B14F9-EED6-4C4B-B909-02C47265B6C1}"
+	ProjectSection(SolutionItems) = preProject
+		backend\srcs\docker-compose.yml = backend\srcs\docker-compose.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{FDE42A66-BA0F-4344-8515-15BB882CC1CB}"
 EndProject

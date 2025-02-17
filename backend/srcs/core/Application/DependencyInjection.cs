@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Behaviors;
+using Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -6,9 +7,11 @@ namespace Application;
 public static class DependencyInjection {
 	public static IServiceCollection AddApplication(this IServiceCollection services) {
 
-		services.AddMediatR(conf => {
-			conf.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly);
-			conf.RegisterServicesFromAssemblies(typeof(AppUser).Assembly);
+
+		services.AddMediatR(conf =>
+		{
+			conf.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+			conf.AddOpenBehavior(typeof(ValidationBehavior<,>));
 		});
 
 		return services;

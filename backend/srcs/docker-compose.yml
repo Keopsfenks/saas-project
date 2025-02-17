@@ -1,0 +1,51 @@
+﻿version: '3.8'
+
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: /WebApi/Dockerfile
+    container_name: webapi_container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MongoDB=mongodb://mongo:27017/mydatabase
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    networks:
+      - backend_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_container
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=adminpassword
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend_network
+
+  smtp4dev:
+    container_name: smtp4dev
+    image: rnwood/smtp4dev
+    ports:
+      - "5000:80"
+      - "2525:25"
+    networks:
+      - backend_network
+    volumes:
+      - ../data/smtp4dev-data:/app/data
+    restart: unless-stopped
+
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  mongo_data:

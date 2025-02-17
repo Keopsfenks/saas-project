@@ -9,40 +9,44 @@ public sealed class EncryptionService(ISecuritySettings securitySettings) : IEnc
 	private static readonly int KeySize = 32;
 	private static readonly int IvSize  = 16;
 
-	[Obsolete("Obsolete")]
-	private (byte[] Key, byte[] IV) GenerateKeyAndIv(string plainVar) {
-		using (var pbkdf2 = new Rfc2898DeriveBytes(plainVar, Encoding.UTF8.GetBytes(securitySettings.HashAlgorithmKey), 10000)) {
-			byte[] key = pbkdf2.GetBytes(KeySize);
-			byte[] iv  = pbkdf2.GetBytes(IvSize);
-			return (key, iv);
-		}
+	private byte[] GenerateKey(string encryptionKey, string salt) {
+		using HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(salt));
+		return hmac.ComputeHash(Encoding.UTF8.GetBytes(encryptionKey)).Take(KeySize).ToArray();
 	}
 
-	[Obsolete("Obsolete")]
-	public string Encrypt(string plainVar) {
-		var (key, iv) = GenerateKeyAndIv(plainVar);
+	public string Encrypt(string plainText) {
+		byte[] key = GenerateKey(securitySettings.EncryptionKey, securitySettings.Salt);
 
 		using Aes aesAlg = Aes.Create();
 		aesAlg.Key = key;
-		aesAlg.IV  = iv;
+		aesAlg.GenerateIV();
+		byte[] iv = aesAlg.IV;
 
 		using MemoryStream msEncrypt = new();
+		msEncrypt.Write(iv, 0, iv.Length);
+
 		using CryptoStream csEncrypt = new(msEncrypt, aesAlg.CreateEncryptor(), CryptoStreamMode.Write);
-		using (StreamWriter swEncrypt = new(csEncrypt)) {
-			swEncrypt.Write(plainVar);
-		}
+		using StreamWriter swEncrypt = new(csEncrypt);
+		swEncrypt.Write(plainText);
+		swEncrypt.Flush();
+		csEncrypt.FlushFinalBlock();
+
 		return Convert.ToBase64String(msEncrypt.ToArray());
 	}
 
-	[Obsolete("Obsolete")]
-	public string Decrypt(string cipherVar) {
-		var (key, iv) = GenerateKeyAndIv(cipherVar);
+	public string Decrypt(string cipherText) {
+		byte[] key        = GenerateKey(securitySettings.EncryptionKey, securitySettings.Salt);
+		byte[] fullCipher = Convert.FromBase64String(cipherText);
+
+		using MemoryStream msDecrypt = new(fullCipher);
+
+		byte[] iv = new byte[IvSize];
+		msDecrypt.ReadExactly(iv, 0, iv.Length);
 
 		using Aes aesAlg = Aes.Create();
 		aesAlg.Key = key;
 		aesAlg.IV  = iv;
 
-		using MemoryStream msDecrypt = new(Convert.FromBase64String(cipherVar));
 		using CryptoStream csDecrypt = new(msDecrypt, aesAlg.CreateDecryptor(), CryptoStreamMode.Read);
 		using StreamReader srDecrypt = new(csDecrypt);
 		return srDecrypt.ReadToEnd();

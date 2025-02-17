@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public sealed class AppUser : BaseEntity {
+public sealed class User : BaseEntity {
 	public string Name     { get; set; }
 	public string Surname  { get; set; }
 	public string FullName => $"{Name} {Surname}";
