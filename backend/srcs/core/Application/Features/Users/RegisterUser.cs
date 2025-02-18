@@ -39,8 +39,7 @@ internal sealed record RegisterUserHandler(
 
 		await userRepository.InsertOneAsync(user);
 
-		OtpService otpService = new OtpService();
-		string otp = otpService.GenerateOtp();
+		string otp = emailService.GenerateOtp();
 
 		VerificationMail verificationMail = new(otp);
 		await emailService.SendEmailAsync(request.email, verificationMail.Subject, verificationMail.Body);

@@ -11,20 +11,29 @@ public sealed class ProfileController(IMediator mediator) : ApiController(mediat
 		var request  = new GetProfileRequest(id);
 		var response = await mediator.Send(request);
 
-		return Ok(response);
+		if (response.IsSuccessful)
+			return Ok(response);
+
+		return StatusCode(response.StatusCode, response);
 	}
 
 	[HttpPut]
 	public async Task<IActionResult> UpdateProfile(UpdateProfileRequest request) {
 		var response = await mediator.Send(request);
 
-		return Ok(response);
+		if (response.IsSuccessful)
+			return Ok(response);
+
+		return StatusCode(response.StatusCode, response);
 	}
 
 	[HttpDelete]
 	public async Task<IActionResult> CloseOtherSessions(CloseOtherSessionsRequest request) {
 		var response = await mediator.Send(request);
 
-		return Ok(response);
+		if (response.IsSuccessful)
+			return Ok(response);
+
+		return StatusCode(response.StatusCode, response);
 	}
 }

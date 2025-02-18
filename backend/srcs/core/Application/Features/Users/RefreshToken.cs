@@ -17,6 +17,7 @@ internal sealed record RefreshTokenHandler(
 	IRepositoryService<User> userRepository,
 	IRepositoryService<Session> sessionRepository,
 	IEncryptionService encryptionService,
+	IRepositoryService<Workspace> workspaceRepository,
 	IJwtProvider jwtProvider) : IRequestHandler<RefreshTokenRequest, Result<string>> {
 	public async Task<Result<string>> Handle(RefreshTokenRequest request, CancellationToken cancellationToken) {
 		User? user = await userRepository.FindOneAsync(x => x.Id == request.UserId);
@@ -28,13 +29,19 @@ internal sealed record RefreshTokenHandler(
 
 		Session? session = sessions.FirstOrDefault(x => x?.RefreshToken is not null && encryptionService.Decrypt(x.RefreshToken) == request.RefreshToken);
 
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
+
+
+
+
 		if (session == null)
 			return (500, "Oturum bulunamadı.");
 
 		if (session.RefreshTokenExpiryTime < DateTime.UtcNow)
 			return (500, "Oturumun süresi dolmuş.");
 
-		TokenDto token = await jwtProvider.GenerateJwtToken(user);
+		var      enumerable = workspaces.ToList();
+		TokenDto token      = await jwtProvider.GenerateJwtToken(user, enumerable, enumerable.First()!.Id);;
 
 		session.RefreshTokenExpiryTime = token.RefreshTokenExpiryTime;
 		session.ExpiryTime             = token.ExpiryTime;

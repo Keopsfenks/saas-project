@@ -39,9 +39,8 @@ internal sealed record UpdateProfileHandler(
 			user.Email          = request.Email;
 			user.EmailConfirmed = false;
 
-			OtpService otpService = new();
 
-			string           otp  = otpService.GenerateOtp();
+			string           otp  = emailService.GenerateOtp();
 			VerificationMail mail = new VerificationMail(otp);
 
 			await emailService.SendEmailAsync(user.Email, mail.Subject, mail.Body);

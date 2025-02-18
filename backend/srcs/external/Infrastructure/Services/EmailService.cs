@@ -12,13 +12,9 @@ public sealed class EmailService(IFluentEmail email) : IEmailService {
 			.Body(body)
 			.SendAsync();
 	}
-	private string CreateBody(User user) {
-		string body = $@"
-		Mail adresinizi onaylamak için aşağıdaki linkle tıklayın. 
-		<a href='http://localhost:4200/confirm-email/{user.Email}' target='_blank'>Maili Onaylamak için tıklayın
-		</a>
-		";
-		return body;
-	}
 
+	public string GenerateOtp() {
+		Random random = new Random();
+		return random.Next(100000, 999999).ToString();
+	}
 }

@@ -1,19 +1,39 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Claims;
 using Application.Services;
 using Domain.Abstractions;
-	using MongoDB.Driver;
+using Infrastructure.Settings.DatabaseSetting;
+using Infrastructure.Variables;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
 namespace Infrastructure.Services;
 
 public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
-	where TEntity : BaseEntity {
+	where TEntity : IEntity {
 	private readonly IMongoCollection<TEntity> _collection;
 
 
-	public RepositoryService(IMongoDatabase database) {
-		var collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
-		_collection = collection;
+	public RepositoryService(IMongoClient client, IDatabaseSettings databaseSettings, IHttpContextAccessor contextAccessor) {
+
+		if (typeof(BaseEntity).IsAssignableFrom(typeof(TEntity))) {
+			var database = client.GetDatabase(databaseSettings.DatabaseName);
+			_collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
+		}
+		else if (typeof(WorkspaceEntity).IsAssignableFrom(typeof(TEntity))) {
+
+			if (contextAccessor.HttpContext is null)
+				throw new ArgumentException("HttpContext is null");
+
+			var workspaceId = contextAccessor.HttpContext?.User.FindFirstValue("Workspace");
+
+			var database     = client.GetDatabase("workspace_" + workspaceId);
+			_collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
+		}
+		else {
+			throw new ArgumentException("Invalid entity type");
+		}
 	}
 
 	public async Task<IEnumerable<TEntity?>> FindAsync(Expression<Func<TEntity, bool>> filter) {

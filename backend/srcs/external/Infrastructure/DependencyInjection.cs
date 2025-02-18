@@ -1,8 +1,10 @@
-﻿using Application.Services;
+﻿using System.Security.Claims;
+using Application.Services;
 using Infrastructure.Services;
 using Infrastructure.Settings.DatabaseSetting;
 using Infrastructure.Settings.EmailSettings;
 using Infrastructure.Settings.SecuritySettings;
+using Infrastructure.Variables;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +48,8 @@ public static class DependencyInjection {
 			var databaseSettings = serviceProvider.GetRequiredService<IOptions<DatabaseSettings>>().Value;
 			return client.GetDatabase(databaseSettings.DatabaseName);
 		});
+
+		services.AddHttpContextAccessor();
 
 		services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 

@@ -18,6 +18,7 @@ internal sealed record LoginUserHandler(
 	IEncryptionService          encryptionService,
 	IRepositoryService<User>    userRepository,
 	IRepositoryService<Session> sessionsRepository,
+	IRepositoryService<Workspace> workspaceRepository,
 	IJwtProvider                jwtProvider) : IRequestHandler<LoginUserRequest, Result<TokenDto>> {
 	public async Task<Result<TokenDto>> Handle(LoginUserRequest request, CancellationToken cancellationToken) {
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.email);
@@ -29,7 +30,15 @@ internal sealed record LoginUserHandler(
 			return (500, "Şifre hatalı.");
 		}
 
-		TokenDto token = await jwtProvider.GenerateJwtToken(user);
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
+
+		string? workspace  = null;
+		var     enumerable = workspaces.ToList();
+
+		if (enumerable.Any() && enumerable.First() is not null)
+			workspace = enumerable.First()?.Id;
+
+		TokenDto token = await jwtProvider.GenerateJwtToken(user, enumerable, workspace);
 
 		Session session = new() {
 														Token                  = encryptionService.Encrypt(token.Token),

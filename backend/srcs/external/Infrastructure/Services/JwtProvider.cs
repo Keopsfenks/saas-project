@@ -12,12 +12,13 @@ namespace Infrastructure.Services;
 
 public sealed class JwtProvider(
 	ISecuritySettings securitySettings) : IJwtProvider {
-	public async Task<TokenDto> GenerateJwtToken(User user, List<Workspace> workspaces) {
+	public async Task<TokenDto> GenerateJwtToken(User user, List<Workspace?> workspaces, string? WorkspaceId) {
 		List<Claim> claims = new() {
 									   new Claim("Id",      user.Id),
 									   new Claim("Name",    user.Name),
 									   new Claim("Surname", user.Surname),
 									   new Claim("Email",   user.Email),
+									   new Claim("Workspace", WorkspaceId ?? string.Empty),
 									   new Claim("Workspaces", JsonSerializer.Serialize(workspaces))
 								   };
 

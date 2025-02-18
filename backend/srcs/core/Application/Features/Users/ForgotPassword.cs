@@ -22,8 +22,7 @@ internal sealed record ForgotPasswordHandler(
 		if (user is null)
 			return (500, "Girdiğiniz mail adresi ile kayıtlı bir kullanıcı bulunamadı.");
 
-		OtpService otpService = new();
-		string otp = otpService.GenerateOtp();
+		string otp = emailService.GenerateOtp();
 
 		cacheService.Set(request.Email, otp, TimeSpan.FromMinutes(5));
 
