@@ -1,11 +1,15 @@
 using System.Threading.RateLimiting;
 using Application;
+using Application.Services;
 using Asp.Versioning;
+using Domain.Entities;
 using Infrastructure;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.RateLimiting;
 using Scalar.AspNetCore;
 using WebApi;
 using Serilog;
+using WebApi.Attributes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,11 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()  // Konsola log yaz
     .WriteTo.File("logs/webapi-.log", rollingInterval: RollingInterval.Day)  // Dosyaya log yaz, günlük dosyalar oluştur
     .CreateLogger();
+
+builder.Services.AddScoped<IAsyncAuthorizationFilter, JwtVerificationFilter>(provider => {
+	return new JwtVerificationFilter(provider.GetRequiredService<IRepositoryService<Session>>(),
+									 provider.GetRequiredService<IEncryptionService>());
+});
 
 builder.Services.AddHttpContextAccessor();
 

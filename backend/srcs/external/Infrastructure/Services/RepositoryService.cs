@@ -7,6 +7,7 @@ using Infrastructure.Variables;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using TS.Result;
 
 namespace Infrastructure.Services;
 
@@ -24,7 +25,7 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 		else if (typeof(WorkspaceEntity).IsAssignableFrom(typeof(TEntity))) {
 
 			if (contextAccessor.HttpContext is null)
-				throw new ArgumentException("HttpContext is null");
+				Result<string>.Failure("HttpContext bulunamadı.");
 
 			var workspaceId = contextAccessor.HttpContext?.User.FindFirstValue("Workspace");
 
@@ -32,7 +33,7 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 			_collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
 		}
 		else {
-			throw new ArgumentException("Invalid entity type");
+			Result<string>.Failure("Geçersiz nesne tipi");
 		}
 	}
 

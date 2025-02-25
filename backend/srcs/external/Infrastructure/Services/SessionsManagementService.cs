@@ -17,7 +17,7 @@ public sealed class SessionsManagementService(
 
 			await DeleteExpiredSessionsAsync(sessionRepository);
 
-			await Task.Delay(TimeSpan.FromMinutes(settings.ExpiredTokenControlMinutes), stoppingToken);
+			await Task.Delay(TimeSpan.FromSeconds(settings.ExpiredTokenControlMinutes), stoppingToken);
 		}
 	}
 
