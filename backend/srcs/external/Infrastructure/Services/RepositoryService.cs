@@ -55,6 +55,7 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 	}
 
 	public async Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity) {
+		entity.UpdateAt = DateTimeOffset.UtcNow;
 		await _collection.FindOneAndReplaceAsync(filter, entity);
 	}
 

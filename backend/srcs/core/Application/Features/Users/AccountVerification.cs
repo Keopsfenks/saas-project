@@ -17,15 +17,15 @@ internal sealed record AccountVerificationHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
 
 		if (user == null)
-			return (500, "Kullanıcı bulunamadı.");
+			return (404, "Kullanıcı bulunamadı.");
 
 		string? otp = cacheService.Get<string>(request.Email);
 
 		if (otp == null)
-			return (500, "Doğrulama kodu bulunamadı.");
+			return (400, "Doğrulama kodu bulunamadı.");
 
 		if (otp != request.otp)
-			return (500, "Girdiğiniz doğrulama kodu hatalı.");
+			return (400, "Girdiğiniz doğrulama kodu hatalı.");
 
 		user.EmailConfirmed = true;
 

@@ -18,12 +18,12 @@ internal sealed record LogoutUserHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Id == request.UserId);
 
 		if (user is null)
-			return (500, "Kullanıcı bulunamadı.");
+			return (404, "Kullanıcı bulunamadı.");
 
 		Session? session = await sessionRepository.FindOneAsync(x => x.UserId == request.UserId && x.Token == request.Token);
 
 		if (session is null)
-			return (500, "Oturum bulunamadı.");
+			return (404, "Oturum bulunamadı.");
 
 		await sessionRepository.DeleteOneAsync(x => x.UserId == request.UserId && x.Token == request.Token);
 

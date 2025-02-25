@@ -1,5 +1,6 @@
 using System.Threading.RateLimiting;
 using Application;
+using Asp.Versioning;
 using Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
 using Scalar.AspNetCore;
@@ -16,6 +17,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/webapi-.log", rollingInterval: RollingInterval.Day)  // Dosyaya log yaz, günlük dosyalar oluştur
     .CreateLogger();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Host.UseSerilog();
 
 builder.Configuration
@@ -28,6 +31,12 @@ builder.Configuration
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning(options => {
+	options.DefaultApiVersion                   = new ApiVersion(1);
+	options.AssumeDefaultVersionWhenUnspecified = true;
+	options.UnsupportedApiVersionStatusCode     = 404;
+	options.ApiVersionReader                    = new HeaderApiVersionReader();
+}).AddMvc();
 builder.Services.AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 
 // Rate Limiting Ayarları

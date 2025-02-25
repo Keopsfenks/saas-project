@@ -20,21 +20,21 @@ internal sealed record ResetPasswordHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
 
 		if (user is null)
-			return (500, "Kullanıcı Bulunamadı");
+			return (404, "Kullanıcı Bulunamadı");
 
 		string? otp = cacheService.Get<string>(request.Email);
 
 		if (otp == null)
-			return (500, "Doğrulama kodu bulunamadı.");
+			return (404, "Doğrulama kodu bulunamadı.");
 
 		if (otp != request.Otp)
-			return (500, "Girdiğiniz doğrulama kodu hatalı.");
+			return (400, "Girdiğiniz doğrulama kodu hatalı.");
 
 		user.Password = encryptionService.Encrypt(request.Password);
 
 		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user);
 
-		cacheService.Remove(request.Email);
+		cacheService.Remove("forgot_" + request.Email);
 
 		return "Şifreniz başarıyla değiştirildi.";
 	}

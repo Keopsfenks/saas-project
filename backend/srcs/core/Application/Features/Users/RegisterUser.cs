@@ -24,10 +24,10 @@ internal sealed record RegisterUserHandler(
 		User? isEmailExist = await userRepository.FindOneAsync(x => x.Email == request.email);
 
 		if (isEmailExist != null)
-			return (500, "Bu e-posta adresi zaten kullanılmaktadır.");
+			return (409, "Bu e-posta adresi zaten kullanılmaktadır.");
 
 		if (!IsValidEmail(request.email))
-			return (500, "Geçersiz e-posta adresi.");
+			return (404, "Geçersiz e-posta adresi.");
 
 		User user = new() {
 			Name     = request.name,
@@ -39,12 +39,10 @@ internal sealed record RegisterUserHandler(
 
 		await userRepository.InsertOneAsync(user);
 
-		string otp = emailService.GenerateOtp();
+		string otp = emailService.GenerateOtp(request.email, TimeSpan.FromMinutes(5));
 
 		VerificationMail verificationMail = new(otp);
 		await emailService.SendEmailAsync(request.email, verificationMail.Subject, verificationMail.Body);
-
-		cacheService.Set(user.Email, otp, TimeSpan.FromMinutes(5));
 
 		return "Kullanıcı başarıyla kaydedildi.";
 	}

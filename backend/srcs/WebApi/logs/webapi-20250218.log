@@ -619,3 +619,46 @@ System.InvalidOperationException: Sequence contains no elements
 2025-02-18 06:15:24.078 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:8080/api/User/LoginUser - 500 null application/json; charset=utf-8 170.2899ms
 2025-02-18 06:16:13.260 +03:00 [INF] Application is shutting down...
 2025-02-18 06:16:13.274 +03:00 [INF] Uygulama Durduruldu
+2025-02-18 06:30:34.778 +03:00 [INF] User profile is available. Using 'C:\Users\sgurb\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-18 06:30:35.461 +03:00 [INF] Now listening on: http://localhost:8080
+2025-02-18 06:30:35.466 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-18 06:30:35.466 +03:00 [INF] Hosting environment: Development
+2025-02-18 06:30:35.467 +03:00 [INF] Content root path: C:\Users\sgurb\Documents\projects\CSharp\project-a\backend\srcs\WebApi
+2025-02-18 06:30:35.469 +03:00 [INF] Çalışma Ortamı: Development
+2025-02-18 06:30:35.472 +03:00 [INF] Uygulama Başlatıldı
+2025-02-18 06:30:35.920 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:8080/scalar/v1 - null null
+2025-02-18 06:30:35.999 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-02-18 06:30:36.007 +03:00 [INF] Executing endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-02-18 06:30:36.077 +03:00 [INF] Write content with HTTP Response ContentType of text/html
+2025-02-18 06:30:36.081 +03:00 [INF] Executed endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-02-18 06:30:36.088 +03:00 [INF] HTTP GET /scalar/v1 responded 200 in 81.4144 ms
+2025-02-18 06:30:36.102 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:8080/scalar/v1 - 200 1038 text/html 184.0752ms
+2025-02-18 06:30:36.287 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:8080/scalar/scalar.aspnetcore.js - null null
+2025-02-18 06:30:36.287 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:8080/scalar/scalar.js - null null
+2025-02-18 06:30:36.294 +03:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-02-18 06:30:36.297 +03:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.js'
+2025-02-18 06:30:36.301 +03:00 [INF] Sending file with download name ''.
+2025-02-18 06:30:36.304 +03:00 [INF] Setting HTTP status code 304.
+2025-02-18 06:30:36.306 +03:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.js'
+2025-02-18 06:30:36.307 +03:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-02-18 06:30:36.308 +03:00 [INF] HTTP GET /scalar/scalar.js responded 304 in 10.3206 ms
+2025-02-18 06:30:36.309 +03:00 [INF] HTTP GET /scalar/scalar.aspnetcore.js responded 200 in 15.0785 ms
+2025-02-18 06:30:36.312 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:8080/scalar/scalar.js - 304 null null 25.7587ms
+2025-02-18 06:30:36.314 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:8080/scalar/scalar.aspnetcore.js - 200 418 text/javascript 27.5994ms
+2025-02-18 06:30:36.474 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:8080/openapi/v1.json - null null
+2025-02-18 06:30:36.476 +03:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-02-18 06:30:36.871 +03:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-02-18 06:30:36.892 +03:00 [INF] HTTP GET /openapi/v1.json responded 200 in 416.6291 ms
+2025-02-18 06:30:36.895 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:8080/openapi/v1.json - 200 null application/json;charset=utf-8 421.8549ms
+2025-02-18 06:30:41.253 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:8080/api/User/GetUsers - null null
+2025-02-18 06:30:41.257 +03:00 [INF] Executing endpoint 'WebApi.Controllers.UserController.GetUsers (WebApi)'
+2025-02-18 06:30:41.269 +03:00 [INF] Route matched with {action = "GetUsers", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUsers() on controller WebApi.Controllers.UserController (WebApi).
+2025-02-18 06:30:41.277 +03:00 [INF] Executing action method WebApi.Controllers.UserController.GetUsers (WebApi) - Validation state: "Valid"
+2025-02-18 06:30:41.332 +03:00 [INF] Executed action method WebApi.Controllers.UserController.GetUsers (WebApi), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 49.1111ms.
+2025-02-18 06:30:41.344 +03:00 [INF] Executing OkObjectResult, writing value of type 'TS.Result.Result`1[[System.Collections.Generic.List`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-02-18 06:30:41.376 +03:00 [INF] Executed action WebApi.Controllers.UserController.GetUsers (WebApi) in 101.9371ms
+2025-02-18 06:30:41.378 +03:00 [INF] Executed endpoint 'WebApi.Controllers.UserController.GetUsers (WebApi)'
+2025-02-18 06:30:41.380 +03:00 [INF] HTTP GET /api/User/GetUsers responded 200 in 124.4499 ms
+2025-02-18 06:30:41.383 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:8080/api/User/GetUsers - 200 null application/json; charset=utf-8 130.2001ms
+2025-02-18 06:31:16.181 +03:00 [INF] Application is shutting down...
+2025-02-18 06:31:16.198 +03:00 [INF] Uygulama Durduruldu

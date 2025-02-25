@@ -23,7 +23,7 @@ internal sealed record RefreshTokenHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Id == request.UserId);
 
 		if (user == null)
-			return (500, "Kullanıcı bulunamadı.");
+			return (404, "Kullanıcı bulunamadı.");
 
 		IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id);
 
@@ -35,10 +35,10 @@ internal sealed record RefreshTokenHandler(
 
 
 		if (session == null)
-			return (500, "Oturum bulunamadı.");
+			return (404, "Oturum bulunamadı.");
 
 		if (session.RefreshTokenExpiryTime < DateTime.UtcNow)
-			return (500, "Oturumun süresi dolmuş.");
+			return (404, "Oturumun süresi dolmuş.");
 
 		var      enumerable = workspaces.ToList();
 		TokenDto token      = await jwtProvider.GenerateJwtToken(user, enumerable, enumerable.First()!.Id);;

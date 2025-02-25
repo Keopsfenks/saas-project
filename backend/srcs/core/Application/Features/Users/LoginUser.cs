@@ -24,10 +24,10 @@ internal sealed record LoginUserHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.email);
 
 		if (user == null)
-			return (500, "Kullanıcı bulunamadı.");
+			return (404, "Kullanıcı bulunamadı.");
 
 		if (encryptionService.Decrypt(user.Password) != request.password) {
-			return (500, "Şifre hatalı.");
+			return (400, "Şifre hatalı.");
 		}
 
 		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
@@ -51,8 +51,6 @@ internal sealed record LoginUserHandler(
 
 		await sessionsRepository.InsertOneAsync(session);
 
-
 		return token;
-
 	}
 }

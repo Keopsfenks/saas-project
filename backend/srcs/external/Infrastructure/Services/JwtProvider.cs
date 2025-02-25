@@ -11,7 +11,10 @@ using Microsoft.IdentityModel.Tokens;
 namespace Infrastructure.Services;
 
 public sealed class JwtProvider(
-	ISecuritySettings securitySettings) : IJwtProvider {
+	ISecuritySettings           securitySettings,
+	IRepositoryService<Session> sessionRepository,
+	IRepositoryService<User>    userRepository,
+	IEncryptionService          encryptionService) : IJwtProvider {
 	public async Task<TokenDto> GenerateJwtToken(User user, List<Workspace?> workspaces, string? WorkspaceId) {
 		List<Claim> claims = new() {
 									   new Claim("Id",      user.Id),

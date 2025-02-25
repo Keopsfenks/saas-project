@@ -40,12 +40,11 @@ internal sealed record UpdateProfileHandler(
 			user.EmailConfirmed = false;
 
 
-			string           otp  = emailService.GenerateOtp();
+			string           otp  = emailService.GenerateOtp(user.Email, TimeSpan.FromMinutes(5));
 			VerificationMail mail = new VerificationMail(otp);
 
 			await emailService.SendEmailAsync(user.Email, mail.Subject, mail.Body);
 
-			cacheService.Set(user.Email, otp, TimeSpan.FromMinutes(5));
 		}
 
 		if (request.Password is not null)
@@ -60,7 +59,6 @@ internal sealed record UpdateProfileHandler(
 			cacheService.Remove(user.Email);
 		}
 
-		user.UpdateAt = DateTimeOffset.Now;
 		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user);
 
 		return "Kullanıcı başarıyla güncellendi.";

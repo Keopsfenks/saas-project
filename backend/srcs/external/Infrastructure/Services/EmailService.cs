@@ -4,7 +4,7 @@ using FluentEmail.Core;
 
 namespace Infrastructure.Services;
 
-public sealed class EmailService(IFluentEmail email) : IEmailService {
+public sealed class EmailService(IFluentEmail email, ICacheService cacheService) : IEmailService {
 	public async Task SendEmailAsync(string to, string subject, string body) {
 		await email
 			.To(to)
@@ -13,8 +13,10 @@ public sealed class EmailService(IFluentEmail email) : IEmailService {
 			.SendAsync();
 	}
 
-	public string GenerateOtp() {
+	public string GenerateOtp(string email, TimeSpan expiry) {
 		Random random = new Random();
-		return random.Next(100000, 999999).ToString();
+		string otp = random.Next(100000, 999999).ToString();
+		cacheService.Set(email, otp, expiry);
+		return otp;
 	}
 }

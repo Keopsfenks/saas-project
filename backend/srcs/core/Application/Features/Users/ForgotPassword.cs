@@ -20,11 +20,9 @@ internal sealed record ForgotPasswordHandler(
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
 
 		if (user is null)
-			return (500, "Girdiğiniz mail adresi ile kayıtlı bir kullanıcı bulunamadı.");
+			return (404, "Girdiğiniz mail adresi ile kayıtlı bir kullanıcı bulunamadı.");
 
-		string otp = emailService.GenerateOtp();
-
-		cacheService.Set(request.Email, otp, TimeSpan.FromMinutes(5));
+		string otp = emailService.GenerateOtp("forgot_" + request.Email, TimeSpan.FromMinutes(5));
 
 		ForgotPasswordMail mail = new(otp);
 
