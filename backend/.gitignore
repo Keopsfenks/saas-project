@@ -679,4 +679,5 @@ FodyWeavers.xsd
 
 
 #My custom ignore
-./srcs/WebApi/logs/
+./srcs/WebApi/logs
+.editorconfig
