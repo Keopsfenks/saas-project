@@ -1,0 +1,5 @@
+﻿<Project>
+	<PropertyGroup>
+		<OutDir>C:\output\$(MSBuildProjectName)</OutDir>
+	</PropertyGroup>
+</Project>

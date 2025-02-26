@@ -1,0 +1,29 @@
+﻿<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <ItemGroup>
+		<PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+		<PackageVersion Include="Scalar.AspNetCore" Version="2.0.12" />
+		<PackageVersion Include="Serilog" Version="4.2.0" />
+		<PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+		<PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+		<PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+	    <PackageVersion Include="FluentEmail.Core" Version="3.0.2" />
+	    <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
+	    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+    	<PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.2" />
+    	<PackageVersion Include="MongoDB.Driver" Version="3.2.1" />
+	    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+	    <PackageVersion Include="StackExchange.Redis" Version="2.8.24" />
+        <PackageVersion Include="MediatR" Version="12.4.1" />
+	    <PackageVersion Include="MongoDB.Bson" Version="3.2.1" />
+    	<PackageVersion Include="FluentValidation" Version="11.11.0" />
+	    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+	    <PackageVersion Include="TS.Result" Version="9.0.1" />
+    </ItemGroup>
+</Project>
