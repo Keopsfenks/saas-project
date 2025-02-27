@@ -15,7 +15,8 @@ internal sealed record CreateWorkspaceHandler(
 	IRepositoryService<Workspace> workspaceRepository,
 	ITokenService                 tokenService,
 	IMediator                     mediator,
-	IRepositoryService<User>      userRepository) : IRequestHandler<CreateWorkspaceRequest, Result<string>> {
+	IRepositoryService<User>      userRepository,
+	IWorkspaceDatabaseService     workspaceDatabaseService) : IRequestHandler<CreateWorkspaceRequest, Result<string>> {
 	public async Task<Result<string>> Handle(CreateWorkspaceRequest request, CancellationToken cancellationToken) {
 		Workspace? workspace = await workspaceRepository.FindOneAsync(c => c.Title == request.Title);
 
@@ -35,6 +36,13 @@ internal sealed record CreateWorkspaceHandler(
 									   };
 
 		await workspaceRepository.InsertOneAsync(newWorkspace);
+
+		try {
+			//await workspaceDatabaseService.CreateWorkspaceDatabaseAsync(newWorkspace.Id);
+		}
+		catch (Exception e) {
+			return (500, e.Message);
+		}
 
 		return "Çalışma alanı başarıyla oluşturuldu";
 	}

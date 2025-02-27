@@ -4,9 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;
 
-namespace WebApi.Controllers.v1;
+namespace WebApi.Controllers;
 
-[ApiVersion(1)]
 public sealed class ProfileController(IMediator mediator) : ApiController(mediator) {
 	[HttpGet]
 	public async Task<IActionResult> GetProfile() {

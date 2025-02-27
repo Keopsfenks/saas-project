@@ -1,15 +1,11 @@
 ﻿using Application.Features.Users;
-using Application.Services;
-using Asp.Versioning;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;
 
-namespace WebApi.Controllers.v1;
+namespace WebApi.Controllers;
 
-[ApiVersion(1)]
 public sealed class UserController(IMediator mediator) : ApiController(mediator) {
 
 	[HttpPost]

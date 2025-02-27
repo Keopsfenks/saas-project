@@ -22,6 +22,7 @@ public static class DependencyInjection {
 		services.AddScoped<IEmailService, EmailService>();
 		services.AddScoped<ITokenService, TokenService>();
 		services.AddSingleton<IEncryptionService, EncryptionService>();
+		services.AddSingleton<IWorkspaceDatabaseService, WorkspaceDatabaseService>();
 
 		services.AddHostedService<SessionsManagementService>();
 

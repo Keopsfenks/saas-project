@@ -5,8 +5,7 @@ using TS.Result;
 
 namespace Application.Features.Profile;
 
-public sealed record CloseOtherSessionsRequest(
-	string Token) : IRequest<Result<string>>;
+public sealed record CloseOtherSessionsRequest() : IRequest<Result<string>>;
 
 
 
@@ -15,18 +14,19 @@ internal sealed record CloseOtherSessionsHandler(
 	ITokenService               tokenService,
 	IEncryptionService          encryptionService) : IRequestHandler<CloseOtherSessionsRequest, Result<string>> {
 	public async Task<Result<string>> Handle(CloseOtherSessionsRequest request, CancellationToken cancellationToken) {
+		User?   user  = await tokenService.FindUserAsync();
+		string? token = await tokenService.GetTokenAsync();
 
-		User? user = await tokenService.FindUserAsync();
 
 		if (user is null)
 			return (404, "Kullanıcı bulunamadı.");
 
-		if (string.IsNullOrWhiteSpace(request.Token))
+		if (string.IsNullOrWhiteSpace(token))
 			return (400, "Token boş olamaz.");
 
 		IEnumerable<Session?> sessions
 			= await sessionRepository.FindAsync(x => x.UserId == user.Id &&
-													 x.Token != encryptionService.Encrypt(request.Token));
+													 x.Token != encryptionService.Encrypt(token));
 
 		foreach (Session? session in sessions)
 			await sessionRepository.DeleteOneAsync(x => x.Id == session!.Id);

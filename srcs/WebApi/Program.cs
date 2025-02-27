@@ -37,15 +37,15 @@ builder.Configuration
 	   .AddEnvironmentVariables();
 
 // Add services to the container.
-builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddControllers();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApiVersioning(options => {
 	options.DefaultApiVersion                   = new ApiVersion(1);
 	options.AssumeDefaultVersionWhenUnspecified = true;
 	options.UnsupportedApiVersionStatusCode     = 404;
-	options.ApiVersionReader                    = new HeaderApiVersionReader();
+	options.ReportApiVersions                   = true;
 }).AddMvc();
+builder.Services.AddControllers();
 builder.Services.AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 
 // Rate Limiting Ayarları

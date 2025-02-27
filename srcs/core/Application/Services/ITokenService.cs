@@ -7,5 +7,5 @@ public interface ITokenService {
 	Task<User?>      FindUserAsync();
 	Task<Workspace?> FindWorkspaceAsync();
 
-
+	Task<string> GetTokenAsync();
 }
