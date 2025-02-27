@@ -38,7 +38,7 @@ internal sealed record CreateWorkspaceHandler(
 		await workspaceRepository.InsertOneAsync(newWorkspace);
 
 		try {
-			//await workspaceDatabaseService.CreateWorkspaceDatabaseAsync(newWorkspace.Id);
+			await workspaceDatabaseService.CreateWorkspaceDatabaseAsync(newWorkspace.Id);
 		}
 		catch (Exception e) {
 			return (500, e.Message);

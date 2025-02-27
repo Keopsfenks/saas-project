@@ -25,6 +25,7 @@ public static class DependencyInjection {
 		services.AddSingleton<IWorkspaceDatabaseService, WorkspaceDatabaseService>();
 
 		services.AddHostedService<SessionsManagementService>();
+		services.AddHostedService<DatabaseControlService>();
 
 		services.ConfigureOptions<JwtTokenOptionsSetup>();
 		services.AddAuthentication(options => {
