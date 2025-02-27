@@ -6,7 +6,7 @@ using TS.Result;
 
 namespace Application.Features.Profile;
 
-public sealed record GetProfileRequest() : IRequest<Result<ProfileDto>>;
+public sealed record GetProfileRequest : IRequest<Result<ProfileDto>>;
 
 
 
@@ -27,7 +27,7 @@ internal sealed record GetProfileHandler(
 		IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id);
 
 		List<TokenDto> tokenDtos = sessions.Select(x => new TokenDto {
-																		 Token = encryptionService.Decrypt(x.Token),
+																		 Token = encryptionService.Decrypt(x!.Token),
 																		 RefreshToken
 																			 = encryptionService
 																				.Decrypt(x.RefreshToken),

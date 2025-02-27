@@ -8,6 +8,10 @@ public sealed class MemoryCacheService(
 	public T? Get<T>(string key) {
 		var result = cache.TryGetValue<T>(key, out var value);
 
+		if (!result) {
+			return default;
+		}
+
 		return value;
 	}
 	public void Set<T>(string key, T value, TimeSpan? expiry = null) {

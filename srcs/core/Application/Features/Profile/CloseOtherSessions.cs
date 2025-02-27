@@ -5,7 +5,7 @@ using TS.Result;
 
 namespace Application.Features.Profile;
 
-public sealed record CloseOtherSessionsRequest() : IRequest<Result<string>>;
+public sealed record CloseOtherSessionsRequest : IRequest<Result<string>>;
 
 
 
@@ -15,7 +15,7 @@ internal sealed record CloseOtherSessionsHandler(
 	IEncryptionService          encryptionService) : IRequestHandler<CloseOtherSessionsRequest, Result<string>> {
 	public async Task<Result<string>> Handle(CloseOtherSessionsRequest request, CancellationToken cancellationToken) {
 		User?   user  = await tokenService.FindUserAsync();
-		string? token = await tokenService.GetTokenAsync();
+		string token = await tokenService.GetTokenAsync();
 
 
 		if (user is null)

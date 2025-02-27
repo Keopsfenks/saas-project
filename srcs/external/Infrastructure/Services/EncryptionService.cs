@@ -7,7 +7,6 @@ namespace Infrastructure.Services;
 
 public sealed class EncryptionService(ISecuritySettings securitySettings) : IEncryptionService {
 	private static readonly int KeySize = 32;
-	private static readonly int IvSize  = 16;
 
 	private byte[] GenerateKey(string encryptionKey, string salt) {
     using HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(salt));

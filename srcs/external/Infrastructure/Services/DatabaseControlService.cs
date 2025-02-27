@@ -1,18 +1,14 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 
 namespace Infrastructure.Services;
 
 public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControlService> logger) : BackgroundService {
-    private readonly int    Interval     = 5;
+    private readonly int    Interval     = 30;
     private readonly string DatabaseName = "ProjectDb";
+	private readonly DateTime OneMonthAgo = DateTime.UtcNow.AddMonths(-1);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
        logger.LogInformation("DatabaseControlOperations Service Started.");
@@ -38,11 +34,10 @@ public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControl
 
                    var collection = database.GetCollection<BsonDocument>(collectionName);
 
-                   DateTime oneMonthAgo = DateTime.UtcNow.AddMonths(-1);
 
                    var deleteFilter = Builders<BsonDocument>.Filter.And(
                       Builders<BsonDocument>.Filter.Eq("IsDeleted", true),
-                      Builders<BsonDocument>.Filter.Lt("UpdateAt", oneMonthAgo)
+                      Builders<BsonDocument>.Filter.Lt("UpdateAt", OneMonthAgo)
                    );
 
                    var deleteResult = await collection.DeleteManyAsync(deleteFilter, stoppingToken);
@@ -57,7 +52,7 @@ public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControl
              logger.LogError(e, "Database control operation failed");
           }
 
-          await Task.Delay(TimeSpan.FromMinutes(Interval), stoppingToken);
+          await Task.Delay(TimeSpan.FromDays(Interval), stoppingToken);
        }
     }
 
@@ -66,7 +61,10 @@ public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControl
             var projectDb = client.GetDatabase(DatabaseName);
             var workspacesCollection = projectDb.GetCollection<BsonDocument>("Workspaces");
 
-            var filter = Builders<BsonDocument>.Filter.Eq("IsDeleted", true);
+			var filter = Builders<BsonDocument>.Filter.And(
+				Builders<BsonDocument>.Filter.Eq("IsDeleted", true),
+				Builders<BsonDocument>.Filter.Lt("UpdateAt", OneMonthAgo)
+			);
             var deletedWorkspaces = await workspacesCollection.Find(filter).ToListAsync(stoppingToken);
 
             foreach (var workspace in deletedWorkspaces) {

@@ -12,7 +12,7 @@ namespace Infrastructure.Services;
 
 public sealed class JwtProvider(
 	ISecuritySettings           securitySettings) : IJwtProvider {
-	public async Task<TokenDto> GenerateJwtToken(User user, List<Workspace?> workspaces, string? WorkspaceId) {
+	public Task<TokenDto> GenerateJwtToken(User user, List<Workspace?> workspaces, string? WorkspaceId) {
 		List<Claim> claims = new() {
 									   new Claim("Id",      user.Id),
 									   new Claim("Name",    user.Name),
@@ -49,6 +49,6 @@ public sealed class JwtProvider(
 									  ExpiryTime             = expires
 								  };
 
-		return tokenDto;
+		return Task.FromResult(tokenDto);
 	}
 }

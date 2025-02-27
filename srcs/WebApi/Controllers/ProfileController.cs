@@ -1,5 +1,4 @@
 ﻿using Application.Features.Profile;
-using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;

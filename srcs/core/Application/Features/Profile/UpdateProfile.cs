@@ -1,6 +1,4 @@
-﻿using Application.Features.Users;
-using Application.Services;
-using Domain.Dtos;
+﻿using Application.Services;
 using Domain.EmailPatterns;
 using Domain.Entities;
 using MediatR;

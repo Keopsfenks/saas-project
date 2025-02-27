@@ -49,7 +49,7 @@ internal sealed record RegisterUserHandler(
 	private bool IsValidEmail(string email) {
 		try {
 			var addr = new MailAddress(email);
-			return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+			return Regex.IsMatch(addr.Address, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 		} catch {
 			return false;
 		}

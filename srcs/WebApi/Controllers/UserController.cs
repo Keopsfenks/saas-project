@@ -11,7 +11,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> RegisterUser(RegisterUserRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -22,7 +22,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> LoginUser(LoginUserRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -33,7 +33,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> AccountVerification(AccountVerificationRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -44,7 +44,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -54,7 +54,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 
 	[HttpPost]
 	public async Task<IActionResult> RefreshToken(RefreshTokenRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -65,7 +65,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> ResetPassword(ResetPasswordRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -75,7 +75,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 
 	[HttpPost]
 	public async Task<IActionResult> LogoutUser(LogoutUserRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -86,7 +86,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> SendMailVerification(SendMailVerificationRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -96,7 +96,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 
 	[HttpDelete]
 	public async Task<IActionResult> DeleteUser(DeleteUserRequest request) {
-		var response = await mediator.Send(request);
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
@@ -106,7 +106,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 
 	[HttpGet]
 	public async Task<IActionResult> GetUsers() {
-		var response = await mediator.Send(new ResultUsersQuery());
+		var response = await Mediator.Send(new ResultUsersQuery());
 
 		if (response.IsSuccessful)
 			return Ok(response);

@@ -5,7 +5,7 @@ using TS.Result;
 
 namespace Application.Features.Users;
 
-public sealed record DeleteUserRequest() : IRequest<Result<string>>;
+public sealed record DeleteUserRequest : IRequest<Result<string>>;
 
 
 internal sealed record DeleteUserHandler(

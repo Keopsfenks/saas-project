@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using Application.Services;
 using Domain.Abstractions;
-using Domain.Entities;
 using Infrastructure.Settings.DatabaseSetting;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
@@ -13,7 +12,6 @@ namespace Infrastructure.Services;
 public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 	where TEntity : IEntity {
 	private readonly IMongoCollection<TEntity> _collection;
-	private readonly IMongoClient _client;
 
 
 	public RepositoryService(IMongoClient client, IDatabaseSettings databaseSettings, IHttpContextAccessor contextAccessor) {
@@ -21,18 +19,16 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 		if (typeof(BaseEntity).IsAssignableFrom(typeof(TEntity))) {
 			var database = client.GetDatabase(databaseSettings.DatabaseName);
 			_collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
-			_client = client;
 		}
 		else if (typeof(WorkspaceEntity).IsAssignableFrom(typeof(TEntity))) {
 
 			if (contextAccessor.HttpContext is null)
-				throw new ArgumentNullException("HttpContext bulunamadı.");
+				throw new ArgumentNullException("contextAccessor");
 
 			var workspaceId = contextAccessor.HttpContext?.User.FindFirstValue("Workspace");
 
 			var database     = client.GetDatabase("workspace_" + workspaceId);
 			_collection = database.GetCollection<TEntity>(typeof(TEntity).Name + "s");
-			_client = client;
 		}
 		else
 			throw new ArgumentException("Geçersiz nesne tipi.");

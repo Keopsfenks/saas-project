@@ -38,7 +38,7 @@ public sealed class TokenService(
 		return workspace;
 	}
 
-	public async Task<string> GetTokenAsync() {
+	public  Task<string> GetTokenAsync() {
 		if (contextAccessor.HttpContext is null)
 			throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
 
@@ -49,6 +49,6 @@ public sealed class TokenService(
 
 		authorization = authorization.Split(" ").Last();
 
-		return authorization;
+		return Task.FromResult(authorization);
 	}
 }

@@ -69,7 +69,7 @@ public static class DependencyInjection {
 
 		services.AddMemoryCache();
 		services.AddScoped<ICacheService, MemoryCacheService>();
-		services.AddScoped<ICacheService, RedisCacheService>();
+		//services.AddScoped<ICacheService, RedisCacheService>();
 
 		return services;
 	}
