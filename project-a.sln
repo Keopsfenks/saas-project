@@ -1,21 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "srcs\core\Application\Application.csproj", "{EE84C106-9530-410D-8F23-95B6AEAF3C9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\core\Application\Application.csproj", "{EE84C106-9530-410D-8F23-95B6AEAF3C9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "srcs\core\Domain\Domain.csproj", "{2B3C37C2-C579-495A-B3C6-46077C6FB6B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\core\Domain\Domain.csproj", "{2B3C37C2-C579-495A-B3C6-46077C6FB6B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "srcs\external\Infrastructure\Infrastructure.csproj", "{4CD26EA8-366A-40F6-9FD8-8212BD5B546E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\external\Infrastructure\Infrastructure.csproj", "{4CD26EA8-366A-40F6-9FD8-8212BD5B546E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "srcs\WebApi\WebApi.csproj", "{647F4AAC-86AA-4171-A7F6-5203C646C6D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{647F4AAC-86AA-4171-A7F6-5203C646C6D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-item", "solution-item", "{4A6E8334-BB8B-45CE-B3F5-13F22A3FC867}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
-		srcs\docker-compose.yml = srcs\docker-compose.yml
+		src\docker-compose.yml = src\docker-compose.yml
 		Directory.Build.props = Directory.Build.props
+		.editorconfig = .editorconfig
+		global.json = global.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI", "src\WebUI\WebUI.csproj", "{B725065D-1315-4EBC-84DA-9DC94DE0B9A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +29,11 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{EE84C106-9530-410D-8F23-95B6AEAF3C9D} = {DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}
+		{2B3C37C2-C579-495A-B3C6-46077C6FB6B1} = {DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}
+		{4CD26EA8-366A-40F6-9FD8-8212BD5B546E} = {DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}
+		{647F4AAC-86AA-4171-A7F6-5203C646C6D5} = {DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}
+		{B725065D-1315-4EBC-84DA-9DC94DE0B9A5} = {DB2DF7F0-A1D3-4A6B-858C-F935A51DA1E0}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EE84C106-9530-410D-8F23-95B6AEAF3C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -41,5 +52,9 @@ Global
 		{647F4AAC-86AA-4171-A7F6-5203C646C6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647F4AAC-86AA-4171-A7F6-5203C646C6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647F4AAC-86AA-4171-A7F6-5203C646C6D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B725065D-1315-4EBC-84DA-9DC94DE0B9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B725065D-1315-4EBC-84DA-9DC94DE0B9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B725065D-1315-4EBC-84DA-9DC94DE0B9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B725065D-1315-4EBC-84DA-9DC94DE0B9A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

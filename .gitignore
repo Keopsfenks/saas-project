@@ -1,6 +1,5 @@
 #My custom ignore
 ./srcs/WebApi/logs
-.editorconfig
 .project-a.sln.DotSettings.user
 .idea
 
