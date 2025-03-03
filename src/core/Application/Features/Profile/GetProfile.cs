@@ -17,12 +17,12 @@ internal sealed record GetProfileHandler(
 {
 	public async Task<Result<ProfileDto>> Handle(GetProfileRequest request, CancellationToken cancellationToken) {
 
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user == null)
 			return (404, "Kullanıcı bulunamadı");
 
-		IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id);
+		IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
 
 		List<TokenDto> tokenDtos = sessions
 								  .OrderBy(cr => cr!.ExpiryTime)

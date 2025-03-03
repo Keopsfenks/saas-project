@@ -20,7 +20,7 @@ internal sealed record RefreshTokenHandler(
 	IAuthorizeService                 AuthorizeService,
 	IJwtProvider                  jwtProvider) : IRequestHandler<RefreshTokenRequest, Result<string>> {
 	public async Task<Result<string>> Handle(RefreshTokenRequest request, CancellationToken cancellationToken) {
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user == null)
 			return (404, "Kullanıcı bulunamadı.");
@@ -28,9 +28,9 @@ internal sealed record RefreshTokenHandler(
 
 		Session? session
 			= await sessionRepository.FindOneAsync(x => x.RefreshToken ==
-														encryptionService.Encrypt(request.RefreshToken));
+														encryptionService.Encrypt(request.RefreshToken), cancellationToken);
 
-		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
 
 		if (session == null)
 			return (404, "Oturum bulunamadı.");
@@ -46,7 +46,7 @@ internal sealed record RefreshTokenHandler(
 		session.RefreshToken           = encryptionService.Encrypt(token.RefreshToken);
 		session.Token                  = encryptionService.Encrypt(token.Token);
 
-		await sessionRepository.ReplaceOneAsync(x => x.Id == session.Id, session);
+		await sessionRepository.ReplaceOneAsync(x => x.Id == session.Id, session, cancellationToken);
 
 		return "Başarılı bir şekilde oturum yenilendi.";
 	}

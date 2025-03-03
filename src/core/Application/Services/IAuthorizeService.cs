@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace Application.Services;
 
 public interface IAuthorizeService {
-	Task<User?>                    FindUserAsync();
-	Task<Workspace?>               FindWorkspaceAsync();
-	Task<string>                   GetTokenAsync();
-	Task<IReadOnlyList<Attribute>> GetAttributeAsync();
-	Task<Session?>                  GetSessionAsync();
+	Task<User?>                    FindUserAsync(CancellationToken cancellationToken = default);
+	Task<Workspace?>               FindWorkspaceAsync(CancellationToken cancellationToken = default);
+	Task<string>                   GetTokenAsync(CancellationToken cancellationToken = default);
+	Task<IReadOnlyList<Attribute>> GetAttributeAsync(CancellationToken cancellationToken = default);
+	Task<Session?>                  GetSessionAsync(CancellationToken cancellationToken = default);
 }

@@ -21,7 +21,7 @@ internal sealed record RegisterUserHandler(
 	IEmailService            emailService
 ) : IRequestHandler<RegisterUserRequest, Result<string>> {
 	public async Task<Result<string>> Handle(RegisterUserRequest request, CancellationToken cancellationToken) {
-		User? isEmailExist = await userRepository.FindOneAsync(x => x.Email == request.email);
+		User? isEmailExist = await userRepository.FindOneAsync(x => x.Email == request.email, cancellationToken);
 
 		if (isEmailExist != null)
 			return (409, "Bu e-posta adresi zaten kullanılmaktadır.");
@@ -36,12 +36,12 @@ internal sealed record RegisterUserHandler(
 			Password = encryptionService.Encrypt(request.password)
 		};
 
-		await userRepository.InsertOneAsync(user);
+		await userRepository.InsertOneAsync(user, cancellationToken);
 
 		string otp = emailService.GenerateOtp(request.email, TimeSpan.FromMinutes(5));
 
 		VerificationMail verificationMail = new(otp);
-		await emailService.SendEmailAsync(request.email, verificationMail.Subject, verificationMail.Body);
+		await emailService.SendEmailAsync(request.email, verificationMail.Subject, verificationMail.Body, cancellationToken);
 
 		return "Kullanıcı başarıyla kaydedildi.";
 	}

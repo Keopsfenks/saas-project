@@ -26,7 +26,7 @@ internal sealed record UpdateProfileHandler(
 
 	public async Task<Result<UserDto>> Handle(UpdateProfileRequest request, CancellationToken cancellationToken) {
 
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user is null)
 			return (404, "Kullanıcı bulunamadı.");
@@ -45,7 +45,7 @@ internal sealed record UpdateProfileHandler(
 			string           otp  = emailService.GenerateOtp(user.Email, TimeSpan.FromMinutes(5));
 			VerificationMail mail = new VerificationMail(otp);
 
-			await emailService.SendEmailAsync(user.Email, mail.Subject, mail.Body);
+			await emailService.SendEmailAsync(user.Email, mail.Subject, mail.Body, cancellationToken);
 
 		}
 
@@ -53,15 +53,15 @@ internal sealed record UpdateProfileHandler(
 			user.Password = encryptionService.Encrypt(request.Password);
 
 		if (request.SessionClose) {
-			IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id);
+			IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
 
 			foreach (Session? session in sessions)
-				await sessionRepository.DeleteOneAsync(x => x.Id == session!.Id);
+				await sessionRepository.DeleteOneAsync(x => x.Id == session!.Id, cancellationToken);
 
 			cacheService.Remove(user.Email);
 		}
 
-		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user);
+		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user, cancellationToken);
 
 		return new UserDto() {
 								 Id = user.Id,

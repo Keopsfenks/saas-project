@@ -19,12 +19,12 @@ internal sealed record CreateWorkspaceHandler(
 	IRepositoryService<User>      userRepository,
 	IWorkspaceDatabaseService     workspaceDatabaseService) : IRequestHandler<CreateWorkspaceRequest, Result<WorkspaceDto>> {
 	public async Task<Result<WorkspaceDto>> Handle(CreateWorkspaceRequest request, CancellationToken cancellationToken) {
-		Workspace? workspace = await workspaceRepository.FindOneAsync(c => c.Title == request.Title);
+		Workspace? workspace = await workspaceRepository.FindOneAsync(c => c.Title == request.Title, cancellationToken);
 
 		if (workspace is not null)
 			return (409, "Çalışma alanı zaten mevcut");
 
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user is null)
 			return (404, "Kullanıcı bulunamadı");
@@ -36,10 +36,10 @@ internal sealed record CreateWorkspaceHandler(
 										   UserId = user.Id
 									   };
 
-		await workspaceRepository.InsertOneAsync(newWorkspace);
+		await workspaceRepository.InsertOneAsync(newWorkspace, cancellationToken);
 
 		try {
-			await workspaceDatabaseService.CreateWorkspaceDatabaseAsync(newWorkspace.Id);
+			await workspaceDatabaseService.CreateWorkspaceDatabaseAsync(newWorkspace.Id, cancellationToken);
 		}
 		catch (Exception e) {
 			return (500, e.Message);

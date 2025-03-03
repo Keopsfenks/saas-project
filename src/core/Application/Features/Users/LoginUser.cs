@@ -21,7 +21,7 @@ internal sealed record LoginUserHandler(
 	IRepositoryService<Workspace> workspaceRepository,
 	IJwtProvider                jwtProvider) : IRequestHandler<LoginUserRequest, Result<TokenDto>> {
 	public async Task<Result<TokenDto>> Handle(LoginUserRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.email);
+		User? user = await userRepository.FindOneAsync(x => x.Email == request.email, cancellationToken);
 
 		if (user == null)
 			return (404, "Kullanıcı bulunamadı.");
@@ -32,7 +32,7 @@ internal sealed record LoginUserHandler(
 		if (user.EmailConfirmed == false)
 			return (400, "Email adresinizi onaylayınız.");
 
-		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
 
 		string? workspace  = null;
 		var     enumerable = workspaces.ToList();
@@ -51,7 +51,7 @@ internal sealed record LoginUserHandler(
 									UserId                 = user.Id,
 								};
 
-		await sessionsRepository.InsertOneAsync(session);
+		await sessionsRepository.InsertOneAsync(session, cancellationToken);
 
 		return token;
 	}

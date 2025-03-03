@@ -4,12 +4,12 @@ using FluentEmail.Core;
 namespace Infrastructure.Services;
 
 public sealed class EmailService(IFluentEmail email, ICacheService cacheService) : IEmailService {
-	public async Task SendEmailAsync(string to, string subject, string body) {
+	public async Task SendEmailAsync(string to, string subject, string body, CancellationToken cancellationToken = default) {
 		await email
 			.To(to)
 			.Subject(subject)
 			.Body(body)
-			.SendAsync();
+			.SendAsync(cancellationToken);
 	}
 
 	public string GenerateOtp(string email, TimeSpan expiry) {

@@ -20,7 +20,7 @@ internal sealed record ResultWorkspace(
 		int     pageNumber = request.PageNumber;
 		string? search     = request.Search;
 
-		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => true);
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => true, cancellationToken);
 
 		List<WorkspaceDto?> workspacesList = workspaces
 											.OrderBy(x => x.Title)

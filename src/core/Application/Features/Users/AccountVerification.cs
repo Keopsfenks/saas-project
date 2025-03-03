@@ -14,7 +14,7 @@ internal sealed record AccountVerificationHandler(
 	ICacheService            cacheService,
 	IRepositoryService<User> userRepository) : IRequestHandler<AccountVerificationRequest, Result<string>> {
 	public async Task<Result<string>> Handle(AccountVerificationRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
+		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
 
 		if (user == null)
 			return (404, "Kullanıcı bulunamadı.");
@@ -32,7 +32,7 @@ internal sealed record AccountVerificationHandler(
 
 		user.EmailConfirmed = true;
 
-		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user);
+		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user, cancellationToken);
 
 		cacheService.Remove(request.Email);
 

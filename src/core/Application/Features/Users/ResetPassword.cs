@@ -17,7 +17,7 @@ internal sealed record ResetPasswordHandler(
 	ICacheService cacheService,
 	IEncryptionService encryptionService) : IRequestHandler<ResetPasswordRequest, Result<string>> {
 	public async Task<Result<string>> Handle(ResetPasswordRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
+		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
 
 		if (user is null)
 			return (404, "Kullanıcı Bulunamadı");
@@ -32,7 +32,7 @@ internal sealed record ResetPasswordHandler(
 
 		user.Password = encryptionService.Encrypt(request.Password);
 
-		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user);
+		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user, cancellationToken);
 
 		cacheService.Remove("forgot_" + request.Email);
 

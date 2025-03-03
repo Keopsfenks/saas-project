@@ -14,17 +14,19 @@ internal sealed record LogoutUserHandler(
 	IAuthorizeService               AuthorizeService,
 	IRepositoryService<Session> sessionRepository) : IRequestHandler<LogoutUserRequest, Result<string>> {
 	public async Task<Result<string>> Handle(LogoutUserRequest request, CancellationToken cancellationToken) {
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user is null)
 			return (404, "Kullanıcı bulunamadı.");
 
-		Session? session = await sessionRepository.FindOneAsync(x => x.UserId == user.Id && x.Token == request.Token);
+		Session? session
+			= await sessionRepository.FindOneAsync(x => x.UserId == user.Id && x.Token == request.Token,
+												   cancellationToken);
 
 		if (session is null)
 			return (404, "Oturum bulunamadı.");
 
-		await sessionRepository.DeleteOneAsync(x => x.UserId == user.Id && x.Token == request.Token);
+		await sessionRepository.DeleteOneAsync(x => x.UserId == user.Id && x.Token == request.Token, cancellationToken);
 
 		return "Başarıyla çıkış yapıldı.";
 	}

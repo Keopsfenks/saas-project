@@ -12,7 +12,7 @@ public sealed class AuthorizeService(
 	IRepositoryService<Session>   sessionRepository,
 	IEncryptionService            encryptionService,
 	IRepositoryService<Workspace> workspaceRepository) : IAuthorizeService {
-	public async Task<User?> FindUserAsync() {
+	public async Task<User?> FindUserAsync(CancellationToken cancellationToken = default) {
 		if (contextAccessor.HttpContext is null)
 			throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
 
@@ -21,12 +21,12 @@ public sealed class AuthorizeService(
 		if (Id is null)
 			throw new ArgumentNullException(nameof(Id));
 
-		User? user = await userRepository.FindOneAsync(x => x.Id == Id);
+		User? user = await userRepository.FindOneAsync(x => x.Id == Id, cancellationToken);
 
 		return user;
 	}
 
-	public async Task<Workspace?> FindWorkspaceAsync() {
+	public async Task<Workspace?> FindWorkspaceAsync(CancellationToken cancellationToken = default) {
 		if (contextAccessor.HttpContext is null)
 			throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
 
@@ -35,12 +35,12 @@ public sealed class AuthorizeService(
 		if (WorkspaceId is null)
 			throw new ArgumentNullException(nameof(WorkspaceId));
 
-		Workspace? workspace = await workspaceRepository.FindOneAsync(x => x.Id == WorkspaceId);
+		Workspace? workspace = await workspaceRepository.FindOneAsync(x => x.Id == WorkspaceId, cancellationToken);
 
 		return workspace;
 	}
 
-	public  Task<string> GetTokenAsync() {
+	public  Task<string> GetTokenAsync(CancellationToken cancellationToken = default) {
 		if (contextAccessor.HttpContext is null)
 			throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
 
@@ -54,7 +54,7 @@ public sealed class AuthorizeService(
 		return Task.FromResult(authorization);
 	}
 
-	public Task<IReadOnlyList<Attribute>> GetAttributeAsync() {
+	public Task<IReadOnlyList<Attribute>> GetAttributeAsync(CancellationToken cancellationToken = default) {
 		if (contextAccessor.HttpContext is null)
 			throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
 
@@ -69,10 +69,10 @@ public sealed class AuthorizeService(
 
 	}
 
-	public async Task<Session?> GetSessionAsync() {
+	public async Task<Session?> GetSessionAsync(CancellationToken cancellationToken = default) {
 		string token = await GetTokenAsync();
 
-		Session? session = await sessionRepository.FindOneAsync(x => x.Token == encryptionService.Encrypt(token));
+		Session? session = await sessionRepository.FindOneAsync(x => x.Token == encryptionService.Encrypt(token), cancellationToken);
 
 		return session;
 	}

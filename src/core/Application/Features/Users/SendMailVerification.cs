@@ -15,7 +15,7 @@ internal sealed record SendMailVerificationHandler(
 	ICacheService            cacheService,
 	IRepositoryService<User> userRepository) : IRequestHandler<SendMailVerificationRequest, Result<string>> {
 	public async Task<Result<string>> Handle(SendMailVerificationRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email);
+		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
 
 		if (user is null)
 			return (404, "Girdiğiniz mail adresi ile kayıtlı bir kullanıcı bulunamadı.");
@@ -24,7 +24,7 @@ internal sealed record SendMailVerificationHandler(
 
 		VerificationMail mail = new(otp);
 
-		await emailService.SendEmailAsync(request.Email, mail.Subject, mail.Body);
+		await emailService.SendEmailAsync(request.Email, mail.Subject, mail.Body, cancellationToken);
 
 		return "Doğrulama maili gönderildi.";
 	}

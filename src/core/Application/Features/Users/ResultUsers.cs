@@ -20,7 +20,7 @@ internal sealed record ResultUsersHandler(
 		int     pageNumber = request.PageNumber;
 		string? search     = request.Search;
 
-		IEnumerable<User?> users = await userRepository.FindAsync(x => true);
+		IEnumerable<User?> users = await userRepository.FindAsync(x => true, cancellationToken);
 
 		List<User> usersList = users
 							  .OrderBy(x => x.Name)

@@ -34,31 +34,31 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 			throw new ArgumentException("Geçersiz nesne tipi.");
 	}
 
-	public async Task<IEnumerable<TEntity?>> FindAsync(Expression<Func<TEntity, bool>> filter) {
+	public async Task<IEnumerable<TEntity?>> FindAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
 		return await _collection.AsQueryable()
 								.Where(entity => !entity.IsDeleted)
 								.Where(filter)
-								.ToListAsync();
+								.ToListAsync(cancellationToken);
 	}
 
-	public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> filter) {
+	public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
 		return await _collection.AsQueryable()
 								.Where(entity => !entity.IsDeleted)
 								.Where(filter)
-								.FirstOrDefaultAsync();
+								.FirstOrDefaultAsync(cancellationToken);
 	}
 
-	public async Task InsertOneAsync(TEntity entity) {
+	public async Task InsertOneAsync(TEntity entity, CancellationToken cancellationToken = default) {
 		entity.CreateAt = DateTimeOffset.UtcNow;
-		await _collection.InsertOneAsync(entity);
+		await _collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
 	}
 
-	public async Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity) {
+	public async Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity, CancellationToken cancellationToken = default) {
 		entity.UpdateAt = DateTimeOffset.UtcNow;
-		await _collection.FindOneAndReplaceAsync(filter, entity);
+		await _collection.FindOneAndReplaceAsync(filter, entity, cancellationToken: cancellationToken);
 	}
 
-	public async Task DeleteOneAsync(Expression<Func<TEntity, bool>> filter) {
-		await _collection.DeleteOneAsync(filter);
+	public async Task DeleteOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
+		await _collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
 	}
 }

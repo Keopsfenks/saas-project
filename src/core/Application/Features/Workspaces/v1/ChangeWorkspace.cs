@@ -23,13 +23,13 @@ public sealed record ChangeWorkspaceHandler(
 		if (contextAccessor.HttpContext is null)
 			return (500, "HttpContext hatalı veya boş");
 
-		User? user = await AuthorizeService.FindUserAsync();
+		User? user = await AuthorizeService.FindUserAsync(cancellationToken);
 
 		if (user is null)
 			return (401, "Kullanıcı bulunamadı");
 
 
-		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id);
+		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
 
 		List<Workspace?>        enumerable = workspaces.ToList();
 		Workspace? workspace  = enumerable.FirstOrDefault(x => x.Id == request.Id);
@@ -41,9 +41,9 @@ public sealed record ChangeWorkspaceHandler(
 				return (404, "Çalışma alanı bulunamadı.");
 		}
 
-		string authorization = await AuthorizeService.GetTokenAsync();
+		string authorization = await AuthorizeService.GetTokenAsync(cancellationToken);
 
-		Session? session = await sessionRepository.FindOneAsync(x => x.Token == encryptionService.Encrypt(authorization));
+		Session? session = await sessionRepository.FindOneAsync(x => x.Token == encryptionService.Encrypt(authorization), cancellationToken);
 
 		if (session is null)
 			return (401, "Oturum bulunamadı.");
@@ -52,7 +52,7 @@ public sealed record ChangeWorkspaceHandler(
 
 		session.Token = encryptionService.Encrypt(token.Token);
 
-		await sessionRepository.ReplaceOneAsync(x => x.Id == session.Id, session);
+		await sessionRepository.ReplaceOneAsync(x => x.Id == session.Id, session, cancellationToken);
 
 		return token;
 	}
