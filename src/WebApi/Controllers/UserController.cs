@@ -105,12 +105,13 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetUsers() {
-		var response = await Mediator.Send(new ResultUsersQuery());
+	public async Task<IActionResult> GetUsers([FromQuery] ResultUsersQuery request) {
+		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)
 			return Ok(response);
 
 		return StatusCode(response.StatusCode, response);
 	}
+
 }

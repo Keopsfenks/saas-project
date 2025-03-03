@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Dtos;
+using Application.Services;
 using Domain.Entities;
 using MediatR;
 using TS.Result;
@@ -7,7 +8,7 @@ namespace Application.Features.Workspaces.v1;
 
 public sealed record CreateWorkspaceRequest(
 	string Title,
-	string Description) : IRequest<Result<Workspace>>;
+	string Description) : IRequest<Result<WorkspaceDto>>;
 
 
 
@@ -16,8 +17,8 @@ internal sealed record CreateWorkspaceHandler(
 	IAuthorizeService                 AuthorizeService,
 	IMediator                     mediator,
 	IRepositoryService<User>      userRepository,
-	IWorkspaceDatabaseService     workspaceDatabaseService) : IRequestHandler<CreateWorkspaceRequest, Result<Workspace>> {
-	public async Task<Result<Workspace>> Handle(CreateWorkspaceRequest request, CancellationToken cancellationToken) {
+	IWorkspaceDatabaseService     workspaceDatabaseService) : IRequestHandler<CreateWorkspaceRequest, Result<WorkspaceDto>> {
+	public async Task<Result<WorkspaceDto>> Handle(CreateWorkspaceRequest request, CancellationToken cancellationToken) {
 		Workspace? workspace = await workspaceRepository.FindOneAsync(c => c.Title == request.Title);
 
 		if (workspace is not null)
@@ -44,6 +45,10 @@ internal sealed record CreateWorkspaceHandler(
 			return (500, e.Message);
 		}
 
-		return newWorkspace;
+		return new WorkspaceDto() {
+									  Id = newWorkspace.Id,
+									  Title = newWorkspace.Title,
+									  Description = newWorkspace.Description,
+								  };
 	}
 }

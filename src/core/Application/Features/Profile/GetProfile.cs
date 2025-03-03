@@ -6,13 +6,7 @@ using TS.Result;
 
 namespace Application.Features.Profile;
 
-public sealed record GetProfileRequest : IRequest<Result<ProfileDto>> {
-	public int     pageSize   { get; set; } = 10;
-	public int     pageNumber { get; set; } = 0;
-}
-
-
-
+public sealed record GetProfileRequest : IRequest<Result<ProfileDto>>;
 
 internal sealed record GetProfileHandler(
 	IRepositoryService<User>    userRepository,
@@ -22,8 +16,6 @@ internal sealed record GetProfileHandler(
 ) : IRequestHandler<GetProfileRequest, Result<ProfileDto>>
 {
 	public async Task<Result<ProfileDto>> Handle(GetProfileRequest request, CancellationToken cancellationToken) {
-		int     pageSize   = request.pageSize;
-		int     pageNumber = request.pageNumber;
 
 		User? user = await AuthorizeService.FindUserAsync();
 
@@ -34,8 +26,6 @@ internal sealed record GetProfileHandler(
 
 		List<TokenDto> tokenDtos = sessions
 								  .OrderBy(cr => cr!.ExpiryTime)
-								  .Skip(pageNumber * pageSize)
-								  .Take(pageSize)
 								  .Select(x => new TokenDto {
 																		 Token = encryptionService.Decrypt(x!.Token),
 																		 RefreshToken

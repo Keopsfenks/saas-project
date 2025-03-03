@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Dtos;
+using Application.Services;
 using Domain.EmailPatterns;
 using Domain.Entities;
 using MediatR;
@@ -11,7 +12,7 @@ public sealed record UpdateProfileRequest(
 	string? Surname,
 	string? Email,
 	string? Password,
-	bool    SessionClose) : IRequest<Result<User>>;
+	bool    SessionClose) : IRequest<Result<UserDto>>;
 
 
 internal sealed record UpdateProfileHandler(
@@ -21,9 +22,9 @@ internal sealed record UpdateProfileHandler(
 	IAuthorizeService				AuthorizeService,
 	IEmailService               emailService,
 	ICacheService               cacheService,
-	IMediator mediator): IRequestHandler<UpdateProfileRequest, Result<User>> {
+	IMediator mediator): IRequestHandler<UpdateProfileRequest, Result<UserDto>> {
 
-	public async Task<Result<User>> Handle(UpdateProfileRequest request, CancellationToken cancellationToken) {
+	public async Task<Result<UserDto>> Handle(UpdateProfileRequest request, CancellationToken cancellationToken) {
 
 		User? user = await AuthorizeService.FindUserAsync();
 
@@ -62,7 +63,13 @@ internal sealed record UpdateProfileHandler(
 
 		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user);
 
-		return user;
+		return new UserDto() {
+								 Id = user.Id,
+								 Name = user.Name,
+								 Surname = user.Surname,
+								 Email = user.Email,
+								 EmailConfirmed = user.EmailConfirmed,
+							 };
 	}
 
 }

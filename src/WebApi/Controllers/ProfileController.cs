@@ -1,4 +1,5 @@
 ﻿using Application.Features.Profile;
+using Application.Features.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;
@@ -6,6 +7,7 @@ using WebApi.Abstractions;
 namespace WebApi.Controllers;
 
 public sealed class ProfileController(IMediator mediator) : ApiController(mediator) {
+
 	[HttpGet]
 	public async Task<IActionResult> GetProfile() {
 		var response = await Mediator.Send(new GetProfileRequest());
