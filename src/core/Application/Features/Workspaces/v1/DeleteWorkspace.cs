@@ -10,18 +10,20 @@ public sealed record DeleteWorkspaceRequest() : IRequest<Result<string>>;
 
 
 internal sealed record DeleteWorkspaceHandler(
-	IRepositoryService<Workspace> workspaceRepository,
-	IAuthorizeService                 AuthorizeService) : IRequestHandler<DeleteWorkspaceRequest, Result<string>> {
-	public async Task<Result<string>> Handle(DeleteWorkspaceRequest request, CancellationToken cancellationToken) {
-		Workspace? workspace = await AuthorizeService.FindWorkspaceAsync(cancellationToken);
+    IRepositoryService<Workspace> workspaceRepository,
+    IAuthorizeService AuthorizeService) : IRequestHandler<DeleteWorkspaceRequest, Result<string>>
+{
+    public async Task<Result<string>> Handle(DeleteWorkspaceRequest request, CancellationToken cancellationToken)
+    {
+        Workspace? workspace = await AuthorizeService.FindWorkspaceAsync(cancellationToken);
 
-		if (workspace is null)
-			return (404, "Çalışma alanı bulunamadı");
+        if (workspace is null)
+            return (404, "Çalışma alanı bulunamadı");
 
-		workspace.IsDeleted = true;
+        workspace.IsDeleted = true;
 
-		await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
+        await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
 
-		return "Çalışma alanı başarıyla silindi";
-	}
+        return "Çalışma alanı başarıyla silindi";
+    }
 }

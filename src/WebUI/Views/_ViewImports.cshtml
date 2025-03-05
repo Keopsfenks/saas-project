@@ -1,3 +1,8 @@
 ﻿@using WebUI
 @using WebUI.Models
+@using WebUI.Resources
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

@@ -6,36 +6,38 @@ using TS.Result;
 namespace Application.Features.Users;
 
 public sealed record ResetPasswordRequest(
-	string Email,
-	string Otp,
-	string Password) : IRequest<Result<string>>;
+    string Email,
+    string Otp,
+    string Password) : IRequest<Result<string>>;
 
 
 
 internal sealed record ResetPasswordHandler(
-	IRepositoryService<User> userRepository,
-	ICacheService cacheService,
-	IEncryptionService encryptionService) : IRequestHandler<ResetPasswordRequest, Result<string>> {
-	public async Task<Result<string>> Handle(ResetPasswordRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
+    IRepositoryService<User> userRepository,
+    ICacheService cacheService,
+    IEncryptionService encryptionService) : IRequestHandler<ResetPasswordRequest, Result<string>>
+{
+    public async Task<Result<string>> Handle(ResetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
 
-		if (user is null)
-			return (404, "Kullanıcı Bulunamadı");
+        if (user is null)
+            return (404, "Kullanıcı Bulunamadı");
 
-		string? otp = cacheService.Get<string>("forgot_" + request.Email);
+        string? otp = cacheService.Get<string>("forgot_" + request.Email);
 
-		if (otp == null)
-			return (404, "Doğrulama kodu bulunamadı.");
+        if (otp == null)
+            return (404, "Doğrulama kodu bulunamadı.");
 
-		if (otp != request.Otp)
-			return (400, "Girdiğiniz doğrulama kodu hatalı.");
+        if (otp != request.Otp)
+            return (400, "Girdiğiniz doğrulama kodu hatalı.");
 
-		user.Password = encryptionService.Encrypt(request.Password);
+        user.Password = encryptionService.Encrypt(request.Password);
 
-		await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user, cancellationToken);
+        await userRepository.ReplaceOneAsync(x => x.Email == request.Email, user, cancellationToken);
 
-		cacheService.Remove("forgot_" + request.Email);
+        cacheService.Remove("forgot_" + request.Email);
 
-		return "Şifreniz başarıyla değiştirildi.";
-	}
+        return "Şifreniz başarıyla değiştirildi.";
+    }
 }

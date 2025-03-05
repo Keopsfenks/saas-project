@@ -1,6 +1,4 @@
 using Application.Dtos;
-using Application.Services;
-using Domain.Entities;
 using MediatR;
 using TS.Result;
 
@@ -8,8 +6,7 @@ namespace Application.Features.Users;
 
 public sealed record MeReqguest : IRequest<Result<UserDto>>;
 
-
-
+/*
 internal sealed class MeHandler(
 	IAuthorizeService authorizeService) : IRequestHandler<MeRequest, Result<UserDto>> {
 	public async Task<Result<UserDto>> Handle(MeRequest request, CancellationToken cancellationToken) {
@@ -31,3 +28,4 @@ internal sealed class MeHandler(
 
 	}
 }
+*/

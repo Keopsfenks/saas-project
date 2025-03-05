@@ -1,0 +1,1422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>İsim</value>
+  </data>
+  <data name="IsDeleted" xml:space="preserve">
+    <value>Silindi</value>
+  </data>
+  <data name="InsertedDate" xml:space="preserve">
+    <value>Eklenme Tarihi</value>
+  </data>
+  <data name="DeletedDate" xml:space="preserve">
+    <value>Silinme Tarih</value>
+  </data>
+  <data name="PriceInfo" xml:space="preserve">
+    <value>Fiyat Bilgisi</value>
+  </data>
+  <data name="CityRegionId" xml:space="preserve">
+    <value>Şehir Bölge Kimliği</value>
+  </data>
+  <data name="PhoneCode" xml:space="preserve">
+    <value>Telefon Kodu</value>
+  </data>
+  <data name="ShortCode" xml:space="preserve">
+    <value>Kısa kod</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="Icon" xml:space="preserve">
+    <value>İkon</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="UpdatedDate" xml:space="preserve">
+    <value>Güncelleme Tarihi</value>
+  </data>
+  <data name="InsertedUser" xml:space="preserve">
+    <value>Ekleyen Kullanıcı</value>
+  </data>
+  <data name="UpdatedUser" xml:space="preserve">
+    <value>Güncelleyen Kullanıcı</value>
+  </data>
+  <data name="DeletedUser" xml:space="preserve">
+    <value>Silen kullanıcı</value>
+  </data>
+  <data name="ServerSideName" xml:space="preserve">
+    <value>Sunucu Tarafı Adı</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Genişlik</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Uzunluk</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Derinlik</value>
+  </data>
+  <data name="IconUrl" xml:space="preserve">
+    <value>Ikon Url</value>
+  </data>
+  <data name="IconDescription" xml:space="preserve">
+    <value>Ikon Açıklama</value>
+  </data>
+  <data name="StatusId" xml:space="preserve">
+    <value>Durum Kimliği</value>
+  </data>
+  <data name="MapProvider" xml:space="preserve">
+    <value>Harita Sağlayıcı</value>
+  </data>
+  <data name="ResourceKey" xml:space="preserve">
+    <value>Kaynak Anahtarı</value>
+  </data>
+  <data name="ProductDeliveryTypeId" xml:space="preserve">
+    <value>Ürün Teslimat Türü Kimliği</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Birim Kimliği</value>
+  </data>
+  <data name="AreaCalculationId" xml:space="preserve">
+    <value>Alan Hesaplama Kimliği</value>
+  </data>
+  <data name="UniqueKey" xml:space="preserve">
+    <value>Benzersiz anahtar</value>
+  </data>
+  <data name="WarehouseContactWarehouseId" xml:space="preserve">
+    <value>Depo İletişim Depo Kimliği</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Soyadı</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-posta</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Sıra</value>
+  </data>
+  <data name="ContactId" xml:space="preserve">
+    <value>Kişi Kimliği</value>
+  </data>
+  <data name="LanguageId" xml:space="preserve">
+    <value>Dil Kimliği</value>
+  </data>
+  <data name="serviceId" xml:space="preserve">
+    <value>Hizmet kimliği</value>
+  </data>
+  <data name="TypeDepo" xml:space="preserve">
+    <value>Tip Depo</value>
+  </data>
+  <data name="TypeFullfilment" xml:space="preserve">
+    <value>Tip Fullfilment</value>
+  </data>
+  <data name="TypeLogistics" xml:space="preserve">
+    <value>Tip Lojistik</value>
+  </data>
+  <data name="AreaTypeDepo" xml:space="preserve">
+    <value>Alan Türü Depo</value>
+  </data>
+  <data name="AreaTypeTemp" xml:space="preserve">
+    <value>Alan Türü Temp</value>
+  </data>
+  <data name="AreaTypeOpen" xml:space="preserve">
+    <value>Alan Türü Açık</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>OluşturulmaTarihi</value>
+  </data>
+  <data name="StoryNo" xml:space="preserve">
+    <value>HikayeNo</value>
+  </data>
+  <data name="PageName" xml:space="preserve">
+    <value>Sayfa ismi</value>
+  </data>
+  <data name="StoryTitle" xml:space="preserve">
+    <value>Hikaye Başlığı</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="MessageNo" xml:space="preserve">
+    <value>Mesaj No</value>
+  </data>
+  <data name="MessageTr" xml:space="preserve">
+    <value>Mesaj Tr</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="MessageEn" xml:space="preserve">
+    <value>Mesaj En</value>
+  </data>
+  <data name="EventGroupId" xml:space="preserve">
+    <value>Etkinlik Grubu Kimliği</value>
+  </data>
+  <data name="EventMailId" xml:space="preserve">
+    <value>Etkinlik Posta Kimliği</value>
+  </data>
+  <data name="DisplayFieldId" xml:space="preserve">
+    <value>Görüntü Alanı Kimliği</value>
+  </data>
+  <data name="ApiFieldId" xml:space="preserve">
+    <value>API Alan Kimliği</value>
+  </data>
+  <data name="FieldId" xml:space="preserve">
+    <value>Alan Kimliği</value>
+  </data>
+  <data name="MediaOwnerId" xml:space="preserve">
+    <value>Medya Sahibi Kimliği</value>
+  </data>
+  <data name="FileLink" xml:space="preserve">
+    <value>Dosya Bağlantısı</value>
+  </data>
+  <data name="Rank" xml:space="preserve">
+    <value>Sıra</value>
+  </data>
+  <data name="MediaType" xml:space="preserve">
+    <value>Ortam türü</value>
+  </data>
+  <data name="CacheId" xml:space="preserve">
+    <value>Önbellek kimliği</value>
+  </data>
+  <data name="ReservationId" xml:space="preserve">
+    <value>Rezervasyon Kimliği</value>
+  </data>
+  <data name="CardNumber" xml:space="preserve">
+    <value>Kart numarası</value>
+  </data>
+  <data name="CardOwner" xml:space="preserve">
+    <value>Kart sahibi</value>
+  </data>
+  <data name="CardOwnerPhoneNumber" xml:space="preserve">
+    <value>Kart Sahibi Telefon Numarası</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Toplam tutar</value>
+  </data>
+  <data name="PaidAmount" xml:space="preserve">
+    <value>Ödenen miktar</value>
+  </data>
+  <data name="ResponseUrl" xml:space="preserve">
+    <value>Yanıt URL'si</value>
+  </data>
+  <data name="OperationGUID" xml:space="preserve">
+    <value>Operasyon GUID'i</value>
+  </data>
+  <data name="UCDMd" xml:space="preserve">
+    <value>UCDMd</value>
+  </data>
+  <data name="IsSecure" xml:space="preserve">
+    <value>Güvenli mi</value>
+  </data>
+  <data name="ProvisionStatus" xml:space="preserve">
+    <value>Tedarik Durumu</value>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Hata kodu</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Hata mesajı</value>
+  </data>
+  <data name="IsCompleted" xml:space="preserve">
+    <value>Tamamlandı</value>
+  </data>
+  <data name="ReceiptId" xml:space="preserve">
+    <value>Makbuz Kimliği</value>
+  </data>
+  <data name="IsGrayWarehouse" xml:space="preserve">
+    <value>Gri Depo</value>
+  </data>
+  <data name="TypeId" xml:space="preserve">
+    <value>Tür Kimliği</value>
+  </data>
+  <data name="AreaTypeId" xml:space="preserve">
+    <value>AlanTürü Kimliği</value>
+  </data>
+  <data name="PriceId" xml:space="preserve">
+    <value>Fiyat Kimliği</value>
+  </data>
+  <data name="IsPeriod" xml:space="preserve">
+    <value>Dönem</value>
+  </data>
+  <data name="DescriptionId" xml:space="preserve">
+    <value>Açıklama Kimliği</value>
+  </data>
+  <data name="VerticalField" xml:space="preserve">
+    <value>Dikey Alan</value>
+  </data>
+  <data name="PalletField" xml:space="preserve">
+    <value>Palet Alanı</value>
+  </data>
+  <data name="Request" xml:space="preserve">
+    <value>Rica etmek</value>
+  </data>
+  <data name="RequestDate" xml:space="preserve">
+    <value>İstek Tarihi</value>
+  </data>
+  <data name="Response" xml:space="preserve">
+    <value>Cevap</value>
+  </data>
+  <data name="ResponseDate" xml:space="preserve">
+    <value>Cevap tarihi</value>
+  </data>
+  <data name="MethodName" xml:space="preserve">
+    <value>Yöntem Adı</value>
+  </data>
+  <data name="IpAddress" xml:space="preserve">
+    <value>IP adresi</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Kullanıcı adı</value>
+  </data>
+  <data name="ReservationUserId" xml:space="preserve">
+    <value>Rezervasyon Kullanıcı Kimliği</value>
+  </data>
+  <data name="ReservationWarehouseId" xml:space="preserve">
+    <value>Rezervasyon Depo Kimliği</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Başlangıç tarihi</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Bitiş tarihi</value>
+  </data>
+  <data name="ReservationProductDeliveryTypeId" xml:space="preserve">
+    <value>Rezervasyon Ürün Gönderim Şekli Kimliği</value>
+  </data>
+  <data name="ReservationProductTypeId" xml:space="preserve">
+    <value>Rezervasyon Ürün Türü Id</value>
+  </data>
+  <data name="ReservationStatusId" xml:space="preserve">
+    <value>Rezervasyon Durumu Kimliği</value>
+  </data>
+  <data name="TotalProductVolume" xml:space="preserve">
+    <value>Toplam Ürün Hacmi</value>
+  </data>
+  <data name="MaximumPerPallet" xml:space="preserve">
+    <value>Maksimum Palet Başına</value>
+  </data>
+  <data name="MinimumPerPallet" xml:space="preserve">
+    <value>Palet Başına Minimum</value>
+  </data>
+  <data name="PalletAmount" xml:space="preserve">
+    <value>Palet Miktarı</value>
+  </data>
+  <data name="SkuAmount" xml:space="preserve">
+    <value>Sku Tutarı</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>İleti</value>
+  </data>
+  <data name="RecordName" xml:space="preserve">
+    <value>Kayıt Adı</value>
+  </data>
+  <data name="isRecorded" xml:space="preserve">
+    <value>Kaydedildi</value>
+  </data>
+  <data name="ProductTypeMessage" xml:space="preserve">
+    <value>Ürün Türü Mesaj</value>
+  </data>
+  <data name="DailyOrderMax" xml:space="preserve">
+    <value>Günlük Sipariş Maks</value>
+  </data>
+  <data name="DailyOrderMin" xml:space="preserve">
+    <value>Günlük Sipariş Min</value>
+  </data>
+  <data name="DailyOrderAverage" xml:space="preserve">
+    <value>Günlük Sipariş Ortalaması</value>
+  </data>
+  <data name="IsPallet" xml:space="preserve">
+    <value>Palet</value>
+  </data>
+  <data name="IsPalletExit" xml:space="preserve">
+    <value>Palet Çıkışı mı?</value>
+  </data>
+  <data name="PalletApproveStatus" xml:space="preserve">
+    <value>Palet Onay Durumu</value>
+  </data>
+  <data name="PalletPrice" xml:space="preserve">
+    <value>Palet fiyatı</value>
+  </data>
+  <data name="IsInsurance" xml:space="preserve">
+    <value>Sigorta</value>
+  </data>
+  <data name="ProductPrice" xml:space="preserve">
+    <value>Ürün fiyatı</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Ödeme Durumu</value>
+  </data>
+  <data name="RejectionReason" xml:space="preserve">
+    <value>Reddetme nedeni</value>
+  </data>
+  <data name="ReservationAdditionalDemandedTimeReservationId" xml:space="preserve">
+    <value>Rezervasyon Ek Talep Edilen Zaman Rezervasyon Kimliği</value>
+  </data>
+  <data name="DemandedDate" xml:space="preserve">
+    <value>Talep Tarihi</value>
+  </data>
+  <data name="ReservationAdvancedServiceReservationId" xml:space="preserve">
+    <value>Rezervasyon Gelişmiş Hizmet Rezervasyon Kimliği</value>
+  </data>
+  <data name="ReservationAdvancedServiceId" xml:space="preserve">
+    <value>Rezervasyon Gelişmiş Hizmet Kimliği</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Fiyat</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="MeasurementUnitId" xml:space="preserve">
+    <value>Ölçüm Birimi Kimliği</value>
+  </data>
+  <data name="ReservationDangerReservationId" xml:space="preserve">
+    <value>Rezervasyon Tehlike Rezervasyon Kimliği</value>
+  </data>
+  <data name="ReservationDangerId" xml:space="preserve">
+    <value>Rezervasyon Tehlike Kimliği</value>
+  </data>
+  <data name="ReservationFacilityReservationId" xml:space="preserve">
+    <value>Rezervasyon Tesis Rezervasyon</value>
+  </data>
+  <data name="ReservationFacilityId" xml:space="preserve">
+    <value>Rezervasyon Tesis Kimliği</value>
+  </data>
+  <data name="ReservationFeatureReservationId" xml:space="preserve">
+    <value>Rezervasyon Özelliği Rezervasyon Kimliği</value>
+  </data>
+  <data name="ReservationFeatureId" xml:space="preserve">
+    <value>Rezervasyon Özelliği Kimliği</value>
+  </data>
+  <data name="ReservationMessageReservationId" xml:space="preserve">
+    <value>Rezervasyon Mesajı Rezervasyon Kimliği</value>
+  </data>
+  <data name="ReservationMessageId" xml:space="preserve">
+    <value>Rezervasyon Mesaj Kimliği</value>
+  </data>
+  <data name="ReservationProductFeatureReservationId" xml:space="preserve">
+    <value>Rezervasyon Ürün Özelliği Rezervasyon Kimliği</value>
+  </data>
+  <data name="ReservationProductFeatureId" xml:space="preserve">
+    <value>Rezervasyon Ürün Özelliği Kimliği</value>
+  </data>
+  <data name="ReservationProductSpecReservationId" xml:space="preserve">
+    <value>Rezervasyon Ürün Spec Rezervasyon Id</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Ağırlık</value>
+  </data>
+  <data name="VerticalStockAmount" xml:space="preserve">
+    <value>Dikey Stok Tutarı</value>
+  </data>
+  <data name="UserId" xml:space="preserve">
+    <value>Kullanıcı kimliği</value>
+  </data>
+  <data name="MaximumNumberPerPallet" xml:space="preserve">
+    <value>Palet Başına Maksimum Sayı</value>
+  </data>
+  <data name="MinimumNumberPerPallet" xml:space="preserve">
+    <value>Palet Başına MinimumSayı</value>
+  </data>
+  <data name="PalletNumber" xml:space="preserve">
+    <value>Palet Numarası</value>
+  </data>
+  <data name="StockItemTypeId" xml:space="preserve">
+    <value>Stok Ürün Türü Kimliği</value>
+  </data>
+  <data name="PalletTypeId" xml:space="preserve">
+    <value>Palet tipi kimliği</value>
+  </data>
+  <data name="ModelName" xml:space="preserve">
+    <value>Model adı</value>
+  </data>
+  <data name="Format" xml:space="preserve">
+    <value>Biçim</value>
+  </data>
+  <data name="EmailConfirmed" xml:space="preserve">
+    <value>E-posta Onaylandı mı?</value>
+  </data>
+  <data name="EmailConfirmedGuid" xml:space="preserve">
+    <value>E-posta Onaylama Kimliği</value>
+  </data>
+  <data name="PasswordHash" xml:space="preserve">
+    <value>Parola Hash</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefon numarası</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Ad Soyad</value>
+  </data>
+  <data name="AcceptNotifications" xml:space="preserve">
+    <value>Bildirimleri Kabul Et</value>
+  </data>
+  <data name="AcceptElectronicMessages" xml:space="preserve">
+    <value>Elektronik Mesajları Kabul Et</value>
+  </data>
+  <data name="RegisterIpAddress" xml:space="preserve">
+    <value>Register Ip Address</value>
+  </data>
+  <data name="UserCountryId" xml:space="preserve">
+    <value>Kullanıcı Ülke Kimliği</value>
+  </data>
+  <data name="IsWarehouseOwner" xml:space="preserve">
+    <value>Depo Sahibi</value>
+  </data>
+  <data name="AcceptUserContract" xml:space="preserve">
+    <value>Kullanıcı Sözleşmesini Kabul Et</value>
+  </data>
+  <data name="StorageContract" xml:space="preserve">
+    <value>Depolama Sözleşmesi</value>
+  </data>
+  <data name="FullfilmentContract" xml:space="preserve">
+    <value>Tamamlama Sözleşmesi</value>
+  </data>
+  <data name="IdentityNo" xml:space="preserve">
+    <value>Nüfus cüzdanı No</value>
+  </data>
+  <data name="ContactFullName" xml:space="preserve">
+    <value>Kişi Tam Adı</value>
+  </data>
+  <data name="ContactPhoneNumber" xml:space="preserve">
+    <value>İletişimTelefon Numarası</value>
+  </data>
+  <data name="IsAdmin" xml:space="preserve">
+    <value>Yönetici</value>
+  </data>
+  <data name="InvoiceType" xml:space="preserve">
+    <value>Fatura Türü</value>
+  </data>
+  <data name="ContactAddress" xml:space="preserve">
+    <value>İletişim Adresi</value>
+  </data>
+  <data name="ExpireDate" xml:space="preserve">
+    <value>Son kullanma tarihi</value>
+  </data>
+  <data name="ConfirmationCode" xml:space="preserve">
+    <value>Onay kodu</value>
+  </data>
+  <data name="ConfirmationType" xml:space="preserve">
+    <value>Onay Türü</value>
+  </data>
+  <data name="isConfirmed" xml:space="preserve">
+    <value>Onaylandı</value>
+  </data>
+  <data name="UserCorporateInvoiceUserId" xml:space="preserve">
+    <value>Kullanıcı Kurumsal Fatura Kimliği</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Firma Adı</value>
+  </data>
+  <data name="AuthorizedFullName" xml:space="preserve">
+    <value>Yetkili Tam Adı</value>
+  </data>
+  <data name="CorporateEmail" xml:space="preserve">
+    <value>Kurumsal E-posta</value>
+  </data>
+  <data name="TaxAdministration" xml:space="preserve">
+    <value>vergi idaresi</value>
+  </data>
+  <data name="TaxNumber" xml:space="preserve">
+    <value>Vergi numarası</value>
+  </data>
+  <data name="IsEBillPayer" xml:space="preserve">
+    <value>E-Fatura</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Ülke</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Şehir</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>Semt</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="OsType" xml:space="preserve">
+    <value>İşletim Sistemi Türü</value>
+  </data>
+  <data name="UserIndividualInvoiceUserId" xml:space="preserve">
+    <value>Kullanıcı Bireysel Fatura Kullanıcı Kimliği</value>
+  </data>
+  <data name="UserIdNumber" xml:space="preserve">
+    <value>Kullanıcı Kimliği Numarası</value>
+  </data>
+  <data name="IsRead" xml:space="preserve">
+    <value>Okundu</value>
+  </data>
+  <data name="WarehouseName" xml:space="preserve">
+    <value>Depo Adı</value>
+  </data>
+  <data name="WarehouseCode" xml:space="preserve">
+    <value>Depo Kodu</value>
+  </data>
+  <data name="WarehouseTypeId" xml:space="preserve">
+    <value>DepoTürü Kimliği</value>
+  </data>
+  <data name="WarehouseUserId" xml:space="preserve">
+    <value>Depo Kullanıcı Kimliği</value>
+  </data>
+  <data name="WarehouseCapacity" xml:space="preserve">
+    <value>Depo Kapasitesi</value>
+  </data>
+  <data name="WarehouseWorkWd" xml:space="preserve">
+    <value>Depo Çalışma Saati Haftaiçi</value>
+  </data>
+  <data name="WarehouseWorkHoursWdStart" xml:space="preserve">
+    <value>Depo Çalışma Saat Haftaiçi Başlangıç</value>
+  </data>
+  <data name="WarehouseWorkHoursWdEnd" xml:space="preserve">
+    <value>Depo Çalışma Saatleri Haftaiçi Bitiş</value>
+  </data>
+  <data name="WarehouseWorkSat" xml:space="preserve">
+    <value>Depo Çalışma Ctesi</value>
+  </data>
+  <data name="WarehouseWorkHoursSatStart" xml:space="preserve">
+    <value>Depo Çalışma Saat Ctesi Başlangıç</value>
+  </data>
+  <data name="WarehouseWorkHoursSatEnd" xml:space="preserve">
+    <value>Depo Çalışma Saat Ctesi Sonu</value>
+  </data>
+  <data name="WarehouseWorkSun" xml:space="preserve">
+    <value>Depo Çalışma Pazar</value>
+  </data>
+  <data name="WarehouseWorkHoursSunStart" xml:space="preserve">
+    <value>Depo Çalışma Saat Pazar Başlangıç</value>
+  </data>
+  <data name="WarehouseWorkHoursSunEnd" xml:space="preserve">
+    <value>Depo Çalışma Saat Pazar Bitiş</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Boş</value>
+  </data>
+  <data name="ApplicationAdvancedService" xml:space="preserve">
+    <value>Gelişmiş Hizmet</value>
+  </data>
+  <data name="ApplicationAreaCalculation" xml:space="preserve">
+    <value>Alan Hesaplama</value>
+  </data>
+  <data name="ApplicationAreaType" xml:space="preserve">
+    <value>Alan Türü</value>
+  </data>
+  <data name="ApplicationBasicService" xml:space="preserve">
+    <value>Temel Hizmet</value>
+  </data>
+  <data name="ApplicationCertificate" xml:space="preserve">
+    <value>Başvuru Sertifikası</value>
+  </data>
+  <data name="ApplicationCity" xml:space="preserve">
+    <value>Şehir</value>
+  </data>
+  <data name="ApplicationContract" xml:space="preserve">
+    <value>Başvuru Sözleşmesi</value>
+  </data>
+  <data name="ApplicationCountry" xml:space="preserve">
+    <value>Ülke</value>
+  </data>
+  <data name="ApplicationDanger" xml:space="preserve">
+    <value>Tehlike</value>
+  </data>
+  <data name="ApplicationDescription" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="ApplicationDictionary" xml:space="preserve">
+    <value>Sözlük</value>
+  </data>
+  <data name="ApplicationEventGroup" xml:space="preserve">
+    <value>Etkinlik Grubu</value>
+  </data>
+  <data name="ApplicationEventType" xml:space="preserve">
+    <value>Olay Türü</value>
+  </data>
+  <data name="ApplicationFacility" xml:space="preserve">
+    <value>Tesis</value>
+  </data>
+  <data name="ApplicationFeature" xml:space="preserve">
+    <value>Özellik</value>
+  </data>
+  <data name="ApplicationField" xml:space="preserve">
+    <value>Alan</value>
+  </data>
+  <data name="ApplicationFireService" xml:space="preserve">
+    <value>Yangın Hizmeti</value>
+  </data>
+  <data name="ApplicationInsurance" xml:space="preserve">
+    <value>Sigorta</value>
+  </data>
+  <data name="ApplicationLogisticsService" xml:space="preserve">
+    <value>Lojistik Hizmet</value>
+  </data>
+  <data name="ApplicationMail" xml:space="preserve">
+    <value>E-Posta</value>
+  </data>
+  <data name="ApplicationMeasurementUnitId" xml:space="preserve">
+    <value>Ölçüm Birimi Kimliği</value>
+  </data>
+  <data name="ApplicationMediaRoleTypes" xml:space="preserve">
+    <value>Ortamı Rol Türleri</value>
+  </data>
+  <data name="ApplicationMessageType" xml:space="preserve">
+    <value>MesajTürü</value>
+  </data>
+  <data name="ApplicationPalletType" xml:space="preserve">
+    <value>PaletTürü</value>
+  </data>
+  <data name="ApplicationPrice" xml:space="preserve">
+    <value>Fiyat</value>
+  </data>
+  <data name="ApplicationProductDeliveryType" xml:space="preserve">
+    <value>Ürün Teslimat Türü</value>
+  </data>
+  <data name="ApplicationProductFeature" xml:space="preserve">
+    <value>Ürün Özelliği</value>
+  </data>
+  <data name="ApplicationProductType" xml:space="preserve">
+    <value>Ürün Türü</value>
+  </data>
+  <data name="ApplicationRegion" xml:space="preserve">
+    <value>Bölge</value>
+  </data>
+  <data name="ApplicationSecurityService" xml:space="preserve">
+    <value>Güvenlik Hizmet</value>
+  </data>
+  <data name="ApplicationServiceProvider" xml:space="preserve">
+    <value>Servis Sağlayıcısı</value>
+  </data>
+  <data name="ApplicationServiceReceiver" xml:space="preserve">
+    <value>Hizmet Alıcısı</value>
+  </data>
+  <data name="ApplicationStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="ApplicationStockItemType" xml:space="preserve">
+    <value>Stok Ürün Türü</value>
+  </data>
+  <data name="ApplicationStockPrice" xml:space="preserve">
+    <value>Borsa Fiyatı</value>
+  </data>
+  <data name="ApplicationSurrounding" xml:space="preserve">
+    <value>Yakınlık</value>
+  </data>
+  <data name="ApplicationTechnicalInfo" xml:space="preserve">
+    <value>Teknik Bilgi</value>
+  </data>
+  <data name="ApplicationTechnology" xml:space="preserve">
+    <value>Teknoloji</value>
+  </data>
+  <data name="ApplicationType" xml:space="preserve">
+    <value>Tür</value>
+  </data>
+  <data name="ApplicationUnit" xml:space="preserve">
+    <value>Birim</value>
+  </data>
+  <data name="AreaCalculationMapping" xml:space="preserve">
+    <value>Alan Hesaplama</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>İlgili Kişiler</value>
+  </data>
+  <data name="ContactLanguage" xml:space="preserve">
+    <value>İletişim Dili</value>
+  </data>
+  <data name="DependencyAdvancedService" xml:space="preserve">
+    <value>Bağımlılık GelişmişHizmet</value>
+  </data>
+  <data name="DependencyAreaType" xml:space="preserve">
+    <value>Bağımlılık AlanTürü</value>
+  </data>
+  <data name="DependencyBasicService" xml:space="preserve">
+    <value>Bağımlılık TemelHizmet</value>
+  </data>
+  <data name="DependencyCertificate" xml:space="preserve">
+    <value>Bağımlılık Sertifikası</value>
+  </data>
+  <data name="DependencyDanger" xml:space="preserve">
+    <value>Bağımlılık Tehlike</value>
+  </data>
+  <data name="DependencyFacility" xml:space="preserve">
+    <value>Bağımlılık Tesisi</value>
+  </data>
+  <data name="DependencyFeature" xml:space="preserve">
+    <value>Bağımlılık Özelliği</value>
+  </data>
+  <data name="DependencyFireService" xml:space="preserve">
+    <value>Bağımlılık Yangın Hizmeti</value>
+  </data>
+  <data name="DependencyLogisticsService" xml:space="preserve">
+    <value>Bağımlılık Lojistik Hizmeti</value>
+  </data>
+  <data name="DependencyProductDeliveryType" xml:space="preserve">
+    <value>Bağımlılık Product Delivery Type</value>
+  </data>
+  <data name="DependencyProductFeature" xml:space="preserve">
+    <value>Bağımlılık Ürün Özelliği</value>
+  </data>
+  <data name="DependencyProductType" xml:space="preserve">
+    <value>Bağımlılık Ürün Türü</value>
+  </data>
+  <data name="DependencySecurityService" xml:space="preserve">
+    <value>Bağımlılık Güvenlik Hizmeti</value>
+  </data>
+  <data name="DependencyTechnicalInfo" xml:space="preserve">
+    <value>Bağımlılık Teknik Bilgisi</value>
+  </data>
+  <data name="DependencyTechnology" xml:space="preserve">
+    <value>Bağımlılık Teknolojisi</value>
+  </data>
+  <data name="ErrorResource" xml:space="preserve">
+    <value>Mesajlar</value>
+  </data>
+  <data name="EventMailGroupRelation" xml:space="preserve">
+    <value>Olay Posta Grubu İlişkisi</value>
+  </data>
+  <data name="FieldDisplayApiMapping" xml:space="preserve">
+    <value>Alan Görüntüleme Api Eşleme</value>
+  </data>
+  <data name="FieldMapping" xml:space="preserve">
+    <value>Alan Eşleme</value>
+  </data>
+  <data name="Media" xml:space="preserve">
+    <value>Medya</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Ödeme</value>
+  </data>
+  <data name="PriceMappingProductFeature" xml:space="preserve">
+    <value>Fiyat Eşleştirme Ürün Özelliği</value>
+  </data>
+  <data name="ProductDeliveryTypeQuestionMapping" xml:space="preserve">
+    <value>Ürün Teslimat Türü Soru Eşleme</value>
+  </data>
+  <data name="RequestResponseLog" xml:space="preserve">
+    <value>İstek Yanı tGünlüğü</value>
+  </data>
+  <data name="Reservation" xml:space="preserve">
+    <value>Rezervasyon</value>
+  </data>
+  <data name="ReservationAdditionalDemandedTime" xml:space="preserve">
+    <value>Rezervasyon Ek Talep Edilen Zaman</value>
+  </data>
+  <data name="ReservationAdvancedService" xml:space="preserve">
+    <value>Rezervasyon Gelişmiş Hizmet</value>
+  </data>
+  <data name="ReservationDanger" xml:space="preserve">
+    <value>Rezervasyon Tehlike</value>
+  </data>
+  <data name="ReservationFacility" xml:space="preserve">
+    <value>Rezervasyon Tesis</value>
+  </data>
+  <data name="ReservationFeature" xml:space="preserve">
+    <value>Rezervasyon Özelliği</value>
+  </data>
+  <data name="ReservationMessage" xml:space="preserve">
+    <value>Rezervasyon Mesajı</value>
+  </data>
+  <data name="ReservationProductFeature" xml:space="preserve">
+    <value>Rezervasyon Ürün Özelliği</value>
+  </data>
+  <data name="ReservationProductSpec" xml:space="preserve">
+    <value>Rezervasyon Ürün Özellikleri</value>
+  </data>
+  <data name="Simulation" xml:space="preserve">
+    <value>Simülasyon</value>
+  </data>
+  <data name="SimulationHistory" xml:space="preserve">
+    <value>Simülasyon Tarihi</value>
+  </data>
+  <data name="SimulationModelConstant" xml:space="preserve">
+    <value>SimülasyonModelSabit</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Kullanıcı</value>
+  </data>
+  <data name="UserConfirmation" xml:space="preserve">
+    <value>Kullanıcı Onayı</value>
+  </data>
+  <data name="UserCorporateInvoice" xml:space="preserve">
+    <value>Kullanıcı Kurumsal Fatura</value>
+  </data>
+  <data name="UserDevice" xml:space="preserve">
+    <value>Kullanıcı Cihaz</value>
+  </data>
+  <data name="UserIndividualInvoice" xml:space="preserve">
+    <value>Kullanıcı BireyselFatura</value>
+  </data>
+  <data name="UserNotification" xml:space="preserve">
+    <value>Kullanıcı Bildirimi</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>Depo</value>
+  </data>
+  <data name="WarehouseAdvancedService" xml:space="preserve">
+    <value>Gelişmiş Hizmet</value>
+  </data>
+  <data name="WarehouseAreaType" xml:space="preserve">
+    <value>Alan Türü</value>
+  </data>
+  <data name="WarehouseAvailability" xml:space="preserve">
+    <value>Kullanılabilirliği</value>
+  </data>
+  <data name="WarehouseBasicService" xml:space="preserve">
+    <value>Temel Hizmet</value>
+  </data>
+  <data name="WarehouseCertificate" xml:space="preserve">
+    <value>Sertifika</value>
+  </data>
+  <data name="WarehouseDanger" xml:space="preserve">
+    <value>Tehlike</value>
+  </data>
+  <data name="WarehouseFacility" xml:space="preserve">
+    <value>Tesis</value>
+  </data>
+  <data name="WarehouseFavorites" xml:space="preserve">
+    <value>Favoriler</value>
+  </data>
+  <data name="WarehouseFireService" xml:space="preserve">
+    <value>Yangın Hizmet</value>
+  </data>
+  <data name="WarehouseInPrice" xml:space="preserve">
+    <value>Giriş Fiyatları</value>
+  </data>
+  <data name="WarehouseInsurance" xml:space="preserve">
+    <value>Sigorta</value>
+  </data>
+  <data name="WarehouseLogisticsService" xml:space="preserve">
+    <value>Lojistik Hizmet</value>
+  </data>
+  <data name="WarehouseOutPrice" xml:space="preserve">
+    <value>Çıkış Fiyatları</value>
+  </data>
+  <data name="WarehouseProductFeature" xml:space="preserve">
+    <value>Ürün Özelliği</value>
+  </data>
+  <data name="WarehouseProductType" xml:space="preserve">
+    <value>Ürün Türü</value>
+  </data>
+  <data name="WarehouseQuestions" xml:space="preserve">
+    <value>Sorular</value>
+  </data>
+  <data name="WarehouseSecurityService" xml:space="preserve">
+    <value>Güvenlik Hizmet</value>
+  </data>
+  <data name="WarehouseShare" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="WarehouseStockPrice" xml:space="preserve">
+    <value>Stok Fiyatları</value>
+  </data>
+  <data name="WarehouseSurrounding" xml:space="preserve">
+    <value>Yakınlık</value>
+  </data>
+  <data name="WarehouseTechnicalInfo" xml:space="preserve">
+    <value>Teknik Bilgi</value>
+  </data>
+  <data name="WarehouseTechnology" xml:space="preserve">
+    <value>Teknoloji</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Uygulama</value>
+  </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Yeni oluştur</value>
+  </data>
+  <data name="Dependency" xml:space="preserve">
+    <value>Bağımlılık</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Listeye geri dön</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Oluştur</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Onayla</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Onaylı</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>İşlemi onaylıyor musunuz?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Silinmiş</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="NotDeleted" xml:space="preserve">
+    <value>Aktif</value>
+  </data>
+  <data name="Operations" xml:space="preserve">
+    <value>İşlemler</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Unapprove" xml:space="preserve">
+    <value>Onayı Kaldır</value>
+  </data>
+  <data name="Unapproved" xml:space="preserve">
+    <value>Onaylanmamış</value>
+  </data>
+  <data name="Undelete" xml:space="preserve">
+    <value>Silmeyi Kaldır</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="WarehouseVehicleCapacity" xml:space="preserve">
+    <value>Depo Araç Kapasitesi</value>
+  </data>
+  <data name="WarehouseLoadUnload" xml:space="preserve">
+    <value>Depo Yük Boşaltma</value>
+  </data>
+  <data name="WarehouseCrossDock" xml:space="preserve">
+    <value>Depo Çapraz Yükleme</value>
+  </data>
+  <data name="WarehouseCity" xml:space="preserve">
+    <value>Depo Şehri</value>
+  </data>
+  <data name="WarehouseCountry" xml:space="preserve">
+    <value>Depo Ülkesi</value>
+  </data>
+  <data name="WarehouseDistrict" xml:space="preserve">
+    <value>Depo Bölgesi</value>
+  </data>
+  <data name="WarehouseAddress" xml:space="preserve">
+    <value>Depo Adresi</value>
+  </data>
+  <data name="WarehouseLat" xml:space="preserve">
+    <value>Lat</value>
+  </data>
+  <data name="WarehouseLng" xml:space="preserve">
+    <value>Lng</value>
+  </data>
+  <data name="WarehouseStatus" xml:space="preserve">
+    <value>Depo Durumu</value>
+  </data>
+  <data name="WarehouseAvailableStartDate" xml:space="preserve">
+    <value>Kul. Baş. Tar.</value>
+  </data>
+  <data name="WarehouseAvailableEndDate" xml:space="preserve">
+    <value>Kul. Bitiş Tar.</value>
+  </data>
+  <data name="IsGrayWarehousing" xml:space="preserve">
+    <value>Gri Depolama mı</value>
+  </data>
+  <data name="IsApproved" xml:space="preserve">
+    <value>Onaylandı</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Onay tarihi</value>
+  </data>
+  <data name="ApprovedUserId" xml:space="preserve">
+    <value>Onaylayan Kullanıcı Kimliği</value>
+  </data>
+  <data name="IsDisasterFriendly" xml:space="preserve">
+    <value>Afet Dostu</value>
+  </data>
+  <data name="WarehouseAdvancedServiceWarehouseId" xml:space="preserve">
+    <value>Gelişmiş Hizmet Depo Kimliği</value>
+  </data>
+  <data name="WarehouseAdvancedServiceId" xml:space="preserve">
+    <value>Depo Gelişmiş Servisleri</value>
+  </data>
+  <data name="WarehouseAreaTypeWarehouseId" xml:space="preserve">
+    <value>Depo Alanı Türü Depo No</value>
+  </data>
+  <data name="WarehouseAreaTypeId" xml:space="preserve">
+    <value>Depo Alanı Tip No</value>
+  </data>
+  <data name="WarehouseId" xml:space="preserve">
+    <value>Depo Kimliği</value>
+  </data>
+  <data name="ReservedCapacity" xml:space="preserve">
+    <value>Ayrılmış Kapasite</value>
+  </data>
+  <data name="IsReservationApproved" xml:space="preserve">
+    <value>Rezervasyon Onaylandı mı</value>
+  </data>
+  <data name="WarehouseBasicServiceWarehouseId" xml:space="preserve">
+    <value>Depo Temel Hizmet Depo Kimliği</value>
+  </data>
+  <data name="WarehouseBasicServiceId" xml:space="preserve">
+    <value>Depo Temel Hizmet Kimliği</value>
+  </data>
+  <data name="WarehouseCertificateWarehouseId" xml:space="preserve">
+    <value>Depo Sertifikası Depo Kimliği</value>
+  </data>
+  <data name="WarehouseCertificateId" xml:space="preserve">
+    <value>Depo Sertifika Kimliği</value>
+  </data>
+  <data name="WarehouseDangerWarehouseId" xml:space="preserve">
+    <value>Depo Tehlikesi Depo Kimliği</value>
+  </data>
+  <data name="WarehouseDangerId" xml:space="preserve">
+    <value>Depo Tehlike Kimliği</value>
+  </data>
+  <data name="WarehouseFacilityWarehouseId" xml:space="preserve">
+    <value>Depo Tesisi Depo Kimliği</value>
+  </data>
+  <data name="WarehouseFacilityId" xml:space="preserve">
+    <value>Depo Tesis Kimliği</value>
+  </data>
+  <data name="WarehouseFavoritesUserId" xml:space="preserve">
+    <value>Depo Favorileri Kullanıcı Kimliği</value>
+  </data>
+  <data name="WarehouseFavoritesWarehouseId" xml:space="preserve">
+    <value>Depo Favorileri Depo Kimliği</value>
+  </data>
+  <data name="WarehouseFireServiceWarehouseId" xml:space="preserve">
+    <value>Depo Yangın Hizmeti Depo Kimliği</value>
+  </data>
+  <data name="WarehouseFireServiceId" xml:space="preserve">
+    <value>Depo Yangın Hizmet Kimliği</value>
+  </data>
+  <data name="WarehouseInPriceWarehouseId" xml:space="preserve">
+    <value>Depo Fiyatı Depo Kimliği</value>
+  </data>
+  <data name="ProductFeatureId" xml:space="preserve">
+    <value>Ürün Özelliği Kimliği</value>
+  </data>
+  <data name="WarehouseInsuranceWarehouseId" xml:space="preserve">
+    <value>Depo Sigortası Depo Kimliği</value>
+  </data>
+  <data name="WarehouseInsuranceId" xml:space="preserve">
+    <value>Depo Sigorta No</value>
+  </data>
+  <data name="IsInsured" xml:space="preserve">
+    <value>sigortalı</value>
+  </data>
+  <data name="WarehouseLogisticsServiceWarehouseId" xml:space="preserve">
+    <value>Depo Lojistik Hizmeti Depo Kimliği</value>
+  </data>
+  <data name="WarehouseLogisticsServiceId" xml:space="preserve">
+    <value>Depo Lojistik Hizmet Kimliği</value>
+  </data>
+  <data name="WarehouseOutPriceWarehouseId" xml:space="preserve">
+    <value>Depo Çıkış Fiyatı Depo Kimliği</value>
+  </data>
+  <data name="WarehouseProductFeatureWarehouseId" xml:space="preserve">
+    <value>Depo Ürün Özelliği Depo Kimliği</value>
+  </data>
+  <data name="WarehouseProductFeatureId" xml:space="preserve">
+    <value>Depo Ürün Özelliği Kimliği</value>
+  </data>
+  <data name="WarehouseProductTypeWarehouseId" xml:space="preserve">
+    <value>Depo Ürün Tipi Depo No</value>
+  </data>
+  <data name="WarehouseProductTypeId" xml:space="preserve">
+    <value>Depo Ürün Tipi No</value>
+  </data>
+  <data name="WarehouseQuestionsWarehouseId" xml:space="preserve">
+    <value>Depo Soruları Depo Kimliği</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Soru</value>
+  </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Cevap</value>
+  </data>
+  <data name="WarehouseSecurityServiceWarehouseId" xml:space="preserve">
+    <value>Depo Güvenlik Hizmeti Depo Kimliği</value>
+  </data>
+  <data name="WarehouseSecurityServiceId" xml:space="preserve">
+    <value>Depo Güvenlik Hizmeti Kimliği</value>
+  </data>
+  <data name="WarehouseShareUserId" xml:space="preserve">
+    <value>Depo Paylaşılan Kullanıcı Kimliği</value>
+  </data>
+  <data name="WarehouseShareWarehouseId" xml:space="preserve">
+    <value>Depo Paylaşımı Depo Kimliği</value>
+  </data>
+  <data name="SharedDomain" xml:space="preserve">
+    <value>Paylaşılan Etki Alanı</value>
+  </data>
+  <data name="WarehouseStockPriceWarehouseId" xml:space="preserve">
+    <value>Depo Stok Fiyatı Depo Kimliği</value>
+  </data>
+  <data name="WarehouseStockPriceId" xml:space="preserve">
+    <value>Depo Stok Fiyatı Kimliği</value>
+  </data>
+  <data name="WarehouseSurroundingWarehouseId" xml:space="preserve">
+    <value>Depo Çevreleyen Depo Kimliği</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Mesafe</value>
+  </data>
+  <data name="IconType" xml:space="preserve">
+    <value>İkon</value>
+  </data>
+  <data name="WarehouseTechnicalInfoWarehouseId" xml:space="preserve">
+    <value>Depo Teknik Bilgi Depo Kimliği</value>
+  </data>
+  <data name="WarehouseTechnicalInfoId" xml:space="preserve">
+    <value>Depo Teknik Bilgisi</value>
+  </data>
+  <data name="WarehouseTechnologyWarehouseId" xml:space="preserve">
+    <value>Depo Teknolojisi Depo Kimliği</value>
+  </data>
+  <data name="WarehouseTechnologyId" xml:space="preserve">
+    <value>Depo Teknolojisi Kimliği</value>
+  </data>
+  <data name="WarehouseQuestion" xml:space="preserve">
+    <value>Sorular</value>
+  </data>
+  <data name="WarehouseInPriceWarehouse" xml:space="preserve">
+    <value>Depo</value>
+  </data>
+  <data name="WarehouseOutPriceWarehouse" xml:space="preserve">
+    <value>Depo</value>
+  </data>
+  <data name="WarehouseStockPriceNavigation" xml:space="preserve">
+    <value>Stok Fiyatı Tanımı</value>
+  </data>
+  <data name="WarehouseStockPriceWarehouse" xml:space="preserve">
+    <value>Depo</value>
+  </data>
+  <data name="WarehouseType" xml:space="preserve">
+    <value>Depo Tipi</value>
+  </data>
+  <data name="WarehouseContactWarehouse" xml:space="preserve">
+    <value>Depo İsmi</value>
+  </data>
+  <data name="AddNewImage" xml:space="preserve">
+    <value>Yeni Resim Ekle</value>
+  </data>
+  <data name="EditRank" xml:space="preserve">
+    <value>Sıralamayı Değiştir</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Dosya</value>
+  </data>
+  <data name="PromptInput" xml:space="preserve">
+    <value>Lütfen giriş yapınız.</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Yükle</value>
+  </data>
+  <data name="FilterLog" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Analitik</value>
+  </data>
+  <data name="WarehouseAdvanceService" xml:space="preserve">
+    <value>Katma Değer</value>
+  </data>
+  <data name="CurrencyType" xml:space="preserve">
+    <value>Para Birimi (0:TL, 1: EUR, 2:USD, 3:GBP)</value>
+  </data>
+  <data name="WarehouseApproveUpdateRequest" xml:space="preserve">
+    <value>Güncellemeyi Onayla</value>
+  </data>
+  <data name="WarehouseFilter" xml:space="preserve">
+    <value>Hızlı Filtreler</value>
+  </data>
+  <data name="WarehouseFilterAll" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="WarehouseFilterApprove" xml:space="preserve">
+    <value>Onay Bekleyenler</value>
+  </data>
+  <data name="WarehouseFilterUpdateRequest" xml:space="preserve">
+    <value>Güncellenenler</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Dışa Aktar</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="FilterLogZeroResult" xml:space="preserve">
+    <value>0 Sonuç Getiren Filtreler</value>
+  </data>
+  <data name="WarehouseRequest" xml:space="preserve">
+    <value>Talepler</value>
+  </data>
+  <data name="EmailRequest" xml:space="preserve">
+    <value>Talepler</value>
+  </data>
+  <data name="SentRequest" xml:space="preserve">
+    <value>Gönderilen Talepler</value>
+  </data>
+  <data name="CreateRequest" xml:space="preserve">
+    <value>Talep Oluştur</value>
+  </data>
+  <data name="BaseWidth" xml:space="preserve">
+    <value>Taban Genişliği</value>
+  </data>
+  <data name="Body" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="Diameter" xml:space="preserve">
+    <value>Dış Çap</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="InsertedBy" xml:space="preserve">
+    <value>Ekleyen</value>
+  </data>
+  <data name="SentEmailList" xml:space="preserve">
+    <value>Kişi Mailleri</value>
+  </data>
+  <data name="SentWarehouseEmail" xml:space="preserve">
+    <value>Depo Mailleri</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Konu</value>
+  </data>
+  <data name="Thickness" xml:space="preserve">
+    <value>Askı Kalınlığı</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detay</value>
+  </data>
+  <data name="Workspace" xml:space="preserve">
+    <value>Çalışma Alanı</value>
+  </data>
+</root>

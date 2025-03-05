@@ -7,32 +7,35 @@ using TS.Result;
 namespace Application.Features.Workspaces.v1;
 
 public sealed record UpdateWorkSpaceRequest(
-	string? Title,
-	string? Description) : IRequest<Result<WorkspaceDto>>;
+    string? Title,
+    string? Description) : IRequest<Result<WorkspaceDto>>;
 
 
 
 internal sealed record UpdateWorkspaceHandler(
-	IRepositoryService<Workspace> workspaceRepository,
-	IAuthorizeService                 AuthorizeService) : IRequestHandler<UpdateWorkSpaceRequest, Result<WorkspaceDto>> {
-	public async Task<Result<WorkspaceDto>> Handle(UpdateWorkSpaceRequest request, CancellationToken cancellationToken) {
-		Workspace? workspace = await AuthorizeService.FindWorkspaceAsync(cancellationToken);
+    IRepositoryService<Workspace> workspaceRepository,
+    IAuthorizeService AuthorizeService) : IRequestHandler<UpdateWorkSpaceRequest, Result<WorkspaceDto>>
+{
+    public async Task<Result<WorkspaceDto>> Handle(UpdateWorkSpaceRequest request, CancellationToken cancellationToken)
+    {
+        Workspace? workspace = await AuthorizeService.FindWorkspaceAsync(cancellationToken);
 
-		if (workspace is null)
-			return (404, "Çalışma alanı bulunamadı");
+        if (workspace is null)
+            return (404, "Çalışma alanı bulunamadı");
 
-		if (request.Title is not null)
-			workspace.Title = request.Title;
+        if (request.Title is not null)
+            workspace.Title = request.Title;
 
-		if (request.Description is not null)
-			workspace.Description = request.Description;
+        if (request.Description is not null)
+            workspace.Description = request.Description;
 
-		await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
+        await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
 
-		return new WorkspaceDto() {
-									  Id          = workspace.Id,
-									  Title       = workspace.Title,
-									  Description = workspace.Description,
-								  };
-	}
+        return new WorkspaceDto()
+        {
+            Id = workspace.Id,
+            Title = workspace.Title,
+            Description = workspace.Description,
+        };
+    }
 }

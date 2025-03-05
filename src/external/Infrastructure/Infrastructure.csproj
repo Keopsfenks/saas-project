@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\core\Application\Application.csproj" />
-	  <ProjectReference Include="..\..\core\Domain\Domain.csproj" />
+		<ProjectReference Include="..\..\core\Application\Application.csproj" />
+		<ProjectReference Include="..\..\core\Domain\Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FluentEmail.Core"/>
-	  <PackageReference Include="FluentEmail.Smtp"/>
-	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-	  <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
-	  <PackageReference Include="MongoDB.Driver" />
-	  <PackageReference Include="Newtonsoft.Json" />
-	  <PackageReference Include="StackExchange.Redis" />
+		<PackageReference Include="FluentEmail.Core"/>
+		<PackageReference Include="FluentEmail.Smtp"/>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+		<PackageReference Include="MongoDB.Driver" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="StackExchange.Redis" />
 	</ItemGroup>
 
 </Project>
