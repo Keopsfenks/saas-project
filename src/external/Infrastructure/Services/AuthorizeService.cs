@@ -70,7 +70,7 @@ public sealed class AuthorizeService(
 	}
 
 	public async Task<Session?> GetSessionAsync(CancellationToken cancellationToken = default) {
-		string token = await GetTokenAsync();
+		string token = await GetTokenAsync(cancellationToken);
 
 		Session? session = await sessionRepository.FindOneAsync(x => x.Token == encryptionService.Encrypt(token), cancellationToken);
 

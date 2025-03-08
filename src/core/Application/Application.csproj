@@ -4,6 +4,7 @@
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 	  <PackageReference Include="MediatR"  />
+	  <PackageReference Include="Microsoft.AspNetCore.Authorization" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions"  />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	  <PackageReference Include="TS.Result" />
@@ -14,9 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Microsoft.AspNetCore.Authorization">
-	    <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.2\Microsoft.AspNetCore.Authorization.dll</HintPath>
-	  </Reference>
+	  <Folder Include="Features\Commands\" />
 	</ItemGroup>
 
 </Project>

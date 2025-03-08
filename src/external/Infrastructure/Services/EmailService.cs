@@ -12,10 +12,10 @@ public sealed class EmailService(IFluentEmail email, ICacheService cacheService)
 			.SendAsync(cancellationToken);
 	}
 
-	public string GenerateOtp(string email, TimeSpan expiry) {
+	public string GenerateOtp(string Email, TimeSpan expiry) {
 		Random random = new Random();
 		string otp = random.Next(100000, 999999).ToString();
-		cacheService.Set(email, otp, expiry);
+		cacheService.Set(Email, otp, expiry);
 		return otp;
 	}
 }

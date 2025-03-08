@@ -4,7 +4,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Workspaces.v1;
+namespace Application.Features.Queries.Workspaces;
 
 public sealed record ResultWorkspaceQuery() : IRequest<Result<List<WorkspaceDto?>>> {
 	public int     PageSize   { get; set; } = 10;

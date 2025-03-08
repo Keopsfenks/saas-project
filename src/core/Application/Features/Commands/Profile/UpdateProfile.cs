@@ -5,14 +5,14 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Profile;
+namespace Application.Features.Commands.Profile;
 
 public sealed record UpdateProfileRequest(
-	string? Name,
-	string? Surname,
-	string? Email,
-	string? Password,
-	bool    SessionClose) : IRequest<Result<UserDto>>;
+	bool    SessionClose,
+	string? Name     = null,
+	string? Surname  = null,
+	string? Email    = null,
+	string? Password = null) : IRequest<Result<UserDto>>;
 
 
 internal sealed record UpdateProfileHandler(

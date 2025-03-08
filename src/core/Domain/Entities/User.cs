@@ -7,6 +7,8 @@ public sealed class User : BaseEntity {
 	public string Surname  { get; set; } = string.Empty;
 	public string FullName => $"{Name} {Surname}";
 
+	public bool IsAdmin { get; set; } = false;
+
 	public string Email          { get; set; } = string.Empty;
 	public string Password       { get; set; } = string.Empty;
 	public bool   EmailConfirmed { get; set; } = false;

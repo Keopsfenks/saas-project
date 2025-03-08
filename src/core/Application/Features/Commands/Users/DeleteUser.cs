@@ -3,7 +3,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Commands.Users;
 
 public sealed record DeleteUserRequest : IRequest<Result<string>>;
 
@@ -27,9 +27,7 @@ internal sealed record DeleteUserHandler(
 			await sessionRepository.DeleteOneAsync(x => x.Id == session.Id, cancellationToken);
 		}
 
-		user.IsDeleted = true;
-
-		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user, cancellationToken);
+		await userRepository.SoftDeleteOneAsync(x => x.Id == user.Id, user, cancellationToken);
 
 		if (cacheService.Remove(user.Email))
 			return "Kullanıcı başarıyla silindi ve bellek temizlendi.";

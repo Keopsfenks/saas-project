@@ -1,5 +1,4 @@
-﻿using Application.Features.Profile;
-using Application.Features.Users;
+﻿using Application.Features.Commands.Profile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;

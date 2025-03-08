@@ -1,4 +1,6 @@
-﻿using Application.Features.Workspaces.v1;
+﻿using Application.Features.Commands.Workspaces.v1;
+using Application.Features.Queries;
+using Application.Features.Queries.Workspaces;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

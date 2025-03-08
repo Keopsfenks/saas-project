@@ -3,9 +3,10 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Commands.Users;
 
-public sealed record LogoutUserRequest(string Token) : IRequest<Result<string>>;
+public sealed record LogoutUserRequest(
+	string Token) : IRequest<Result<string>>;
 
 
 

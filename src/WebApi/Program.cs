@@ -1,19 +1,30 @@
+using System.IO.Compression;
 using System.Threading.RateLimiting;
+using APIWeaver;
 using Application;
-using Application.Services;
 using Asp.Versioning;
-using Domain.Entities;
 using Infrastructure;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
-using WebApi;
 using Serilog;
 using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+
+builder.Services.AddResponseCompression(options => {
+	options.EnableForHttps = true;
+	options.Providers.Clear();
+	options.Providers.Add<BrotliCompressionProvider>();
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options => {
+	options.Level = CompressionLevel.Fastest;
+});
+
 
 // Serilog yapılandırması
 Log.Logger = new LoggerConfiguration()
@@ -51,7 +62,15 @@ builder.Services.AddApiVersioning(options => {
 
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
+builder.Services.AddOpenApi("v1", options => {
+	options.AddSecurityScheme("Bearer", scheme => {
+		scheme.In   = ParameterLocation.Header;
+		scheme.Type = SecuritySchemeType.Http;
+		scheme.Scheme = "Bearer";
+		scheme.BearerFormat = "JWT";
+		scheme.Description = "JWT Authorization header using the Bearer scheme.";
+	});
+});
 
 // Rate Limiting Ayarları
 builder.Services.AddRateLimiter(options =>

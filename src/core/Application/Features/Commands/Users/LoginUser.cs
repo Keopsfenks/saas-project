@@ -2,9 +2,10 @@
 using Application.Services;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Commands.Users;
 
 public sealed record LoginUserRequest(
 	string email,
@@ -15,11 +16,12 @@ public sealed record LoginUserRequest(
 
 
 internal sealed record LoginUserHandler(
-	IEncryptionService          encryptionService,
-	IRepositoryService<User>    userRepository,
-	IRepositoryService<Session> sessionsRepository,
+	IEncryptionService            encryptionService,
+	IRepositoryService<User>      userRepository,
+	IRepositoryService<Session>   sessionsRepository,
 	IRepositoryService<Workspace> workspaceRepository,
-	IJwtProvider                jwtProvider) : IRequestHandler<LoginUserRequest, Result<TokenDto>> {
+	IHttpContextAccessor          httpContextAccessor,
+	IJwtProvider                  jwtProvider) : IRequestHandler<LoginUserRequest, Result<TokenDto>> {
 	public async Task<Result<TokenDto>> Handle(LoginUserRequest request, CancellationToken cancellationToken) {
 		User? user = await userRepository.FindOneAsync(x => x.Email == request.email, cancellationToken);
 
@@ -43,12 +45,12 @@ internal sealed record LoginUserHandler(
 		TokenDto token = await jwtProvider.GenerateJwtToken(user, enumerable, workspace);
 
 		Session session = new() {
+									User                   = user,
+									UserId                 = user.Id,
 									Token                  = encryptionService.Encrypt(token.Token),
 									ExpiryTime             = token.ExpiryTime,
 									RefreshToken           = encryptionService.Encrypt(token.RefreshToken),
 									RefreshTokenExpiryTime = token.RefreshTokenExpiryTime,
-									User                   = user,
-									UserId                 = user.Id,
 								};
 
 		await sessionsRepository.InsertOneAsync(session, cancellationToken);

@@ -3,7 +3,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Workspaces.v1;
+namespace Application.Features.Commands.Workspaces.v1;
 
 public sealed record DeleteWorkspaceRequest() : IRequest<Result<string>>;
 
@@ -18,9 +18,7 @@ internal sealed record DeleteWorkspaceHandler(
 		if (workspace is null)
 			return (404, "Çalışma alanı bulunamadı");
 
-		workspace.IsDeleted = true;
-
-		await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
+		await workspaceRepository.SoftDeleteOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
 
 		return "Çalışma alanı başarıyla silindi";
 	}

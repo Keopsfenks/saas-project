@@ -1,4 +1,6 @@
-﻿using Application.Features.Users;
+﻿using Application.Features.Commands.Users;
+using Application.Features.Queries;
+using Application.Features.Queries.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -105,7 +107,17 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 	}
 
 	[HttpGet]
+	[AllowAnonymous]
 	public async Task<IActionResult> GetUsers([FromQuery] ResultUsersQuery request) {
+		var response = await Mediator.Send(request);
+
+		if (response.IsSuccessful)
+			return Ok(response);
+
+		return StatusCode(response.StatusCode, response);
+	}
+	[HttpGet]
+	public async Task<IActionResult> Me([FromQuery] MeRequest request) {
 		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)

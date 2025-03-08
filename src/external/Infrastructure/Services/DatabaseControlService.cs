@@ -6,7 +6,7 @@ using MongoDB.Bson;
 namespace Infrastructure.Services;
 
 public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControlService> logger) : BackgroundService {
-    private readonly int    Interval     = 30;
+    private readonly int    Interval     = 7;
     private readonly string DatabaseName = "ProjectDb";
 	private readonly DateTime OneMonthAgo = DateTime.UtcNow.AddMonths(-1);
 

@@ -24,6 +24,7 @@ public static class DependencyInjection {
 		services.AddSingleton<IEncryptionService, EncryptionService>();
 		services.AddSingleton<IWorkspaceDatabaseService, WorkspaceDatabaseService>();
 
+
 		services.AddHostedService<SessionsManagementService>();
 		services.AddHostedService<DatabaseControlService>();
 
@@ -54,6 +55,7 @@ public static class DependencyInjection {
 		});
 
 		services.AddHttpContextAccessor();
+
 
 		services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 

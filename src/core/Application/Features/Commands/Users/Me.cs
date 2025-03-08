@@ -4,11 +4,9 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Commands.Users;
 
-public sealed record MeReqguest : IRequest<Result<UserDto>>;
-
-
+public sealed record MeRequest : IRequest<Result<UserDto>>;
 
 internal sealed class MeHandler(
 	IAuthorizeService authorizeService) : IRequestHandler<MeRequest, Result<UserDto>> {

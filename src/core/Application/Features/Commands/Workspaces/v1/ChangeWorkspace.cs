@@ -5,10 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using TS.Result;
 
-namespace Application.Features.Workspaces.v1;
+namespace Application.Features.Commands.Workspaces.v1;
 
 public sealed record ChangeWorkspaceRequest(
-	string? Id) : IRequest<Result<TokenDto>>;
+	string? Id = null) : IRequest<Result<TokenDto>>;
 
 
 public sealed record ChangeWorkspaceHandler(

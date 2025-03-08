@@ -3,7 +3,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Queries.Users;
 
 public sealed record ResultUsersQuery : IRequest<Result<List<User>>> {
 	public int     PageSize   { get; set; } = 10;
@@ -31,6 +31,8 @@ internal sealed record ResultUsersHandler(
 								   x!.Password = encryptionService.Decrypt(x.Password);
 								   return x;
 							   }).ToList();
+
+
 
 		return usersList;
 	}

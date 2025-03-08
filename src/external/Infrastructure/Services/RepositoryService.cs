@@ -61,4 +61,17 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 	public async Task DeleteOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
 		await _collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
 	}
+
+	public async Task SoftDeleteOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity, CancellationToken cancellationToken = default) {
+		entity.DeleteAt = DateTimeOffset.UtcNow;
+		entity.IsDeleted = true;
+		await ReplaceOneAsync(filter, entity, cancellationToken);
+	}
+
+	public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
+		return await _collection.AsQueryable()
+								.Where(entity => !entity.IsDeleted)
+								.Where(filter)
+								.AnyAsync(cancellationToken);
+	}
 }

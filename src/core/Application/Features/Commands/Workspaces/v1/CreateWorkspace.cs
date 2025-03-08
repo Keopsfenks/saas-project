@@ -4,7 +4,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Workspaces.v1;
+namespace Application.Features.Commands.Workspaces.v1;
 
 public sealed record CreateWorkspaceRequest(
 	string Title,

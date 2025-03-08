@@ -6,13 +6,14 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Users;
+namespace Application.Features.Commands.Users;
 
 public sealed record RegisterUserRequest(
 	string name,
 	string surname,
 	string email,
-	string password) : IRequest<Result<string>>;
+	string password,
+	bool   IsAdmin) : IRequest<Result<string>>;
 
 internal sealed record RegisterUserHandler(
 	IEncryptionService       encryptionService,
@@ -30,11 +31,12 @@ internal sealed record RegisterUserHandler(
 			return (404, "Geçersiz e-posta adresi.");
 
 		User user = new() {
-			Name     = request.name,
-			Surname  = request.surname,
-			Email    = request.email,
-			Password = encryptionService.Encrypt(request.password)
-		};
+							  Name     = request.name,
+							  Surname  = request.surname,
+							  Email    = request.email,
+							  Password = encryptionService.Encrypt(request.password),
+							  IsAdmin  = request.IsAdmin
+						  };
 
 		await userRepository.InsertOneAsync(user, cancellationToken);
 
