@@ -1,0 +1,33 @@
+@model LoginModel
+@{
+    ViewData["Title"] = "Giriş yap";
+    Layout = "_LoginLayout";
+}
+
+<form asp-action="Login" method="post">
+    <img class="mb-4" src="/img/digi_logo.png" alt="" width="250" height="62">
+    <h2 class="h1 mb-3 fw-normal">DigiSolutions</h2>
+    <h4 class="h4 mb-4 fw-normal">Lütfen giriş yapınız</h4>
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+    <div class="form-floating">
+        <input type="email" class="form-control" asp-for="Email" placeholder="name@example.com">
+        <label asp-for="Email">Email Adresi</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" asp-for="Password" placeholder="Şifre">
+        <label asp-for="Password">Şifre</label>
+    </div>
+
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" asp-for="RememberMe"> Beni hatırla
+        </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Giriş yap</button>
+    <p class="mt-5 mb-3 text-muted">DigiSolutions &copy; @DateTime.Now.Year</p>
+</form>

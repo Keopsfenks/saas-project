@@ -1,9 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="Serilog.AspNetCore" />
+		<PackageReference Include="Serilog.Extensions.Hosting" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Sinks.File" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\core\Application\Application.csproj" />
+		<ProjectReference Include="..\core\Domain\Domain.csproj" />
+		<ProjectReference Include="..\external\Infrastructure\Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="logs\" />
+	</ItemGroup>
 
 </Project>

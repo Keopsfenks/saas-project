@@ -2,7 +2,8 @@
 
 namespace Infrastructure.Variables;
 
-public interface IDatabaseVariable {
-	IMongoClient Client   { get; set; }
-	string?       Database { get; set; }
+public interface IDatabaseVariable
+{
+    IMongoClient Client { get; set; }
+    string? Database { get; set; }
 }

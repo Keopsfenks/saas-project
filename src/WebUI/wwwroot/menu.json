@@ -1,0 +1,68 @@
+[
+  {
+    "Action": "Application",
+    "Name": "Application",
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" /><path d=\"M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z\" /><path d=\"M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z\" /><path d=\"M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z\" /><path d=\"M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z\" /></svg>",
+    "Order": 0,
+    "IsHiddenMenu": false,
+    "Children": [
+      {
+        "Action": "Workspace",
+        "Name": "Workspace",
+        "Order": 0,
+        "IsHiddenMenu": false
+      }
+    ]
+  },
+  {
+    "Action": "User",
+    "Name": "User",
+    "Order": 1,
+    "IsHiddenMenu": false,
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon icon-tabler icon-tabler-users\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">   <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>   <path d=\"M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\"></path>   <path d=\"M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\"></path>   <path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path>   <path d=\"M21 21v-2a4 4 0 0 0 -3 -3.85\"></path></svg>",
+    "Children": [
+      {
+        "Action": "User",
+        "Name": "User",
+        "Order": 0,
+        "IsHiddenMenu": false
+      }
+    ]
+  },
+  {
+    "Action": "Report",
+    "Name": "Report",
+    "Order": 2,
+    "IsHiddenMenu": false,
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon icon-tabler icon-tabler-report\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">  <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/>  <path d=\"M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697\" />  <path d=\"M18 14v4h4\" />  <path d=\"M18 11v-4a2 2 0 0 0 -2 -2h-2\" />  <path d=\"M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z\" />  <path d=\"M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" />  <path d=\"M8 11h4\" />  <path d=\"M8 15h3\" /></svg>",
+    "Children": [
+    ]
+  },
+  {
+    "Action": "EmailRequest",
+    "Name": "EmailRequest",
+    "Order": 3,
+    "IsHiddenMenu": false,
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon icon-tabler icon-tabler-mail\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z\"/><path d=\"M3 7l9 6l9 -6\"/></svg>",
+    "Children": [
+    ]
+  },
+  {
+    "Action": "Dependency",
+    "Name": "Dependency",
+    "Order": 4,
+    "IsHiddenMenu": false,
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon icon-tabler icon-tabler-plug-connected\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">   <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>   <path d=\"M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z\"></path>   <path d=\"M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z\"></path>   <path d=\"M3 21l2.5 -2.5\"></path>   <path d=\"M18.5 5.5l2.5 -2.5\"></path>   <path d=\"M10 11l-2 2\"></path>   <path d=\"M13 14l-2 2\"></path></svg>",
+    "Children": [
+    ]
+  },
+  {
+    "Action": "Other",
+    "Name": "Other",
+    "Order": 5,
+    "IsHiddenMenu": false,
+    "Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"icon icon-tabler icon-tabler-bucket\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">   <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>   <path d=\"M12 7m-8 0a8 4 0 1 0 16 0a8 4 0 1 0 -16 0\"></path>   <path d=\"M4 7c0 .664 .088 1.324 .263 1.965l2.737 10.035c.5 1.5 2.239 2 5 2s4.5 -.5 5 -2c.333 -1 1.246 -4.345 2.737 -10.035a7.45 7.45 0 0 0 .263 -1.965\"></path></svg>",
+    "Children": [
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+@model IEnumerable<Domain.Entities.User>
+
+@{
+    ViewData["Title"] = SharedLocalizer["List"];
+    Layout = "_Layout";
+}
+
+<div class="row g-2 align-items-center">
+    <div class="col">
+        <h1> @SharedLocalizer["List"]</h1>
+    </div>
+
+    <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+            <a href="/@HttpContextAccessor.HttpContext.Request.RouteValues["controller"].ToString()/Create" class="btn btn-primary d-none d-sm-inline-block">
+                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                @(SharedLocalizer["CreateNew"])
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

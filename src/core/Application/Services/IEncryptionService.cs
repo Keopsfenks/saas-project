@@ -2,7 +2,7 @@
 
 public interface IEncryptionService
 {
-	string Encrypt(string                plainText);
-	string Decrypt(string                cipherText);
-	string DecryptWithGeneratedIV(string cipherText, string originalPlainText);
+    string Encrypt(string plainText);
+    string Decrypt(string cipherText);
+    string DecryptWithGeneratedIV(string cipherText, string originalPlainText);
 }

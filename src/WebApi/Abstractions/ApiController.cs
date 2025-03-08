@@ -6,7 +6,8 @@ namespace WebApi.Abstractions;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-[Authorize]
-public abstract class ApiController(IMediator mediator) : ControllerBase {
-	protected readonly IMediator Mediator = mediator;
+[Authorize(Policy = "JwtAuth")]
+public abstract class ApiController(IMediator mediator) : ControllerBase
+{
+    protected readonly IMediator Mediator = mediator;
 }
