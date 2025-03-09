@@ -18,7 +18,7 @@ internal sealed record DeleteWorkspaceHandler(
 		if (workspace is null)
 			return (404, "Çalışma alanı bulunamadı");
 
-		await workspaceRepository.SoftDeleteOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
+		await workspaceRepository.SoftDeleteOneAsync(c => c.Id == workspace.Id, cancellationToken);
 
 		return "Çalışma alanı başarıyla silindi";
 	}

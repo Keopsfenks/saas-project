@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using Application.Services;
 using Domain.Abstractions;
-using Infrastructure.Settings.DatabaseSetting;
+using Infrastructure.Settings.DatabaseSettings;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -62,9 +62,15 @@ public sealed class RepositoryService<TEntity> : IRepositoryService<TEntity>
 		await _collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
 	}
 
-	public async Task SoftDeleteOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity, CancellationToken cancellationToken = default) {
-		entity.DeleteAt = DateTimeOffset.UtcNow;
-		entity.IsDeleted = true;
+	public async Task SoftDeleteOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default) {
+        var entity = await FindOneAsync(filter, cancellationToken);
+
+        if (entity is null)
+            throw new NullReferenceException();
+
+        entity.IsDeleted = true;
+        entity.DeleteAt = DateTimeOffset.UtcNow;
+
 		await ReplaceOneAsync(filter, entity, cancellationToken);
 	}
 

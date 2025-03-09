@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Settings.DatabaseSetting;
+﻿namespace Infrastructure.Settings.DatabaseSettings;
 
 public interface IDatabaseSettings
 {

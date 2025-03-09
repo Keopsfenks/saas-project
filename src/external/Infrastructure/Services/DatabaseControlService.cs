@@ -37,7 +37,7 @@ public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControl
 
                    var deleteFilter = Builders<BsonDocument>.Filter.And(
                       Builders<BsonDocument>.Filter.Eq("IsDeleted", true),
-                      Builders<BsonDocument>.Filter.Lt("UpdateAt", OneMonthAgo)
+                      Builders<BsonDocument>.Filter.Lt("DeleteAt", OneMonthAgo)
                    );
 
                    var deleteResult = await collection.DeleteManyAsync(deleteFilter, stoppingToken);
@@ -63,7 +63,7 @@ public class DatabaseControlService(IMongoClient client, ILogger<DatabaseControl
 
 			var filter = Builders<BsonDocument>.Filter.And(
 				Builders<BsonDocument>.Filter.Eq("IsDeleted", true),
-				Builders<BsonDocument>.Filter.Lt("UpdateAt", OneMonthAgo)
+				Builders<BsonDocument>.Filter.Lt("DeleteAt", OneMonthAgo)
 			);
             var deletedWorkspaces = await workspacesCollection.Find(filter).ToListAsync(stoppingToken);
 

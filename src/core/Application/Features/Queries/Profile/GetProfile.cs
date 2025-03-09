@@ -4,7 +4,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Commands.Profile;
+namespace Application.Features.Queries.Profile;
 
 public sealed record GetProfileRequest : IRequest<Result<ProfileDto>>;
 

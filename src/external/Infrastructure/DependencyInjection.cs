@@ -1,12 +1,10 @@
-﻿using System.Security.Claims;
-using Application.Services;
+﻿using Application.Services;
 using Infrastructure.Services;
-using Infrastructure.Settings.DatabaseSetting;
+using Infrastructure.Settings.DatabaseSettings;
 using Infrastructure.Settings.EmailSettings;
 using Infrastructure.Settings.SecuritySettings;
-using Infrastructure.Variables;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -29,10 +27,27 @@ public static class DependencyInjection {
 		services.AddHostedService<DatabaseControlService>();
 
 		services.ConfigureOptions<JwtTokenOptionsSetup>();
-		services.AddAuthentication(options => {
-			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-			options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
-		}).AddJwtBearer();
+
+        services.AddAuthentication(options =>
+                 {
+                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                     options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+                 })
+                .AddCookie(options =>
+                 {
+                     options.ExpireTimeSpan    = TimeSpan.FromMinutes(60);
+                     options.SlidingExpiration = true;
+                     options.LoginPath         = "/user/login";
+                 }).AddJwtBearer();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("JwtAuth", policy =>
+            {
+                policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+        });
 
 		services.Configure<DatabaseSettings>(configuration.GetSection("DatabaseSettings"));
 		services.Configure<SecuritySettings>(configuration.GetSection("SecuritySettings"));

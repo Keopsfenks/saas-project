@@ -27,7 +27,7 @@ internal sealed record DeleteUserHandler(
 			await sessionRepository.DeleteOneAsync(x => x.Id == session.Id, cancellationToken);
 		}
 
-		await userRepository.SoftDeleteOneAsync(x => x.Id == user.Id, user, cancellationToken);
+		await userRepository.SoftDeleteOneAsync(x => x.Id == user.Id, cancellationToken);
 
 		if (cacheService.Remove(user.Email))
 			return "Kullanıcı başarıyla silindi ve bellek temizlendi.";
