@@ -4,7 +4,7 @@ using Domain.Entities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Queries.Workspaces;
+namespace Application.Features.Queries.Workspaces.v1;
 
 public sealed record ResultWorkspaceQuery() : IRequest<Result<List<WorkspaceDto?>>>
 {
@@ -30,12 +30,8 @@ internal sealed record ResultWorkspace(
                                             .Where(x => search == null || x.Title.ToLower().Contains(search.ToLower()))
                                             .Skip(pageNumber * pageSize)
                                             .Take(pageSize)
-                                            .Select(x => new WorkspaceDto
-                                            {
-                                                Id = x.Id,
-                                                Title = x.Title,
-                                                Description = x.Description,
-                                            }).ToList();
+                                            .Select(x => new WorkspaceDto(x!)
+                                            ).ToList();
 
         return workspacesList;
     }

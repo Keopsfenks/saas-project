@@ -29,10 +29,6 @@ internal sealed record UpdateWorkspaceHandler(
 
 		await workspaceRepository.ReplaceOneAsync(c => c.Id == workspace.Id, workspace, cancellationToken);
 
-		return new WorkspaceDto() {
-									  Id          = workspace.Id,
-									  Title       = workspace.Title,
-									  Description = workspace.Description,
-								  };
-	}
+        return new WorkspaceDto(workspace);
+    }
 }

@@ -1,17 +1,15 @@
-using Application.Features.Commands.Providers;
-using Application.Features.Commands.Providers.v1;
-using Application.Features.Queries.Providers;
-using Application.Features.Queries.Providers.v1;
+using Application.Features.Commands.Shippers.v1;
+using Application.Features.Queries.Shippers.v1;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstractions;
 
 namespace WebApi.Controllers.v1
 {
-    public sealed class ProviderController(IMediator mediator) : ApiController(mediator)
+    public sealed class ShipperController(IMediator mediator) : ApiController(mediator)
     {
         [HttpPost]
-        public async Task<IActionResult> CreateProvider([FromBody] CreateProviderRequest request)
+        public async Task<IActionResult> CreateShipper([FromBody] CreateShipperRequest request)
         {
             var response = await Mediator.Send(request);
 
@@ -21,7 +19,7 @@ namespace WebApi.Controllers.v1
             return StatusCode(response.StatusCode, response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateProvider([FromBody] UpdateProviderRequest request)
+        public async Task<IActionResult> UpdateShipper([FromBody] UpdateShipperRequest request)
         {
             var response = await Mediator.Send(request);
 
@@ -31,7 +29,7 @@ namespace WebApi.Controllers.v1
             return StatusCode(response.StatusCode, response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteProvider([FromBody] DeleteProviderRequest request)
+        public async Task<IActionResult> DeleteShipper([FromBody] DeleteShipperRequest request)
         {
             var response = await Mediator.Send(request);
 
@@ -41,7 +39,7 @@ namespace WebApi.Controllers.v1
             return StatusCode(response.StatusCode, response);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllProviders([FromQuery] ResultProviderRequest request)
+        public async Task<IActionResult> GetAllShippers([FromQuery] ResultShipperRequest request)
         {
             var response = await Mediator.Send(request);
 

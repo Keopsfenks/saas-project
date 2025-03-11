@@ -17,13 +17,7 @@ internal sealed class MeHandler(
 			return (404, "Kullanıcı bulunamadı");
 
 
-		UserDto userDto = new() {
-									Id             = user.Id,
-									Email          = user.Email,
-									Name           = user.Name,
-									Surname        = user.Surname,
-									EmailConfirmed = user.EmailConfirmed,
-								};
+		UserDto userDto = new(user);
 
 		return userDto;
 

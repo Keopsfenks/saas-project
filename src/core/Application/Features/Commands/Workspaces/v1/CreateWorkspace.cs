@@ -50,11 +50,6 @@ internal sealed record CreateWorkspaceHandler(
             return (500, e.Message);
         }
 
-        return new WorkspaceDto()
-        {
-            Id = newWorkspace.Id,
-            Title = newWorkspace.Title,
-            Description = newWorkspace.Description,
-        };
+        return new WorkspaceDto(newWorkspace);
     }
 }

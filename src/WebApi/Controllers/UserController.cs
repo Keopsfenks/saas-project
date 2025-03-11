@@ -108,7 +108,7 @@ public sealed class UserController(IMediator mediator) : ApiController(mediator)
 
 	[HttpGet]
 	[AllowAnonymous]
-	public async Task<IActionResult> GetUsers([FromQuery] ResultUsersQuery request) {
+	public async Task<IActionResult> GetAllUsers([FromQuery] ResultUsersQuery request) {
 		var response = await Mediator.Send(request);
 
 		if (response.IsSuccessful)

@@ -4,7 +4,7 @@ using Domain.Entities.WorkspaceEntities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Queries.Providers
+namespace Application.Features.Queries.Providers.v1
 {
     public sealed record ResultProviderRequest() : IRequest<Result<List<ProviderDto>>>
     {

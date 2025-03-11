@@ -44,13 +44,7 @@ public sealed class JwtProvider(
         string refreshToken = Guid.NewGuid().ToString();
         DateTime refreshExpires = DateTime.UtcNow.AddHours(securitySettings.RefreshTokenExpirationInMinutes);
 
-        TokenDto tokenDto = new()
-        {
-            Token = token,
-            RefreshToken = refreshToken,
-            RefreshTokenExpiryTime = refreshExpires,
-            ExpiryTime = expires
-        };
+        TokenDto tokenDto = new(token, refreshToken, refreshExpires, expires);
 
         return Task.FromResult(tokenDto);
     }

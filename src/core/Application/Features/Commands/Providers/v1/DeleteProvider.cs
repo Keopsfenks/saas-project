@@ -3,7 +3,7 @@ using Domain.Entities.WorkspaceEntities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Commands.Providers
+namespace Application.Features.Commands.Providers.v1
 {
     public sealed record DeleteProviderRequest(
         string Id) : IRequest<Result<string>>;
@@ -17,7 +17,7 @@ namespace Application.Features.Commands.Providers
             bool isProviderExist = await providerRepository.ExistsAsync(x => x.Id == request.Id, cancellationToken);
 
             if (!isProviderExist)
-                return (409, "Kargo sağlayıcısı bulunamadı.");
+                return (404, "Kargo sağlayıcısı bulunamadı.");
 
             await providerRepository.SoftDeleteOneAsync(x => x.Id == request.Id, cancellationToken);
 

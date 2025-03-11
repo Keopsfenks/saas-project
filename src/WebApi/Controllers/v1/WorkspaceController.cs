@@ -1,6 +1,7 @@
 ﻿using Application.Features.Commands.Workspaces.v1;
 using Application.Features.Queries;
 using Application.Features.Queries.Workspaces;
+using Application.Features.Queries.Workspaces.v1;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ public sealed class WorkspaceController(IMediator mediator) : ApiController(medi
         return StatusCode(response.StatusCode, response);
     }
     [HttpGet]
-    public async Task<IActionResult> GetWorkspaces()
+    public async Task<IActionResult> GetAllWorkspaces()
     {
         var response = await Mediator.Send(new ResultWorkspaceQuery());
 

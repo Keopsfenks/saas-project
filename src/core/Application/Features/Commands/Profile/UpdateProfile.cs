@@ -63,13 +63,7 @@ internal sealed record UpdateProfileHandler(
 
 		await userRepository.ReplaceOneAsync(x => x.Id == user.Id, user, cancellationToken);
 
-		return new UserDto() {
-								 Id = user.Id,
-								 Name = user.Name,
-								 Surname = user.Surname,
-								 Email = user.Email,
-								 EmailConfirmed = user.EmailConfirmed,
-							 };
-	}
+        return new UserDto(user);
+    }
 
 }

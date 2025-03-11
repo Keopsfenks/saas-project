@@ -4,7 +4,7 @@ using Domain.Entities.WorkspaceEntities;
 using MediatR;
 using TS.Result;
 
-namespace Application.Features.Commands.Providers
+namespace Application.Features.Commands.Providers.v1
 {
     public sealed record UpdateProviderRequest(
         string  Id,

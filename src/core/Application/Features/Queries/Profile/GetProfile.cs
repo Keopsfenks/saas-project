@@ -27,24 +27,12 @@ internal sealed record GetProfileHandler(
 
         List<TokenDto> tokenDtos = sessions
                                   .OrderBy(cr => cr!.ExpiryTime)
-                                  .Select(x => new TokenDto
-                                  {
-                                      Token = encryptionService.Decrypt(x!.Token),
-                                      RefreshToken
-                                                                             = encryptionService
-                                                                                .Decrypt(x.RefreshToken),
-                                      ExpiryTime = x.ExpiryTime,
-                                      RefreshTokenExpiryTime
-                                                                             = x.RefreshTokenExpiryTime,
-                                  }).ToList();
+                                  .Select(x => new TokenDto(encryptionService.Decrypt(x!.Token), encryptionService
+                                                               .Decrypt(x.RefreshToken), x.RefreshTokenExpiryTime,
+                                                            x.ExpiryTime)).ToList();
 
 
-        ProfileDto profile = new()
-        {
-            Name = user.Name,
-            Surname = user.Surname,
-            Session = tokenDtos,
-        };
+        ProfileDto profile = new(user, tokenDtos);
 
         return profile;
     }
