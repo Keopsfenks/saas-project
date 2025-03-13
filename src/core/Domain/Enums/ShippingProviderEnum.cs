@@ -25,5 +25,6 @@ namespace Domain.Enums
             = new ShippingProviderEnum("PaketTaxi Kargo", 10);
 
         public static readonly ShippingProviderEnum TEST = new ShippingProviderEnum("Test Kargo", 11);
+
     }
 }

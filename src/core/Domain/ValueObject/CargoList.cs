@@ -1,9 +1,8 @@
-using Domain.Abstractions;
 using Domain.Enums;
 
-namespace Domain.Entities.WorkspaceEntities
+namespace Domain.ValueObject
 {
-    public sealed class Cargo : WorkspaceEntity
+    public sealed class CargoList
     {
         public string  Name        { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
@@ -11,11 +10,13 @@ namespace Domain.Entities.WorkspaceEntities
         public UnitOfMeasureEnum MassUnit     { get; set; } = UnitOfMeasureEnum.Kilogram;
         public UnitOfMeasureEnum DistanceUnit { get; set; } = UnitOfMeasureEnum.Centimeter;
 
-        public decimal Height { get; set; }
-        public decimal Length { get; set; }
-        public decimal Width  { get; set; }
+        public decimal Height { get; set; } = 0;
+        public decimal Length { get; set; } = 0;
+        public decimal Width  { get; set; } = 0;
         public decimal Volume => Width  * Length * Height;
         public decimal Desi   => Volume / 3000;
-        public decimal Weight { get; set; } = 0;
+
+        public List<Item>? Items  { get; set; } = null;
+        public decimal     Weight { get; set; } = 0;
     }
 }

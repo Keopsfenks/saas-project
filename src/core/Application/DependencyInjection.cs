@@ -22,7 +22,6 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
-
         return services;
     }
 

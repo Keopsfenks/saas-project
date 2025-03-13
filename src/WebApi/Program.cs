@@ -4,6 +4,7 @@ using APIWeaver;
 using Application;
 using Asp.Versioning;
 using Infrastructure;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
@@ -60,8 +61,9 @@ builder.Services.AddApiVersioning(options => {
 	options.SubstituteApiVersionInUrl = true;
 });
 
-
 builder.Services.AddControllers();
+
+
 builder.Services.AddOpenApi("v1", options => {
 	options.AddSecurityScheme("Bearer", scheme => {
 		scheme.In   = ParameterLocation.Header;

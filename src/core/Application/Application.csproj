@@ -6,6 +6,7 @@
 	  <PackageReference Include="MediatR"  />
 	  <PackageReference Include="Microsoft.AspNetCore.Authorization" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions"  />
+	  <PackageReference Include="Microsoft.AspNetCore.JsonPatch" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	  <PackageReference Include="Newtonsoft.Json" />
 	  <PackageReference Include="TS.Result" />

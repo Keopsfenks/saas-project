@@ -7,9 +7,10 @@ using TS.Result;
 namespace Application.Features.Commands.Providers.v1
 {
     public sealed record UpdateProviderRequest(
-        string  Id,
-        string? Username,
-        string? Password) : IRequest<Result<ProviderDto>>;
+        string                      Id,
+        string?                     Username,
+        string?                     Password,
+        Dictionary<string, string>? Parameters) : IRequest<Result<ProviderDto>>;
 
     internal sealed record UpdateProviderHandler(
         IRepositoryService<Provider> providerRepository,

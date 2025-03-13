@@ -36,7 +36,7 @@ namespace Application.Features.Commands.Cargoes.v1
                               DistanceUnit = UnitOfMeasureEnum.Centimeter,
                               Height       = request.Height,
                               Length       = request.Lenght,
-                              Width        = request.Width
+                              Width        = request.Width,
                           };
 
             await cargoRepository.InsertOneAsync(cargo, cancellationToken);
