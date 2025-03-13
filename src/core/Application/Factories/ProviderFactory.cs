@@ -19,7 +19,7 @@ namespace Application.Factories
             {
                 var provider when provider == ShippingProviderEnum.TEST =>
                     serviceProvider.GetRequiredService<AProvider<TestParameterProvider, TShipment>>() as
-                        TestProvider<TProvider, TShipment>,
+                        AProvider<TProvider, TShipment>,
 
                 _ => throw new ArgumentException($"Desteklenmeyen kargo sağlayıcısı: {shippingProviderEnum}")
             };

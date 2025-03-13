@@ -1,4 +1,8 @@
 ﻿using Application.Behaviors;
+using Application.Factories.Abstractions;
+using Application.Factories.Interfaces;
+using Application.Factories.Parameters.Provider;
+using Application.Factories.Providers;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +25,8 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
+
+        services.AddScoped<AProvider<TestParameterProvider, IProvider>, TestProvider<TestParameterProvider, IProvider>>();
 
         return services;
     }

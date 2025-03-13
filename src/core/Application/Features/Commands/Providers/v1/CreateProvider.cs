@@ -45,11 +45,12 @@ namespace Application.Features.Commands.Providers.v1
                                 };
 
 
-            ProviderFactory providerFactory
-                = new(ShippingProviderEnum.FromValue(ShippingProviderEnum.FromValue(request.ShippingProviderCode)),
-                      serviceProvider);
+            ProviderFactory providerFactory = new(
+                ShippingProviderEnum.FromValue(request.ShippingProviderCode),
+                serviceProvider);
 
-            AProvider<IProvider, IProvider>? test = providerFactory.GetProvider<IProvider, IProvider>();
+            AProvider<TestParameterProvider, IProvider>? Provider =
+                providerFactory.GetProvider<TestParameterProvider, IProvider>();
 
             ProviderDto providerDto = new(provider);
             provider.Password = encrptionService.Encrypt(request.Password);
