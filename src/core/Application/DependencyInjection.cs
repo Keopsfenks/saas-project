@@ -26,8 +26,7 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
-        services.AddScoped<AProvider<TestParameterProvider, IProvider>, TestProvider<TestParameterProvider, IProvider>>();
-
+        services.AddScoped<AProvider<TestParameterProvider, TestParameterProvider>, TestProvider<TestParameterProvider, TestParameterProvider>>();
         return services;
     }
 

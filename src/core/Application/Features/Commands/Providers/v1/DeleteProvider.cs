@@ -1,3 +1,5 @@
+using Application.Factories;
+using Application.Factories.Interfaces;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using MediatR;
@@ -10,18 +12,21 @@ namespace Application.Features.Commands.Providers.v1
 
 
     internal sealed record DeleteProviderHandler(
-        IRepositoryService<Provider> providerRepository) : IRequestHandler<DeleteProviderRequest, Result<string>>
+        IRepositoryService<Provider> providerRepository,
+        IServiceProvider             serviceProvider) : IRequestHandler<DeleteProviderRequest, Result<string>>
     {
         public async Task<Result<string>> Handle(DeleteProviderRequest request, CancellationToken cancellationToken)
         {
-            bool isProviderExist = await providerRepository.ExistsAsync(x => x.Id == request.Id, cancellationToken);
+            Provider? provider = await providerRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (!isProviderExist)
+            if (provider is null)
                 return (404, "Kargo sağlayıcısı bulunamadı.");
 
-            await providerRepository.SoftDeleteOneAsync(x => x.Id == request.Id, cancellationToken);
+            ProviderFactory providerFactory = new(provider.ShippingProvider, serviceProvider);
 
-            return "Kargo sağlayıcısı başarıyla silindi.";
+            IProvider providerService = providerFactory.GetProvider();
+
+            return await providerService.DeleteProviderAsync<string>(request, cancellationToken);
         }
     }
 }

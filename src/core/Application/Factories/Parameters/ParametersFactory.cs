@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Application.Factories.Parameters
 {
-    public static class ParametersFactory<T> where T : IProvider
+    public static class ParametersFactory<T> where T : class
     {
         public static BsonDocument? Parameters(Dictionary<string, string>? parameters)
         {
@@ -45,8 +45,11 @@ namespace Application.Factories.Parameters
             return parametersBsonDocument;
         }
 
-        public static bool ValidationParameters(Dictionary<string, string> parameters)
+        public static bool ValidationParameters(Dictionary<string, string>? parameters)
         {
+            if (parameters == null)
+                return true;
+
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {

@@ -1,4 +1,6 @@
 using Application.Dtos;
+using Application.Factories;
+using Application.Factories.Interfaces;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using MediatR;
@@ -14,7 +16,8 @@ namespace Application.Features.Commands.Providers.v1
 
     internal sealed record UpdateProviderHandler(
         IRepositoryService<Provider> providerRepository,
-        IEncryptionService           encrptionService) : IRequestHandler<UpdateProviderRequest, Result<ProviderDto>>
+        IEncryptionService           encrptionService,
+        IServiceProvider             serviceProvider) : IRequestHandler<UpdateProviderRequest, Result<ProviderDto>>
     {
         public async Task<Result<ProviderDto>> Handle(UpdateProviderRequest request, CancellationToken cancellationToken)
         {
@@ -23,23 +26,12 @@ namespace Application.Features.Commands.Providers.v1
             if (provider is null)
                 return (404, "Kargo sağlayıcısı bulunamadı.");
 
-            ProviderDto providerDto = new(provider);
+            ProviderFactory providerFactory = new(provider.ShippingProvider, serviceProvider);
 
-            if (request.Username is not null)
-            {
-                providerDto.Username = request.Username;
-                provider.Username = request.Username;
-            }
 
-            if (request.Password is not null)
-            {
-                providerDto.Password = request.Password;
-                provider.Password = encrptionService.Encrypt(request.Password);
-            }
+            IProvider providerService = providerFactory.GetProvider();
 
-            await providerRepository.ReplaceOneAsync(x => x.Id == provider.Id, provider, cancellationToken);
-
-            return providerDto;
+            return await providerService.UpdateProviderAsync<ProviderDto>(request, cancellationToken);
         }
     }
 }

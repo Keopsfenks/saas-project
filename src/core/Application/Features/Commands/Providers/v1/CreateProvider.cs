@@ -28,35 +28,14 @@ namespace Application.Features.Commands.Providers.v1
 
         public async Task<Result<ProviderDto>> Handle(CreateProviderRequest request, CancellationToken cancellationToken)
         {
-            bool isProviderExist
-                = await providerRepository.ExistsAsync(x => x.ShippingProvider ==
-                                                            ShippingProviderEnum.FromValue(
-                                                                request.ShippingProviderCode), cancellationToken);
+            ProviderFactory providerFactory
+                = new(ShippingProviderEnum.FromValue(request.ShippingProviderCode), serviceProvider);
 
-            if (isProviderExist)
-                return (409, "Kargo sağlayıcı zaten mevcut.");
-
-            Provider provider = new()
-                                {
-                                    Username         = request.Username,
-                                    Password         = request.Password,
-                                    ShippingProvider = ShippingProviderEnum.FromValue(request.ShippingProviderCode),
-                                    Parameters       = null
-                                };
+            IProvider provider = providerFactory.GetProvider();
 
 
-            ProviderFactory providerFactory = new(
-                ShippingProviderEnum.FromValue(request.ShippingProviderCode),
-                serviceProvider);
+            return await provider.CreateProviderAsync<ProviderDto>(request, cancellationToken);
 
-            AProvider<TestParameterProvider, IProvider>? Provider =
-                providerFactory.GetProvider<TestParameterProvider, IProvider>();
-
-            ProviderDto providerDto = new(provider);
-            provider.Password = encrptionService.Encrypt(request.Password);
-            await providerRepository.InsertOneAsync(provider, cancellationToken);
-
-            return providerDto;
         }
     }
 }

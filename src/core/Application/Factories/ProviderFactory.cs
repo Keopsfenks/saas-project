@@ -11,15 +11,12 @@ namespace Application.Factories
         ShippingProviderEnum shippingProviderEnum,
         IServiceProvider     serviceProvider)
     {
-        public AProvider<TProvider, TShipment>? GetProvider<TProvider, TShipment>()
-            where TProvider : IProvider
-            where TShipment : IProvider
+        public IProvider GetProvider()
         {
             return shippingProviderEnum switch
             {
                 var provider when provider == ShippingProviderEnum.TEST =>
-                    serviceProvider.GetRequiredService<AProvider<TestParameterProvider, TShipment>>() as
-                        AProvider<TProvider, TShipment>,
+                    serviceProvider.GetRequiredService<AProvider<TestParameterProvider, TestParameterProvider>>(),
 
                 _ => throw new ArgumentException($"Desteklenmeyen kargo sağlayıcısı: {shippingProviderEnum}")
             };
