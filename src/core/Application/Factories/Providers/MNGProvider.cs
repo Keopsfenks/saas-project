@@ -68,6 +68,8 @@ namespace Application.Factories.Providers
             if (mngResponse is null)
                 return (500, "Beklenmeyen bir hata oluştu.");
 
+            mngResponse.Jwt          = EncryptionService.Encrypt(mngResponse.Jwt);
+            mngResponse.RefreshToken = EncryptionService.Encrypt(mngResponse.RefreshToken);
 
             provider.Session = ParametersFactory.Serialize(mngResponse);
 

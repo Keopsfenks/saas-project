@@ -12,7 +12,6 @@ namespace Domain.Entities.WorkspaceEntities
         public ShippingProviderEnum ShippingProvider { get; set; } = ShippingProviderEnum.None;
 
         public BsonDocument? Parameters { get; set; } = null;
-        [BsonIgnore]
         public BsonDocument? Session    { get; set; } = null;
 
     }
