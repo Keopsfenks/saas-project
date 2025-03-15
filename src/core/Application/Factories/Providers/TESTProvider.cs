@@ -26,11 +26,9 @@ namespace Application.Factories.Providers
             throw new NotImplementedException();
         }
 
-        public override Task<Result<T>> CheckConnectionAsync<T>(Provider         provider,
-                                                                CancellationToken cancellationToken = default)
+        public override Task<Result<string>> CreateConnectionAsync(Provider provider, CancellationToken cancellationToken = default)
         {
-
-            return Task.FromResult(Result<T>.Succeed(("Bağlantı başarılı." as T)!));
+            throw new NotImplementedException();
         }
 
         public override Task<Result<T>> RefreshTokenAsync<T>(Provider provider, CancellationToken cancellationToken = default)

@@ -48,7 +48,7 @@ namespace Application.Factories.Providers
             return client;
         }
 
-        public override async Task<Result<T>> CheckConnectionAsync<T>(Provider provider, CancellationToken cancellationToken = default)
+        public override async Task<Result<string>> CreateConnectionAsync(Provider provider, CancellationToken cancellationToken = default)
         {
             HttpClient client = GetClient(provider);
 
@@ -61,7 +61,7 @@ namespace Application.Factories.Providers
             if (!response.IsSuccessStatusCode)
                 return (response.StatusCode.GetHashCode(), response.ReasonPhrase);
 
-            string contentResponse = await response.Content.ReadAsStringAsync();
+            string contentResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
             MNGResponseToken? mngResponse = JsonConvert.DeserializeObject<MNGResponseToken>(contentResponse);
 
@@ -75,7 +75,7 @@ namespace Application.Factories.Providers
 
             await ProviderRepository.ReplaceOneAsync(x => x.Id == provider.Id, provider, cancellationToken);
 
-            return (mngResponse as T)!;
+            return "İşlem başarılı";
         }
 
         public override Task<Result<T>> RefreshTokenAsync<T>(Provider provider, CancellationToken cancellationToken = default)

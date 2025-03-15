@@ -17,9 +17,8 @@ namespace Application.Factories.Interfaces
         Task<Result<T>> DeleteProviderAsync<T>(DeleteProviderRequest request,
                                                CancellationToken     cancellationToken = default) where T : class;
 
-        public abstract Task<Result<T>> CheckConnectionAsync<T>(Provider          provider,
-                                                                CancellationToken cancellationToken = default)
-            where T : class;
+        public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
+                                                                 CancellationToken cancellationToken = default);
 
         Task<Result<T>> CreateShipmentAsync<T>(CreateShipmentRequest request,
                                                CancellationToken     cancellationToken = default) where T : class;
@@ -29,6 +28,8 @@ namespace Application.Factories.Interfaces
 
         Task<Result<T>> DeleteShipmentAsync<T>(DeleteShipmentRequest request,
                                                CancellationToken     cancellationToken = default) where T : class;
+
+
 
     }
 }

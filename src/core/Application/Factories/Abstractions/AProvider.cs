@@ -52,7 +52,7 @@ namespace Application.Factories.Abstractions
 
             ProviderDto<TProvider> providerDto = new(provider);
 
-            await CheckConnectionAsync<MNGResponseToken>(provider, cancellationToken);
+            await CreateConnectionAsync(provider, cancellationToken);
 
             provider.Password = EncryptionService.Encrypt(request.Password);
 
@@ -165,9 +165,8 @@ namespace Application.Factories.Abstractions
         }
 
 
-        public abstract Task<Result<T>> CheckConnectionAsync<T>(Provider          provider,
-                                                                CancellationToken cancellationToken = default)
-            where T : class;
+        public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
+                                                                 CancellationToken cancellationToken = default);
 
         public abstract Task<Result<T>> RefreshTokenAsync<T>(Provider          provider,
                                                              CancellationToken cancellationToken = default)
