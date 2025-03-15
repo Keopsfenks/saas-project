@@ -1,7 +1,7 @@
 ﻿using Application.Behaviors;
 using Application.Factories.Abstractions;
 using Application.Factories.Interfaces;
-using Application.Factories.Parameters.Provider;
+using Application.Factories.Parameters;
 using Application.Factories.Providers;
 using FluentValidation;
 using MediatR;
@@ -26,7 +26,14 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
-        services.AddScoped<AProvider<TestParameterProvider, TestParameterProvider>, TestProvider<TestParameterProvider, TestParameterProvider>>();
+        services.AddHttpClient();
+
+        services
+           .AddScoped<AProvider<TESTParameterProvider, TESTParameterShipment>,
+                TESTProvider<TESTParameterProvider, TESTParameterShipment>>();
+        services
+           .AddScoped<AProvider<MNGParameterProvider, MNGParameterShipment>,
+                MNGProvider<MNGParameterProvider, MNGParameterShipment>>();
         return services;
     }
 

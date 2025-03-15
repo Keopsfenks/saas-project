@@ -20,4 +20,8 @@
 	  <Folder Include="logs\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageVersion Update="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.3" />
+	</ItemGroup>
+
 </Project>

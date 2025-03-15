@@ -1,3 +1,4 @@
+
 using Ardalis.SmartEnum;
 
 namespace Domain.Enums

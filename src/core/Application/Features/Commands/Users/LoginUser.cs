@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Services;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using TS.Result;
@@ -12,8 +13,6 @@ public sealed record LoginUserRequest(
 	string password
 	) : IRequest<Result<TokenDto>> {
 }
-
-
 
 internal sealed record LoginUserHandler(
 	IEncryptionService            encryptionService,

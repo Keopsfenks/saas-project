@@ -2,12 +2,14 @@ using Application.Factories;
 using Application.Factories.Interfaces;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using Domain.Enums;
 using MediatR;
 using TS.Result;
 
 namespace Application.Features.Commands.Providers.v1
 {
     public sealed record DeleteProviderRequest(
+        int    ShippingProviderCode,
         string Id) : IRequest<Result<string>>;
 
 
@@ -17,12 +19,9 @@ namespace Application.Features.Commands.Providers.v1
     {
         public async Task<Result<string>> Handle(DeleteProviderRequest request, CancellationToken cancellationToken)
         {
-            Provider? provider = await providerRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (provider is null)
-                return (404, "Kargo sağlayıcısı bulunamadı.");
-
-            ProviderFactory providerFactory = new(provider.ShippingProvider, serviceProvider);
+            ProviderFactory providerFactory
+                = new(ShippingProviderEnum.FromValue(request.ShippingProviderCode), serviceProvider);
 
             IProvider providerService = providerFactory.GetProvider();
 

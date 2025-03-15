@@ -1,10 +1,14 @@
 using Ardalis.SmartEnum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Enums
 {
     public sealed class ShippingProviderEnum : SmartEnum<ShippingProviderEnum>
     {
-        public ShippingProviderEnum(string name, int value) : base(name, value) { }
+        public ShippingProviderEnum(string name, int value) : base(name, value)
+        {
+
+        }
 
         public static readonly ShippingProviderEnum None             = new ShippingProviderEnum("None",             0);
         public static readonly ShippingProviderEnum SURAT            = new ShippingProviderEnum("Sürat Kargo",      1);
@@ -26,5 +30,11 @@ namespace Domain.Enums
 
         public static readonly ShippingProviderEnum TEST = new ShippingProviderEnum("Test Kargo", 11);
 
+    }
+
+    public enum TestEnum
+    {
+        [Display(Name = "Test")]
+        TEST = 1
     }
 }

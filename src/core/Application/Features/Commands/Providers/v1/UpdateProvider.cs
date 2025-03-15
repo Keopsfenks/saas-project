@@ -3,35 +3,32 @@ using Application.Factories;
 using Application.Factories.Interfaces;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using Domain.Enums;
 using MediatR;
 using TS.Result;
 
 namespace Application.Features.Commands.Providers.v1
 {
     public sealed record UpdateProviderRequest(
-        string                      Id,
-        string?                     Username,
-        string?                     Password,
-        Dictionary<string, string>? Parameters) : IRequest<Result<ProviderDto>>;
+        int     ShippingProviderCode,
+        string  Id,
+        string? Username,
+        string? Password,
+        object? Parameters) : IRequest<Result<object>>;
 
     internal sealed record UpdateProviderHandler(
         IRepositoryService<Provider> providerRepository,
         IEncryptionService           encrptionService,
-        IServiceProvider             serviceProvider) : IRequestHandler<UpdateProviderRequest, Result<ProviderDto>>
+        IServiceProvider             serviceProvider) : IRequestHandler<UpdateProviderRequest, Result<object>>
     {
-        public async Task<Result<ProviderDto>> Handle(UpdateProviderRequest request, CancellationToken cancellationToken)
+        public async Task<Result<object>> Handle(UpdateProviderRequest request, CancellationToken cancellationToken)
         {
-            Provider? provider = await providerRepository.FindOneAsync(x => x.Id == request.Id);
-
-            if (provider is null)
-                return (404, "Kargo sağlayıcısı bulunamadı.");
-
-            ProviderFactory providerFactory = new(provider.ShippingProvider, serviceProvider);
-
+            ProviderFactory providerFactory
+                = new(ShippingProviderEnum.FromValue(request.ShippingProviderCode), serviceProvider);
 
             IProvider providerService = providerFactory.GetProvider();
 
-            return await providerService.UpdateProviderAsync<ProviderDto>(request, cancellationToken);
+            return await providerService.UpdateProviderAsync<object>(request, cancellationToken);
         }
     }
 }

@@ -1,14 +1,14 @@
 using Domain.Abstractions;
 using Domain.Enums;
 using Domain.ValueObject;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Entities.WorkspaceEntities
 {
     public sealed class Shipment : WorkspaceEntity
     {
-        public Dictionary<string, string> Order { get; set; } = new Dictionary<string, string>();
-
+        public BsonDocument    Order  { get; set; } = new BsonDocument();
 
         public CargoStatusEnum Status { get; set; } = CargoStatusEnum.DRAFT;
 

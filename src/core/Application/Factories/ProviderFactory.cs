@@ -1,9 +1,9 @@
 using Application.Factories.Abstractions;
 using Application.Factories.Interfaces;
-using Application.Factories.Parameters.Provider;
-using Application.Factories.Providers;
+using Application.Factories.Parameters;
 using Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Application.Factories
 {
@@ -16,10 +16,14 @@ namespace Application.Factories
             return shippingProviderEnum switch
             {
                 var provider when provider == ShippingProviderEnum.TEST =>
-                    serviceProvider.GetRequiredService<AProvider<TestParameterProvider, TestParameterProvider>>(),
+                    serviceProvider.GetRequiredService<AProvider<TESTParameterProvider, TESTParameterShipment>>(),
+
+                var provider when provider == ShippingProviderEnum.MNG =>
+                    serviceProvider.GetRequiredService<AProvider<MNGParameterProvider, MNGParameterShipment>>(),
 
                 _ => throw new ArgumentException($"Desteklenmeyen kargo sağlayıcısı: {shippingProviderEnum}")
             };
+
         }
     }
 }

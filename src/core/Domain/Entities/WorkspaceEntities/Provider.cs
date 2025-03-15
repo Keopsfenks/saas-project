@@ -1,6 +1,7 @@
 using Domain.Abstractions;
 using Domain.Enums;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Entities.WorkspaceEntities
 {
@@ -10,7 +11,9 @@ namespace Domain.Entities.WorkspaceEntities
         public string               Password         { get; set; } = string.Empty;
         public ShippingProviderEnum ShippingProvider { get; set; } = ShippingProviderEnum.None;
 
-        public BsonDocument?       Parameters       { get; set; } = null;
+        public BsonDocument? Parameters { get; set; } = null;
+        [BsonIgnore]
+        public BsonDocument? Session    { get; set; } = null;
 
     }
 }

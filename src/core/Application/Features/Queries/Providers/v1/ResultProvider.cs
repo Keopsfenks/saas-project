@@ -6,7 +6,7 @@ using TS.Result;
 
 namespace Application.Features.Queries.Providers.v1
 {
-    public sealed record ResultProviderRequest() : IRequest<Result<List<ProviderDto>>>
+    public sealed record ResultProviderRequest() : IRequest<Result<List<ProviderDto<object>>>>
     {
         public int     PageSize   { get; set; } = 10;
         public int     PageNumber { get; set; } = 0;
@@ -14,9 +14,9 @@ namespace Application.Features.Queries.Providers.v1
     }
 
     internal sealed record ResultProviderHandler(
-        IRepositoryService<Provider> providerRepository) : IRequestHandler<ResultProviderRequest, Result<List<ProviderDto>>>
+        IRepositoryService<Provider> providerRepository) : IRequestHandler<ResultProviderRequest, Result<List<ProviderDto<object>>>>
     {
-        public async Task<Result<List<ProviderDto>>> Handle(ResultProviderRequest request, CancellationToken cancellationToken)
+        public async Task<Result<List<ProviderDto<object>>>> Handle(ResultProviderRequest request, CancellationToken cancellationToken)
         {
             int PageSize   = request.PageSize;
             int PageNumber = request.PageNumber;
@@ -24,13 +24,13 @@ namespace Application.Features.Queries.Providers.v1
 
             IEnumerable<Provider?> providers = await providerRepository.FindAsync(x => true, cancellationToken);
 
-            List<ProviderDto> providersList = providers
+            List<ProviderDto<object>> providersList = providers
                                              .OrderBy(x => x.ShippingProvider.Name)
                                              .Where(x => Search == null || x.ShippingProvider.Name.ToLower()
                                                                             .Contains(Search.ToLower()))
                                              .Skip(PageNumber * PageSize)
                                              .Take(PageSize)
-                                             .Select(x => new ProviderDto(x!))
+                                             .Select(x => new ProviderDto<object>(x!))
                                              .ToList();
 
             return providersList;
