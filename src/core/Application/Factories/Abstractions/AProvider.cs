@@ -1,24 +1,22 @@
 using Application.Dtos;
 using Application.Factories.Interfaces;
-using Application.Factories.Parameters.Response;
+using Application.Features.Commands.Orders;
 using Application.Features.Commands.Providers.v1;
 using Application.Features.Commands.Shipments.v1;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
-using System.Net;
 using TS.Result;
 
 namespace Application.Factories.Abstractions
 {
 
-    public abstract class AProvider<TProvider, TShipment>(
+    public abstract class AProvider<TProvider>(
         IRepositoryService<Provider> providerRepository,
         IRepositoryService<Shipment> shipmentRepository,
         IHttpClientFactory           httpClientFactory,
         IEncryptionService           encryptionService) : IProvider
         where TProvider : class
-        where TShipment : class
     {
 
         protected string? token = null;
@@ -52,7 +50,8 @@ namespace Application.Factories.Abstractions
 
             ProviderDto<TProvider> providerDto = new(provider);
 
-            await CreateConnectionAsync(provider, cancellationToken);
+            if (providerDto.ShippingProviderCode != ShippingProviderEnum.TEST)
+                await CreateConnectionAsync(provider, cancellationToken);
 
             provider.Password = EncryptionService.Encrypt(request.Password);
 
@@ -64,7 +63,7 @@ namespace Application.Factories.Abstractions
         public async Task<Result<T>> UpdateProviderAsync<T>(UpdateProviderRequest request, CancellationToken cancellationToken = default)
             where T : class
         {
-            Provider? provider = await ProviderRepository.FindOneAsync(x => x.Id == request.Id);
+            Provider? provider = await ProviderRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
 
             if (provider is null)
                 return (404, "Kargo sağlayıcısı bulunamadı.");
@@ -111,16 +110,16 @@ namespace Application.Factories.Abstractions
                                 {
                                     Provider   = provider,
                                     ProviderId = provider.Id,
-                                    Order = ParametersFactory.Serialize(request.Order) ??
-                                            throw new InvalidOperationException(),
-                                    Cargo     = request.Cargo,
-                                    Shipper   = request.Shipper,
-                                    Recipient = request.Recipient,
-                                    Status    = CargoStatusEnum.DRAFT,
+                                    Order      = request.Order,
+                                    Cargo      = request.Cargo,
+                                    Shipper    = request.Shipper,
+                                    Recipient  = request.Recipient,
+                                    Status = CargoStatusEnum.FromValue(
+                                        request.StatusCode ?? CargoStatusEnum.DRAFT.Value),
                                 };
 
 
-            ShipmentDto<TShipment> shipmentDto = new(shipment);
+            ShipmentDto shipmentDto = new(shipment);
 
             await ShipmentRepository.InsertOneAsync(shipment, cancellationToken);
 
@@ -136,13 +135,13 @@ namespace Application.Factories.Abstractions
             if (shipment is null)
                 return (404, "Gönderi bulunamadı.");
 
-            shipment.Order     = ParametersFactory.Serialize(request.Order) ?? shipment.Order;
-            shipment.Cargo     = request.Cargo                                         ?? shipment.Cargo;
-            shipment.Shipper   = request.Shipper                                       ?? shipment.Shipper;
-            shipment.Recipient = request.Recipient                                     ?? shipment.Recipient;
+            shipment.Order     = request.Order     ?? shipment.Order;
+            shipment.Cargo     = request.Cargo     ?? shipment.Cargo;
+            shipment.Shipper   = request.Shipper   ?? shipment.Shipper;
+            shipment.Recipient = request.Recipient ?? shipment.Recipient;
 
 
-            ShipmentDto<TShipment> shipmentDto = new(shipment);
+            ShipmentDto shipmentDto = new(shipment);
 
             await ShipmentRepository.ReplaceOneAsync(x => x.Id == shipment.Id, shipment, cancellationToken);
 
@@ -164,13 +163,14 @@ namespace Application.Factories.Abstractions
             return ("Gönderi başarıyla silindi." as T)!;
         }
 
+        public Task<Result<T>> CreateOrderAsync<T>(CreateOrderRequest request, CancellationToken cancellationToken = default) where T : class
+        {
+            throw new NotImplementedException();
+        }
 
         public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
-                                                                 CancellationToken cancellationToken = default);
+                                                                   CancellationToken cancellationToken = default);
 
-        public abstract Task<Result<T>> RefreshTokenAsync<T>(Provider          provider,
-                                                             CancellationToken cancellationToken = default)
-            where T : class;
 
     }
 }

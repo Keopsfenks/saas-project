@@ -1,4 +1,5 @@
 using Application.Dtos;
+using Application.Features.Commands.Orders;
 using Application.Features.Commands.Providers.v1;
 using Application.Features.Commands.Shipments.v1;
 using Domain.Entities.WorkspaceEntities;
@@ -17,7 +18,7 @@ namespace Application.Factories.Interfaces
         Task<Result<T>> DeleteProviderAsync<T>(DeleteProviderRequest request,
                                                CancellationToken     cancellationToken = default) where T : class;
 
-        public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
+        abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
                                                                  CancellationToken cancellationToken = default);
 
         Task<Result<T>> CreateShipmentAsync<T>(CreateShipmentRequest request,
@@ -30,6 +31,7 @@ namespace Application.Factories.Interfaces
                                                CancellationToken     cancellationToken = default) where T : class;
 
 
-
+        abstract Task<Result<T>> CreateOrderAsync<T>(CreateOrderRequest request,
+                                                     CancellationToken  cancellationToken = default) where T : class;
     }
 }

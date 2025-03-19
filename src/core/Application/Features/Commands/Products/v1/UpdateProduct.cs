@@ -2,6 +2,7 @@ using Application.Dtos;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -16,6 +17,37 @@ namespace Application.Features.Commands.Products.v1
         decimal? Weight,
         decimal? Stock,
         decimal? Price) : IRequest<Result<ProductDto>>;
+
+    public sealed class UpdateProductValidator : AbstractValidator<UpdateProductRequest>
+    {
+        public UpdateProductValidator()
+        {
+            RuleFor(x => x.Id)
+               .NotEmpty().WithMessage("Id alanı boş olamaz")
+               .NotNull().WithMessage("Id alanı null olamaz");
+
+            RuleFor(x => x.Name)
+               .NotEmpty().WithMessage("Ad alanı boş olamaz")
+               .MinimumLength(3).WithMessage("Ad en az 3 karakter uzunluğunda olmalıdır")
+               .MaximumLength(50).WithMessage("Ad en fazla 50 karakter uzunluğunda olmalıdır")
+               .When(x => !string.IsNullOrEmpty(x.Name));
+
+            RuleFor(x => x.Description)
+               .MaximumLength(200).WithMessage("Açıklama en fazla 200 karakter uzunluğunda olmalıdır")
+               .When(x => !string.IsNullOrEmpty(x.Description));
+
+            RuleFor(x => x.Barcode)
+               .Matches(@"^\d{12}$").WithMessage("Barkod 12 haneli bir sayı olmalıdır")
+               .When(x => !string.IsNullOrEmpty(x.Barcode));
+
+            RuleFor(x => x.Stock)
+               .GreaterThanOrEqualTo(0)
+               .WithMessage("Stok negatif olamaz")
+               .When(x => x.Stock is not null);
+
+        }
+    }
+
 
     internal sealed record UpdateProductHandler(
         IRepositoryService<Product> productRepository) : IRequestHandler<UpdateProductRequest, Result<ProductDto>>

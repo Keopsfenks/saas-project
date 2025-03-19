@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Services;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using MongoDB.Bson;
 using Newtonsoft.Json;
@@ -12,6 +13,19 @@ public sealed record CreateWorkspaceRequest(
     string Title,
     string Description) : IRequest<Result<WorkspaceDto>>;
 
+public sealed class CreateWorkspaceRequestValidator : AbstractValidator<CreateWorkspaceRequest>
+{
+    public CreateWorkspaceRequestValidator()
+    {
+        RuleFor(x => x.Title)
+           .NotEmpty().WithMessage("Başlık boş olamaz")
+           .MaximumLength(100).WithMessage("Başlık en fazla 100 karakter uzunluğunda olmalıdır");
+
+        RuleFor(x => x.Description)
+           .NotEmpty().WithMessage("Açıklama boş olamaz")
+           .MaximumLength(500).WithMessage("Açıklama en fazla 500 karakter uzunluğunda olmalıdır");
+    }
+}
 
 
 internal sealed record CreateWorkspaceHandler(

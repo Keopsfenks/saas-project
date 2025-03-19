@@ -1,6 +1,7 @@
 using Application.Dtos;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -23,6 +24,68 @@ namespace Application.Features.Commands.Shippers.v1
         string? TaxDepartment) : IRequest<Result<ShipperDto>>;
 
 
+    public sealed class UpdateShipperRequestValidator : AbstractValidator<UpdateShipperRequest>
+    {
+        public UpdateShipperRequestValidator()
+        {
+            RuleFor(x => x.Id)
+               .NotEmpty().WithMessage("Gönderici, ID'si boş olamaz")
+               .NotNull().WithMessage("Gönderici, ID'si null olamaz");
+
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Ad boş olamaz")
+                .MaximumLength(50).WithMessage("Ad en fazla 50 karakter uzunluğunda olmalıdır");
+
+            RuleFor(x => x.Surname)
+                .NotEmpty().WithMessage("Soyad boş olamaz")
+                .MaximumLength(50).WithMessage("Soyad en fazla 50 karakter uzunluğunda olmalıdır");
+
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("E-posta boş olamaz")
+                .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz");
+
+            RuleFor(x => x.Phone)
+                .NotEmpty().WithMessage("Telefon numarası boş olamaz")
+                .Matches(@"^\+?[0-9]*$").WithMessage("Geçerli bir telefon numarası giriniz");
+
+            RuleFor(x => x.CountryCode)
+                .NotEmpty().WithMessage("Ülke kodu boş olamaz")
+                .Length(2).WithMessage("Ülke kodu 2 karakter olmalıdır");
+
+            RuleFor(x => x.Address)
+                .NotEmpty().WithMessage("Adres boş olamaz")
+                .MaximumLength(200).WithMessage("Adres en fazla 200 karakter uzunluğunda olmalıdır");
+
+            RuleFor(x => x.City)
+                .NotEmpty().WithMessage("Şehir boş olamaz")
+                .MaximumLength(100).WithMessage("Şehir en fazla 100 karakter uzunluğunda olmalıdır");
+
+            RuleFor(x => x.CityCode)
+                .NotEmpty().WithMessage("Şehir kodu boş olamaz")
+                .Length(4).WithMessage("Şehir kodu 4 karakter olmalıdır");
+
+            RuleFor(x => x.District)
+                .NotEmpty().WithMessage("İlçe boş olamaz")
+                .MaximumLength(100).WithMessage("İlçe en fazla 100 karakter uzunluğunda olmalıdır");
+
+            RuleFor(x => x.DistrictCode)
+                .NotEmpty().WithMessage("İlçe kodu boş olamaz")
+                .Length(4).WithMessage("İlçe kodu 4 karakter olmalıdır");
+
+            RuleFor(x => x.ZipCode)
+                .NotEmpty().WithMessage("Posta kodu boş olamaz")
+                .Length(5).WithMessage("Posta kodu 5 karakter olmalıdır");
+
+            RuleFor(x => x.TaxNumber)
+                .Matches(@"^\d{10}$").WithMessage("Geçerli bir vergi numarası giriniz")
+                .When(x => !string.IsNullOrEmpty(x.TaxNumber));
+
+            RuleFor(x => x.TaxDepartment)
+                .NotEmpty().WithMessage("Vergi dairesi boş olamaz")
+                .MaximumLength(100).WithMessage("Vergi dairesi en fazla 100 karakter uzunluğunda olmalıdır")
+                .When(x => !string.IsNullOrEmpty(x.TaxDepartment));
+        }
+    }
 
     internal sealed record UpdateShipperHandler(
         IRepositoryService<Shipper> shipperRepository) : IRequestHandler<UpdateShipperRequest, Result<ShipperDto>>

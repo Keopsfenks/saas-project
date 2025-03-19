@@ -2,6 +2,7 @@
 using Application.Factories.Abstractions;
 using Application.Factories.Interfaces;
 using Application.Factories.Parameters;
+using Application.Factories.Parameters.Requests;
 using Application.Factories.Providers;
 using FluentValidation;
 using MediatR;
@@ -29,11 +30,12 @@ public static class DependencyInjection
         services.AddHttpClient();
 
         services
-           .AddScoped<AProvider<TESTParameterProvider, TESTParameterShipment>,
-                TESTProvider<TESTParameterProvider, TESTParameterShipment>>();
+           .AddScoped<AProvider<TESTRequestProvider>,
+                TESTProvider<TESTRequestProvider>>();
         services
-           .AddScoped<AProvider<MNGParameterProvider, MNGParameterShipment>,
-                MNGProvider<MNGParameterProvider, MNGParameterShipment>>();
+           .AddScoped<AProvider<MNGRequestProvider>,
+                MNGProvider<MNGRequestProvider>>();
+
         return services;
     }
 

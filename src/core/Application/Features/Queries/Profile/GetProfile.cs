@@ -23,7 +23,8 @@ internal sealed record GetProfileHandler(
         if (user == null)
             return (404, "Kullanıcı bulunamadı");
 
-        IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
+        IEnumerable<Session?> sessions
+            = await sessionRepository.FindAsync(x => x.UserId == user.Id, cancellationToken: cancellationToken);
 
         List<TokenDto> tokenDtos = sessions
                                   .OrderBy(cr => cr!.ExpiryTime)

@@ -10,7 +10,7 @@ namespace Application.Dtos
             Id            = product.Id;
             Name          = product.Name;
             Description   = product.Description;
-            UnitOfMeasure = product.UnitOfMeasure;
+            UnitOfMeasure = UnitOfMeasureEnum.FromValue(product.UnitOfMeasure);
             Weight        = product.Weight;
             Stock         = product.Stock;
             Price         = product.Price;

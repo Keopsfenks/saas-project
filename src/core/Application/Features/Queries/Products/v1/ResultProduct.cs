@@ -8,9 +8,14 @@ namespace Application.Features.Queries.Products.v1
 {
     public record ResultProductRequest() : IRequest<Result<List<ProductDto>>>
     {
-        public int     PageSize   { get; set; } = 10;
-        public int     PageNumber { get; set; } = 0;
-        public string? Search     { get; set; } = null;
+        public string? Filter            { get; set; } = null;
+        public int?    Skip              { get; set; } = null;
+        public int?    Top               { get; set; } = null;
+        public string? Expand            { get; set; } = null;
+        public string? OrderBy           { get; set; } = null;
+        public string? ThenBy            { get; set; } = null;
+        public string? OrderByDescending { get; set; } = null;
+        public string? ThenByDescending  { get; set; } = null;
     }
 
 
@@ -19,21 +24,15 @@ namespace Application.Features.Queries.Products.v1
     {
         public async Task<Result<List<ProductDto>>> Handle(ResultProductRequest request, CancellationToken cancellationToken)
         {
-            int     PageSize   = request.PageSize;
-            int     PageNumber = request.PageNumber;
-            string? Search     = request.Search;
+            IEnumerable<Product?> results
+                = await productRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                                  request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                                  request.ThenByDescending, cancellationToken);
 
-            IEnumerable<Product?> products = await productRepository.FindAsync(x => true, cancellationToken);
 
-            List<ProductDto> productsList = products
-                                           .OrderBy(x => x.Name)
-                                           .Where(x => Search == null || x.Name.ToLower()
-                                                                          .Contains(Search.ToLower()))
-                                           .Skip(PageNumber * PageSize)
-                                           .Take(PageSize)
-                                           .Select(x => new ProductDto(x!))
-                                           .ToList();
-            return productsList;
+
+
+            return results.Select(x => new ProductDto(x!)).ToList();
         }
     }
 }

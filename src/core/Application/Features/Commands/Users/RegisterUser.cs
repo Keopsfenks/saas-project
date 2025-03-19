@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Application.Services;
 using Domain.EmailPatterns;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -14,6 +15,37 @@ public sealed record RegisterUserRequest(
 	string email,
 	string password,
 	bool   IsAdmin) : IRequest<Result<string>>;
+
+public sealed class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
+{
+    public RegisterUserRequestValidator()
+    {
+        RuleFor(x => x.name)
+           .NotEmpty().WithMessage("Ad boş olamaz")
+           .MaximumLength(50).WithMessage("Ad en fazla 50 karakter uzunluğunda olmalıdır");
+
+        RuleFor(x => x.surname)
+           .NotEmpty().WithMessage("Soyad boş olamaz")
+           .MaximumLength(50).WithMessage("Soyad en fazla 50 karakter uzunluğunda olmalıdır");
+
+        RuleFor(x => x.email)
+           .NotEmpty().WithMessage("E-posta boş olamaz")
+           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz");
+
+        RuleFor(x => x.password)
+           .NotEmpty().WithMessage("Şifre boş olamaz")
+           .MinimumLength(6).WithMessage("Şifre en az 6 karakter uzunluğunda olmalıdır")
+           .Matches(@"[A-Z]").WithMessage("Şifre en az bir büyük harf içermelidir")
+           .Matches(@"[a-z]").WithMessage("Şifre en az bir küçük harf içermelidir")
+           .Matches(@"[0-9]").WithMessage("Şifre en az bir rakam içermelidir")
+           .Matches(@"[\W_]").WithMessage("Şifre en az bir özel karakter içermelidir"); // Özel karakterler, örneğin: !, @, #, $
+
+        RuleFor(x => x.IsAdmin)
+           .NotNull().WithMessage("Admin durumu belirlenmelidir");
+    }
+}
+
+
 
 internal sealed record RegisterUserHandler(
 	IEncryptionService       encryptionService,

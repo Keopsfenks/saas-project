@@ -1,5 +1,8 @@
 using Domain.Abstractions;
 using Domain.Enums;
+using Domain.Serializers;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Domain.Entities.WorkspaceEntities
 {
@@ -8,8 +11,10 @@ namespace Domain.Entities.WorkspaceEntities
         public string  Name        { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
 
-        public UnitOfMeasureEnum MassUnit     { get; set; } = UnitOfMeasureEnum.Kilogram;
-        public UnitOfMeasureEnum DistanceUnit { get; set; } = UnitOfMeasureEnum.Centimeter;
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<UnitOfMeasureEnum>))]
+        public int MassUnit     { get; set; } = UnitOfMeasureEnum.Kilogram;
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<UnitOfMeasureEnum>))]
+        public int DistanceUnit { get; set; } = UnitOfMeasureEnum.Centimeter;
 
         public decimal Height { get; set; }
         public decimal Length { get; set; }

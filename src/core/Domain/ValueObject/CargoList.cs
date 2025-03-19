@@ -1,4 +1,6 @@
 using Domain.Enums;
+using Domain.Serializers;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.ValueObject
 {
@@ -7,8 +9,11 @@ namespace Domain.ValueObject
         public string  Name        { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
 
-        public UnitOfMeasureEnum MassUnit     { get; set; } = UnitOfMeasureEnum.Kilogram;
-        public UnitOfMeasureEnum DistanceUnit { get; set; } = UnitOfMeasureEnum.Centimeter;
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<UnitOfMeasureEnum>))]
+        public int MassUnit { get; set; } = UnitOfMeasureEnum.Kilogram;
+
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<UnitOfMeasureEnum>))]
+        public int DistanceUnit { get; set; } = UnitOfMeasureEnum.Centimeter;
 
         public decimal Height { get; set; } = 0;
         public decimal Length { get; set; } = 0;

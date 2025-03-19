@@ -19,7 +19,8 @@ internal sealed record DeleteUserHandler(
 		if (user is null)
 			return (404, "Kullanıcı bulunamadı.");
 
-		IEnumerable<Session?> sessions = await sessionRepository.FindAsync(x=>x.UserId == user.Id, cancellationToken);
+        IEnumerable<Session?> sessions
+            = await sessionRepository.FindAsync(x => x.UserId == user.Id, cancellationToken: cancellationToken);
 
 		foreach (var session in sessions) {
 			if (session is null)

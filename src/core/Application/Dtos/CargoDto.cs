@@ -7,16 +7,16 @@ namespace Application.Dtos
     {
         public CargoDto(Cargo cargo)
         {
-            Id = cargo.Id;
-            Name = cargo.Name;
-            Description = cargo.Description;
-            MassUnit = cargo.MassUnit;
-            DistanceUnit = cargo.DistanceUnit;
-            Height = cargo.Height;
-            Length = cargo.Length;
-            Width = cargo.Width;
-            CreatedAt = cargo.CreateAt;
-            UpdatedAt = cargo.UpdateAt;
+            Id           = cargo.Id;
+            Name         = cargo.Name;
+            Description  = cargo.Description;
+            MassUnit     = UnitOfMeasureEnum.FromValue(cargo.MassUnit);
+            DistanceUnit = UnitOfMeasureEnum.FromValue(cargo.DistanceUnit);
+            Height       = cargo.Height;
+            Length       = cargo.Length;
+            Width        = cargo.Width;
+            CreatedAt    = cargo.CreateAt;
+            UpdatedAt    = cargo.UpdateAt;
         }
         public string            Id           { get; set; }
         public string            Name         { get; set; }

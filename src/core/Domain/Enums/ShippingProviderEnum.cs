@@ -1,5 +1,4 @@
 using Ardalis.SmartEnum;
-using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Enums
 {
@@ -30,11 +29,5 @@ namespace Domain.Enums
 
         public static readonly ShippingProviderEnum TEST = new ShippingProviderEnum("Test Kargo", 11);
 
-    }
-
-    public enum TestEnum
-    {
-        [Display(Name = "Test")]
-        TEST = 1
     }
 }

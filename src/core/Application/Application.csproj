@@ -10,6 +10,7 @@
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	  <PackageReference Include="Microsoft.Extensions.Http" />
 	  <PackageReference Include="Newtonsoft.Json" />
+	  <PackageReference Include="System.Linq.Dynamic.Core" />
 	  <PackageReference Include="TS.Result" />
 	</ItemGroup>
 

@@ -55,9 +55,9 @@ public sealed class WorkspaceController(IMediator mediator) : ApiController(medi
         return StatusCode(response.StatusCode, response);
     }
     [HttpGet]
-    public async Task<IActionResult> GetAllWorkspaces()
+    public async Task<IActionResult> GetAllWorkspaces([FromQuery] ResultWorkspaceQuery query)
     {
-        var response = await Mediator.Send(new ResultWorkspaceQuery());
+        var response = await Mediator.Send(query);
 
         if (response.IsSuccessful)
             return Ok(response);

@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -9,6 +10,21 @@ public sealed record AccountVerificationRequest(
     string Email,
     string otp) : IRequest<Result<string>>;
 
+
+
+public sealed class AccountVerificationRequestValidator : AbstractValidator<AccountVerificationRequest>
+{
+    public AccountVerificationRequestValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("E-posta boş olamaz")
+           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz");
+
+        RuleFor(x => x.otp)
+           .NotEmpty().WithMessage("OTP (One-Time Password) boş olamaz")
+           .Matches(@"^\d{6}$").WithMessage("OTP 6 haneli bir sayısal değer olmalıdır");
+    }
+}
 
 internal sealed record AccountVerificationHandler(
     ICacheService cacheService,

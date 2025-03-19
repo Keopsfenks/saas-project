@@ -1,6 +1,6 @@
 using Application.Factories.Abstractions;
 using Application.Factories.Interfaces;
-using Application.Factories.Parameters;
+using Application.Factories.Parameters.Requests;
 using Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,19 +11,16 @@ namespace Application.Factories
         ShippingProviderEnum shippingProviderEnum,
         IServiceProvider     serviceProvider)
     {
-        public IProvider GetProvider()
-        {
-            return shippingProviderEnum switch
-            {
+        public IProvider GetProvider() {
+            return shippingProviderEnum switch {
                 var provider when provider == ShippingProviderEnum.TEST =>
-                    serviceProvider.GetRequiredService<AProvider<TESTParameterProvider, TESTParameterShipment>>(),
+                    serviceProvider.GetRequiredService<AProvider<TESTRequestProvider>>(),
 
                 var provider when provider == ShippingProviderEnum.MNG =>
-                    serviceProvider.GetRequiredService<AProvider<MNGParameterProvider, MNGParameterShipment>>(),
+                    serviceProvider.GetRequiredService<AProvider<MNGRequestProvider>>(),
 
                 _ => throw new ArgumentException($"Desteklenmeyen kargo sağlayıcısı: {shippingProviderEnum}")
             };
-
         }
     }
 }

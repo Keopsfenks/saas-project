@@ -1,5 +1,6 @@
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -7,6 +8,16 @@ namespace Application.Features.Commands.Products.v1
 {
     public sealed record DeleteProductRequest(
         string Id) : IRequest<Result<string>>;
+
+    public sealed class DeleteProductValidator : AbstractValidator<DeleteProductRequest>
+    {
+        public DeleteProductValidator()
+        {
+            RuleFor(x => x.Id)
+               .NotEmpty().WithMessage("Id alanı boş olamaz")
+               .NotNull().WithMessage("Id alanı null olamaz");
+        }
+    }
 
 
     internal sealed record DeleteProductHandler(

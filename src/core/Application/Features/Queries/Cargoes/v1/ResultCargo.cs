@@ -8,9 +8,14 @@ namespace Application.Features.Queries.Cargoes.v1
 {
     public record ResultCargoRequest() : IRequest<Result<List<CargoDto>>>
     {
-        public int     PageSize   { get; set; } = 10;
-        public int     PageNumber { get; set; } = 0;
-        public string? Search     { get; set; } = null;
+        public string? Filter            { get; set; } = null;
+        public int?    Skip              { get; set; } = null;
+        public int?    Top               { get; set; } = null;
+        public string? Expand            { get; set; } = null;
+        public string? OrderBy           { get; set; } = null;
+        public string? ThenBy            { get; set; } = null;
+        public string? OrderByDescending { get; set; } = null;
+        public string? ThenByDescending  { get; set; } = null;
     }
 
 
@@ -19,22 +24,15 @@ namespace Application.Features.Queries.Cargoes.v1
     {
         public async Task<Result<List<CargoDto>>> Handle(ResultCargoRequest request, CancellationToken cancellationToken)
         {
-            int     PageSize   = request.PageSize;
-            int     PageNumber = request.PageNumber;
-            string? Search     = request.Search;
+            IEnumerable<Cargo?> results
+                = await cargoRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                                  request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                                  request.ThenByDescending, cancellationToken);
 
-            IEnumerable<Cargo?> cargoes = await cargoRepository.FindAsync(x => true, cancellationToken);
 
-            List<CargoDto> cargoesList = cargoes
-                                        .OrderBy(x => x.Name)
-                                        .Where(x => Search == null || x.Name.ToLower()
-                                                                       .Contains(Search.ToLower()))
-                                        .Skip(PageNumber * PageSize)
-                                        .Take(PageSize)
-                                        .Select(x => new CargoDto(x!))
-                                        .ToList();
 
-            return cargoesList;
+
+            return results.Select(x => new CargoDto(x!)).ToList();
         }
     }
 }

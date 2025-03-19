@@ -8,9 +8,14 @@ namespace Application.Features.Queries.Providers.v1
 {
     public sealed record ResultProviderRequest() : IRequest<Result<List<ProviderDto<object>>>>
     {
-        public int     PageSize   { get; set; } = 10;
-        public int     PageNumber { get; set; } = 0;
-        public string? Search     { get; set; } = null;
+        public string? Filter            { get; set; } = null;
+        public int?    Skip              { get; set; } = null;
+        public int?    Top               { get; set; } = null;
+        public string? Expand            { get; set; } = null;
+        public string? OrderBy           { get; set; } = null;
+        public string? ThenBy            { get; set; } = null;
+        public string? OrderByDescending { get; set; } = null;
+        public string? ThenByDescending  { get; set; } = null;
     }
 
     internal sealed record ResultProviderHandler(
@@ -18,22 +23,15 @@ namespace Application.Features.Queries.Providers.v1
     {
         public async Task<Result<List<ProviderDto<object>>>> Handle(ResultProviderRequest request, CancellationToken cancellationToken)
         {
-            int PageSize   = request.PageSize;
-            int PageNumber = request.PageNumber;
-            string? Search = request.Search;
+            IEnumerable<Provider?> results
+                = await providerRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                                  request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                                  request.ThenByDescending, cancellationToken);
 
-            IEnumerable<Provider?> providers = await providerRepository.FindAsync(x => true, cancellationToken);
 
-            List<ProviderDto<object>> providersList = providers
-                                             .OrderBy(x => x.ShippingProvider.Name)
-                                             .Where(x => Search == null || x.ShippingProvider.Name.ToLower()
-                                                                            .Contains(Search.ToLower()))
-                                             .Skip(PageNumber * PageSize)
-                                             .Take(PageSize)
-                                             .Select(x => new ProviderDto<object>(x!))
-                                             .ToList();
 
-            return providersList;
+
+            return results.Select(x => new ProviderDto<object>(x!)).ToList();
         }
     }
 }

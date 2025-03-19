@@ -8,9 +8,14 @@ namespace Application.Features.Queries.Workspaces.v1;
 
 public sealed record ResultWorkspaceQuery() : IRequest<Result<List<WorkspaceDto?>>>
 {
-    public int PageSize { get; set; } = 10;
-    public int PageNumber { get; set; } = 0;
-    public string? Search { get; set; } = null;
+    public string? Filter            { get; set; } = null;
+    public int?    Skip              { get; set; } = null;
+    public int?    Top               { get; set; } = null;
+    public string? Expand            { get; set; } = null;
+    public string? OrderBy           { get; set; } = null;
+    public string? ThenBy            { get; set; } = null;
+    public string? OrderByDescending { get; set; } = null;
+    public string? ThenByDescending  { get; set; } = null;
 }
 
 
@@ -19,20 +24,14 @@ internal sealed record ResultWorkspace(
 {
     public async Task<Result<List<WorkspaceDto?>>> Handle(ResultWorkspaceQuery request, CancellationToken cancellationToken)
     {
-        int pageSize = request.PageSize;
-        int pageNumber = request.PageNumber;
-        string? search = request.Search;
+        IEnumerable<Workspace?> results
+            = await workspaceRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                              request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                              request.ThenByDescending, cancellationToken);
 
-        IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => true, cancellationToken);
 
-        List<WorkspaceDto?> workspacesList = workspaces
-                                            .OrderBy(x => x.Title)
-                                            .Where(x => search == null || x.Title.ToLower().Contains(search.ToLower()))
-                                            .Skip(pageNumber * pageSize)
-                                            .Take(pageSize)
-                                            .Select(x => new WorkspaceDto(x!)
-                                            ).ToList();
 
-        return workspacesList;
+
+        return results.Select(x => new WorkspaceDto(x!)).ToList()!;
     }
 }

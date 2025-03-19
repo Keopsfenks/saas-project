@@ -14,7 +14,7 @@ namespace Application.Dtos
             Username             = provider.Username;
             Password             = provider.Password;
             Parameters           = ParametersFactory.Deserialize<T>(provider.Parameters);
-            ShippingProviderCode = provider.ShippingProvider;
+            ShippingProviderCode = ShippingProviderEnum.FromValue(provider.ShippingProvider);
             CreatedAt            = provider.CreateAt;
             UpdatedAt            = provider.UpdateAt;
         }
@@ -24,6 +24,7 @@ namespace Application.Dtos
         public string               Password             { get; set; }
         public T?                   Parameters           { get; set; }
         public ShippingProviderEnum ShippingProviderCode { get; set; }
+
         public DateTimeOffset       CreatedAt            { get; set; }
         public DateTimeOffset?      UpdatedAt            { get; set; }
     }

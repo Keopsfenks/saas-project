@@ -8,9 +8,14 @@ namespace Application.Features.Queries.Customers.v1
 {
     public record ResultCustomerRequest() : IRequest<Result<List<CustomerDto>>>
     {
-        public int     PageSize   { get; set; } = 10;
-        public int     PageNumber { get; set; } = 0;
-        public string? Search     { get; set; } = null;
+        public string? Filter            { get; set; } = null;
+        public int?    Skip              { get; set; } = null;
+        public int?    Top               { get; set; } = null;
+        public string? Expand            { get; set; } = null;
+        public string? OrderBy           { get; set; } = null;
+        public string? ThenBy            { get; set; } = null;
+        public string? OrderByDescending { get; set; } = null;
+        public string? ThenByDescending  { get; set; } = null;
     }
 
 
@@ -19,22 +24,15 @@ namespace Application.Features.Queries.Customers.v1
     {
         public async Task<Result<List<CustomerDto>>> Handle(ResultCustomerRequest request, CancellationToken cancellationToken)
         {
-            int     PageSize   = request.PageSize;
-            int     PageNumber = request.PageNumber;
-            string? Search     = request.Search;
+            IEnumerable<Customer?> results
+                = await customerRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                                  request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                                  request.ThenByDescending, cancellationToken);
 
-            IEnumerable<Customer?> customers = await customerRepository.FindAsync(x => true, cancellationToken);
 
-            List<CustomerDto> customersList = customers
-                                             .OrderBy(x => x.Name)
-                                             .Where(x => Search == null || x.Name.ToLower()
-                                                                            .Contains(Search.ToLower()))
-                                             .Skip(PageNumber * PageSize)
-                                             .Take(PageSize)
-                                             .Select(x => new CustomerDto(x!))
-                                             .ToList();
 
-            return customersList;
+
+            return results.Select(x => new CustomerDto(x!)).ToList();
         }
     }
 }

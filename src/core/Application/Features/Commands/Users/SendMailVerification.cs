@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.EmailPatterns;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -8,6 +9,16 @@ namespace Application.Features.Commands.Users;
 
 public sealed record SendMailVerificationRequest(
     string Email) : IRequest<Result<string>>;
+
+public sealed class SendMailVerificationValidator : AbstractValidator<SendMailVerificationRequest>
+{
+    public SendMailVerificationValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("E-posta boş olamaz")
+           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz");
+    }
+}
 
 
 internal sealed record SendMailVerificationHandler(

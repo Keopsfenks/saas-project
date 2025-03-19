@@ -1,63 +1,39 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using FluentValidation.TestHelper;
 using MediatR;
 using System.Reflection;
 
 namespace Application.Behaviors;
 
-public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
-    : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : class, IRequest<TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        if (!validators.Any())
-            return await next();
-
-        var context = new ValidationContext<TRequest>(request);
-
-        var errorDictionary = validators
-                             .Select(s => s.Validate(context))
-                             .SelectMany(s => s.Errors)
-                             .Where(s => s != null)
-                             .GroupBy(
-                                  s => s.PropertyName,
-                                  s => s.ErrorMessage, (propertyName, errorMessage) => new
-                                  {
-                                      Key = propertyName,
-                                      Values = errorMessage.Distinct().ToArray()
-                                  })
-                             .ToDictionary(s => s.Key, s => s.Values[0]);
-
-        if (errorDictionary.Any())
-        {
-            var errors = errorDictionary.Select(s => new ValidationFailure
-            {
-                PropertyName = s.Key,
-                ErrorCode = s.Value
-            });
-            throw new ValidationException(errors);
-        }
-
-        return await next();
+        _validators = validators;
     }
 
-    private static Dictionary<string, string> ValidateEnums(object request)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var errors = new Dictionary<string, string>();
-
-        foreach (PropertyInfo property in request.GetType().GetProperties())
+        if (_validators.Any())
         {
-            if (!property.PropertyType.IsEnum)
-                continue;
+            var context = new ValidationContext<TRequest>(request);
 
-            var value = property.GetValue(request);
-            if (value == null || !Enum.IsDefined(property.PropertyType, value))
-            {
-                errors[property.Name] = $"Geçersiz {property.PropertyType.Name} değeri: {value}";
-            }
+            var validationResults = await Task.WhenAll(
+                _validators.Select(v =>
+                                       v.ValidateAsync(context, cancellationToken)));
+
+            var failures = validationResults
+                          .Where(r => r.Errors.Any())
+                          .SelectMany(r => r.Errors)
+                          .ToList();
+
+            if (failures.Any())
+                throw new ValidationException(failures);
         }
-
-        return errors;
+        return await next();
     }
 }

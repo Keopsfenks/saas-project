@@ -1,14 +1,12 @@
 using Application.Factories.Abstractions;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
-using System.Net.Http.Headers;
 using TS.Result;
 
 namespace Application.Factories.Providers
 {
-    public sealed class TESTProvider<TProvider, TShipment> : AProvider<TProvider, TShipment>
+    public sealed class TESTProvider<TProvider> : AProvider<TProvider>
         where TProvider : class
-        where TShipment : class
     {
         public TESTProvider(IRepositoryService<Provider> providerRepository,
                             IRepositoryService<Shipment> shipmentRepository,
@@ -31,9 +29,5 @@ namespace Application.Factories.Providers
             throw new NotImplementedException();
         }
 
-        public override Task<Result<T>> RefreshTokenAsync<T>(Provider provider, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

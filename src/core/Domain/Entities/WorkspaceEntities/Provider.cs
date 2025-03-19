@@ -1,5 +1,6 @@
 using Domain.Abstractions;
 using Domain.Enums;
+using Domain.Serializers;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -9,10 +10,11 @@ namespace Domain.Entities.WorkspaceEntities
     {
         public string               Username         { get; set; } = string.Empty;
         public string               Password         { get; set; } = string.Empty;
-        public ShippingProviderEnum ShippingProvider { get; set; } = ShippingProviderEnum.None;
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<ShippingProviderEnum>))]
+        public int ShippingProvider { get; set; } = ShippingProviderEnum.None;
 
-        public BsonDocument? Parameters { get; set; } = null;
-        public BsonDocument? Session    { get; set; } = null;
+        public BsonDocument? Parameters { get; set; }
+        public BsonDocument? Session    { get; set; }
 
     }
 }

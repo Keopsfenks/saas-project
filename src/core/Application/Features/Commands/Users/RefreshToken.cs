@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Services;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -8,6 +9,17 @@ namespace Application.Features.Commands.Users;
 
 public sealed record RefreshTokenRequest(
     string RefreshToken) : IRequest<Result<string>>;
+
+
+public sealed class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
+{
+    public RefreshTokenRequestValidator()
+    {
+        RuleFor(x => x.RefreshToken)
+           .NotEmpty().WithMessage("Token boş olamaz")
+           .NotNull().WithMessage("Token boş olamaz");
+    }
+}
 
 
 
@@ -32,7 +44,8 @@ internal sealed record RefreshTokenHandler(
             = await sessionRepository.FindOneAsync(x => x.RefreshToken ==
                                                         encryptionService.Encrypt(request.RefreshToken), cancellationToken);
 
-        IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
+        IEnumerable<Workspace?> workspaces
+            = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken: cancellationToken);
 
         if (session == null)
             return (404, "Oturum bulunamadı.");

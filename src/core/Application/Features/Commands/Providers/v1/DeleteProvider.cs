@@ -14,7 +14,6 @@ namespace Application.Features.Commands.Providers.v1
 
 
     internal sealed record DeleteProviderHandler(
-        IRepositoryService<Provider> providerRepository,
         IServiceProvider             serviceProvider) : IRequestHandler<DeleteProviderRequest, Result<string>>
     {
         public async Task<Result<string>> Handle(DeleteProviderRequest request, CancellationToken cancellationToken)

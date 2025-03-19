@@ -1,5 +1,6 @@
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -7,6 +8,17 @@ namespace Application.Features.Commands.Cargoes.v1
 {
     public sealed record DeleteCargoRequest(
         string Id) : IRequest<Result<string>>;
+
+
+    public sealed class DeleteCargoValidator : AbstractValidator<DeleteCargoRequest>
+    {
+        public DeleteCargoValidator()
+        {
+            RuleFor(x => x.Id)
+               .NotEmpty().WithMessage("Kargo idsi boş olamaz")
+               .NotNull().WithMessage("Kargo idsi boş olamaz");
+        }
+    }
 
 
     internal sealed record DeleteCargoHandler(

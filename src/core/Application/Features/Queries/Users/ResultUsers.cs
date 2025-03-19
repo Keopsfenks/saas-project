@@ -6,34 +6,29 @@ using TS.Result;
 namespace Application.Features.Queries.Users;
 
 public sealed record ResultUsersQuery : IRequest<Result<List<User>>> {
-	public int     PageSize   { get; set; } = 10;
-	public int     PageNumber { get; set; } = 0;
-	public string? Search     { get; set; } = null;
+    public string? Filter            { get; set; } = null;
+    public int?    Skip              { get; set; } = null;
+    public int?    Top               { get; set; } = null;
+    public string? Expand            { get; set; } = null;
+    public string? OrderBy           { get; set; } = null;
+    public string? ThenBy            { get; set; } = null;
+    public string? OrderByDescending { get; set; } = null;
+    public string? ThenByDescending  { get; set; } = null;
 };
 
 
 internal sealed record ResultUsersHandler(
 	IRepositoryService<User> userRepository,
-	IEncryptionService encryptionService) : IRequestHandler<ResultUsersQuery, Result<List<User>>> {
+    IEncryptionService       encryptionService) : IRequestHandler<ResultUsersQuery, Result<List<User>>> {
 	public async Task<Result<List<User>>> Handle(ResultUsersQuery request, CancellationToken cancellationToken) {
-		int     pageSize   = request.PageSize;
-		int     pageNumber = request.PageNumber;
-		string? search     = request.Search;
-
-		IEnumerable<User?> users = await userRepository.FindAsync(x => true, cancellationToken);
-
-		List<User> usersList = users
-							  .OrderBy(x => x.Name)
-							  .Where(x => search == null || x.Name.ToLower().Contains(search.ToLower()))
-							  .Skip(pageNumber * pageSize)
-							  .Take(pageSize)
-							  .Select(x => {
-								   x!.Password = encryptionService.Decrypt(x.Password);
-								   return x;
-							   }).ToList();
+        IEnumerable<User?> results
+            = await userRepository.FindAsync(x => true, request.Filter, request.Skip, request.Top, request.Expand,
+                                              request.OrderBy, request.ThenBy, request.OrderByDescending,
+                                              request.ThenByDescending, cancellationToken);
 
 
 
-		return usersList;
-	}
+
+        return results.ToList()!;
+    }
 }

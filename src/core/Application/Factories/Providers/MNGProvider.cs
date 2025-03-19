@@ -1,5 +1,4 @@
 using Application.Factories.Abstractions;
-using Application.Factories.Parameters;
 using Application.Factories.Parameters.Requests;
 using Application.Factories.Parameters.Response;
 using Application.Services;
@@ -10,9 +9,8 @@ using TS.Result;
 
 namespace Application.Factories.Providers
 {
-    public sealed class MNGProvider<TProvider, TShipment> : AProvider<TProvider, TShipment>
+    public sealed class MNGProvider<TProvider> : AProvider<TProvider>
         where TProvider : class
-        where TShipment : class
     {
 
         public MNGProvider(IRepositoryService<Provider> providerRepository,
@@ -30,13 +28,13 @@ namespace Application.Factories.Providers
         {
             HttpClient client = HttpClientFactory.CreateClient();
 
-            MNGParameterProvider? mngParameterProvider
-                = ParametersFactory.Deserialize<MNGParameterProvider>(provider.Parameters);
+            MNGRequestProvider? mngParameterProvider
+                = ParametersFactory.Deserialize<MNGRequestProvider>(provider.Parameters);
 
             if (mngParameterProvider is null)
                 throw new ArgumentNullException(nameof(mngParameterProvider));
 
-            client.BaseAddress = new Uri("https://api.mngkargo.com.tr/mngapi/api/");
+            client.BaseAddress = new Uri("https://testapi.mngkargo.com.tr/mngapi/api/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token ?? "");
             client.DefaultRequestHeaders.Add("X-IBM-Client-Id",     mngParameterProvider.ClientId);
@@ -78,9 +76,5 @@ namespace Application.Factories.Providers
             return "İşlem başarılı";
         }
 
-        public override Task<Result<T>> RefreshTokenAsync<T>(Provider provider, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

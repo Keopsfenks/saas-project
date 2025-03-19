@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -8,6 +9,16 @@ namespace Application.Features.Commands.Users;
 public sealed record LogoutUserRequest(
 	string Token) : IRequest<Result<string>>;
 
+
+public sealed class LogoutUserRequestValidator : AbstractValidator<LogoutUserRequest>
+{
+    public LogoutUserRequestValidator()
+    {
+        RuleFor(x => x.Token)
+           .NotEmpty().WithMessage("Token boş olamaz")
+           .NotNull().WithMessage("Token boş olamaz");
+    }
+}
 
 
 internal sealed record LogoutUserHandler(

@@ -29,7 +29,8 @@ public sealed record ChangeWorkspaceHandler(
 			return (401, "Kullanıcı bulunamadı");
 
 
-		IEnumerable<Workspace?> workspaces = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken);
+        IEnumerable<Workspace?> workspaces
+            = await workspaceRepository.FindAsync(x => x.UserId == user.Id, cancellationToken: cancellationToken);
 
 		List<Workspace?>        enumerable = workspaces.ToList();
 		Workspace? workspace  = enumerable.FirstOrDefault(x => x.Id == request.Id);

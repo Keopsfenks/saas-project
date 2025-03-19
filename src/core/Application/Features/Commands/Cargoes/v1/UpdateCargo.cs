@@ -1,6 +1,7 @@
 using Application.Dtos;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
+using FluentValidation;
 using MediatR;
 using TS.Result;
 
@@ -15,6 +16,27 @@ namespace Application.Features.Commands.Cargoes.v1
         decimal? Height,
         decimal? Lenght,
         decimal? Width) : IRequest<Result<CargoDto>>;
+
+
+    public sealed class UpdateCargoValidator : AbstractValidator<UpdateCargoRequest>
+    {
+        public UpdateCargoValidator()
+        {
+            RuleFor(x => x.Id)
+               .NotEmpty().WithMessage("Kargo idsi boş olamaz")
+               .NotNull().WithMessage("Kargo idsi boş olamaz");
+
+            RuleFor(x => x.Name)
+               .NotEmpty().WithMessage("Kargo ismi boş olamaz")
+               .MinimumLength(3).WithMessage("Kargo ismi en az 3 karakter uzunluğunda olmalıdır")
+               .MaximumLength(30).WithMessage("Kargo ismi en fazla 30 karakter uzunluğunda olmalıdır")
+               .When(x => x.Name is not null);
+
+            RuleFor(x => x.Description)
+               .MaximumLength(100).WithMessage("Kargo açıklaması en fazla 100 karakter uzunluğunda olmalıdır")
+               .When(x => x.Description is not null);
+        }
+    }
 
 
     internal sealed record UpdateCargoHandler(
