@@ -14,24 +14,6 @@ namespace Application.Features.Commands.Providers.v1
 
         object? Parameters) : IRequest<Result<object>>;
 
-    public sealed class CreateProviderRequestValidator : AbstractValidator<CreateProviderRequest>
-    {
-        public CreateProviderRequestValidator()
-        {
-            RuleFor(x => x.Username)
-               .NotEmpty().WithMessage("Kullanıcı adı boş olamaz")
-               .MinimumLength(3).WithMessage("Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır")
-               .MaximumLength(50).WithMessage("Kullanıcı adı en fazla 50 karakter uzunluğunda olmalıdır");
-
-            RuleFor(x => x.Password)
-               .NotEmpty().WithMessage("Şifre boş olamaz");
-
-            RuleFor(x => x.ShippingProviderCode)
-               .GreaterThan(0).WithMessage("Nakliye sağlayıcı kodu sıfırdan büyük olmalıdır");
-        }
-    }
-
-
     internal sealed record CreateProviderHandler(
         IServiceProvider             serviceProvider) : IRequestHandler<CreateProviderRequest, Result<object>>
     {

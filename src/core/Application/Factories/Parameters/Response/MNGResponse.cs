@@ -11,4 +11,12 @@ namespace Application.Factories.Parameters.Response
         public string JwtExpireDate          { get; set; } = JwtExpireDate;
         public string RefreshTokenExpireDate { get; set; } = RefreshTokenExpireDate;
     }
+
+    public sealed record MNGResponseOrder(
+        string OrderInvoiceId,
+        string OrderInvoiceDetailId,
+        string ShipperBranchCode);
+
+
+    public sealed record MNGResponseCancelOrder();
 }

@@ -14,21 +14,6 @@ public sealed record LoginUserRequest(
 	) : IRequest<Result<TokenDto>> {
 }
 
-public sealed class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
-{
-    public LoginUserRequestValidator()
-    {
-        RuleFor(x => x.email)
-           .NotEmpty().WithMessage("E-posta boş olamaz")
-           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz");
-
-        RuleFor(x => x.password)
-           .NotEmpty().WithMessage("Şifre boş olamaz")
-           .MinimumLength(6).WithMessage("Şifre en az 6 karakter uzunluğunda olmalıdır");
-    }
-}
-
-
 internal sealed record LoginUserHandler(
 	IEncryptionService            encryptionService,
 	IRepositoryService<User>      userRepository,

@@ -1,13 +1,24 @@
-using Domain.Entities.WorkspaceEntities;
+using Domain.Abstractions;
 using Domain.Enums;
 using Domain.Serializers;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Domain.ValueObject
+namespace Domain.Entities.WorkspaceEntities
 {
-    public sealed class CargoList
+
+    public sealed class Volume
     {
-        public string? Id          { get; set; }
+        public decimal Height { get; set; }
+        public decimal Width  { get; set; }
+        public decimal Lenght { get; set; }
+
+        public decimal Desi   => (Width * Lenght * Height) / 3000;
+        public decimal Weight { get; set; }
+    }
+
+
+    public sealed class Package : WorkspaceEntity
+    {
         public string  Name        { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
 
@@ -16,7 +27,6 @@ namespace Domain.ValueObject
         [BsonSerializer(typeof(SmartEnumBsonSerializer<UnitOfMeasureEnum>))]
         public int DistanceUnit => UnitOfMeasureEnum.Centimeter;
 
-        public Volume      Volume { get; set; } = new();
-        public List<Item>? Items  { get; set; } = null;
+        public Volume Volume { get; set; } = new();
     }
 }

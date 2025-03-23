@@ -14,31 +14,6 @@ namespace Application.Features.Commands.Providers.v1
         string? Password,
         object? Parameters) : IRequest<Result<object>>;
 
-
-    public sealed class UpdateProviderRequestValidator : AbstractValidator<UpdateProviderRequest>
-    {
-        public UpdateProviderRequestValidator()
-        {
-            RuleFor(x => x.Id)
-               .NotEmpty().WithMessage("Sağlayıcı idsi boş olamaz")
-               .NotNull().WithMessage("sağlayıcı idsi boş olamaz");
-
-            RuleFor(x => x.Username)
-               .NotEmpty().WithMessage("Kullanıcı adı boş olamaz")
-               .MinimumLength(3).WithMessage("Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır")
-               .MaximumLength(50).WithMessage("Kullanıcı adı en fazla 50 karakter uzunluğunda olmalıdır")
-               .When(x => !string.IsNullOrEmpty(x.Username));
-
-            RuleFor(x => x.Password)
-               .NotEmpty().WithMessage("Şifre boş olamaz")
-               .When(x => !string.IsNullOrEmpty(x.Password));
-
-            RuleFor(x => x.ShippingProviderCode)
-               .GreaterThan(0).WithMessage("Nakliye sağlayıcı kodu sıfırdan büyük olmalıdır")
-               .When(x => x.ShippingProviderCode > 0);
-        }
-    }
-
     internal sealed record UpdateProviderHandler(
         IServiceProvider             serviceProvider) : IRequestHandler<UpdateProviderRequest, Result<object>>
     {

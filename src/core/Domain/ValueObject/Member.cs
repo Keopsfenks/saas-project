@@ -1,23 +1,17 @@
+using Domain.Entities.WorkspaceEntities;
+
 namespace Domain.ValueObject
 {
     public sealed class Member
     {
-        public string Name     { get; set; } = string.Empty;
-        public string Surname  { get; set; } = string.Empty;
-        public string FullName => $"{Name} {Surname}";
-        public string Email    { get; set; } = string.Empty;
-        public string Phone    { get; set; } = string.Empty;
-
-        public string CountryCode  { get; set; } = string.Empty;
-        public string Address      { get; set; } = string.Empty;
-        public string City         { get; set; } = string.Empty;
-        public string CityCode     { get; set; } = string.Empty;
-        public string District     { get; set; } = string.Empty;
-        public string DistrictCode { get; set; } = string.Empty;
-
-        public string ZipCode { get; set; } = string.Empty;
-
-        public string? TaxNumber     { get; set; } = null;
-        public string? TaxDepartment { get; set; } = null;
+        public string?   Id            { get; set; }
+        public string    Name          { get; set; } = string.Empty;
+        public string    Surname       { get; set; } = string.Empty;
+        public string    Email         { get; set; } = string.Empty;
+        public string    Phone         { get; set; } = string.Empty;
+        public Residence Residence     { get; set; } = new Residence();
+        public string?   TaxNumber     { get; set; }
+        public string?   TaxDepartment { get; set; }
+        public bool      IsSender      { get; set; } = false;
     }
 }

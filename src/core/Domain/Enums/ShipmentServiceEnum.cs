@@ -8,6 +8,7 @@ namespace Domain.Enums
 
 
         public static readonly ShipmentServiceEnum Standard = new ShipmentServiceEnum("Standart Teslimat", 1);
-        public static readonly ShipmentServiceEnum IntraDay = new ShipmentServiceEnum("Gün içi Teslimat", 2);
+        public static readonly ShipmentServiceEnum IntraDay = new ShipmentServiceEnum("Gün içi Teslimat",  2);
+        public static readonly ShipmentServiceEnum Evening  = new ShipmentServiceEnum("Akşam Teslimat",    3);
     }
 }

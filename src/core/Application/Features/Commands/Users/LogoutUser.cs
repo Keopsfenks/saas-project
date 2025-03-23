@@ -10,16 +10,6 @@ public sealed record LogoutUserRequest(
 	string Token) : IRequest<Result<string>>;
 
 
-public sealed class LogoutUserRequestValidator : AbstractValidator<LogoutUserRequest>
-{
-    public LogoutUserRequestValidator()
-    {
-        RuleFor(x => x.Token)
-           .NotEmpty().WithMessage("Token boş olamaz")
-           .NotNull().WithMessage("Token boş olamaz");
-    }
-}
-
 
 internal sealed record LogoutUserHandler(
     IRepositoryService<User> userRepository,

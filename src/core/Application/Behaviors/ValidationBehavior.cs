@@ -20,6 +20,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     {
         if (_validators.Any())
         {
+            return await next();
             var context = new ValidationContext<TRequest>(request);
 
             var validationResults = await Task.WhenAll(

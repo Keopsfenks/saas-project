@@ -15,32 +15,6 @@ public sealed record UpdateProfileRequest(
 	string? Email    = null,
 	string? Password = null) : IRequest<Result<UserDto>>;
 
-
-public sealed class UpdateProfileRequestValidator : AbstractValidator<UpdateProfileRequest>
-{
-    public UpdateProfileRequestValidator()
-    {
-        RuleFor(x => x.Name)
-           .MaximumLength(50).WithMessage("Ad en fazla 50 karakter uzunluğunda olmalıdır")
-           .When(x => !string.IsNullOrEmpty(x.Name));
-
-        RuleFor(x => x.Surname)
-           .MaximumLength(50).WithMessage("Soyad en fazla 50 karakter uzunluğunda olmalıdır")
-           .When(x => !string.IsNullOrEmpty(x.Surname));
-
-        RuleFor(x => x.Email)
-           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz")
-           .When(x => !string.IsNullOrEmpty(x.Email));
-
-        RuleFor(x => x.Password)
-           .MinimumLength(6).WithMessage("Şifre en az 6 karakter uzunluğunda olmalıdır")
-           .When(x => !string.IsNullOrEmpty(x.Password));
-
-        RuleFor(x => x.SessionClose)
-           .NotNull().WithMessage("Oturum kapama durumu belirtilmelidir");
-    }
-}
-
 internal sealed record UpdateProfileHandler(
 	IRepositoryService<User>    userRepository,
 	IRepositoryService<Session> sessionRepository,

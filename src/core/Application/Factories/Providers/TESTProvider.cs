@@ -1,4 +1,6 @@
+using Application.Dtos;
 using Application.Factories.Abstractions;
+using Application.Features.Commands.Orders.v1;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using TS.Result;
@@ -29,5 +31,14 @@ namespace Application.Factories.Providers
             throw new NotImplementedException();
         }
 
+        public override Task<Result<ShipmentDto>> CreateOrderAsync(CreateOrderRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<Result<ShipmentDto>> CancelOrderAsync(CancelOrderRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

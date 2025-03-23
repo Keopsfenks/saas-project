@@ -1,8 +1,7 @@
 using Application.Dtos;
 using Application.Factories.Interfaces;
-using Application.Features.Commands.Orders;
+using Application.Features.Commands.Orders.v1;
 using Application.Features.Commands.Providers.v1;
-using Application.Features.Commands.Shipments.v1;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
@@ -96,81 +95,16 @@ namespace Application.Factories.Abstractions
             return ("Kargo sağlayıcısı başarıyla silindi." as T)!;
         }
 
-        public async Task<Result<T>> CreateShipmentAsync<T>(CreateShipmentRequest request,
-                                                            CancellationToken     cancellationToken = default)
-            where T : class
-        {
-            Provider? provider
-                = await ProviderRepository.FindOneAsync(x => x.Id == request.ProviderId, cancellationToken);
-
-            if (provider is null)
-                return (404, "Kargo sağlayıcısı bulunamadı.");
-
-            Shipment shipment = new()
-                                {
-                                    Provider   = provider,
-                                    ProviderId = provider.Id,
-                                    Order      = request.Order,
-                                    Cargo      = request.Cargo,
-                                    Shipper    = request.Shipper,
-                                    Recipient  = request.Recipient,
-                                    Status = CargoStatusEnum.FromValue(
-                                        request.StatusCode ?? CargoStatusEnum.DRAFT.Value),
-                                };
-
-
-            ShipmentDto shipmentDto = new(shipment);
-
-            await ShipmentRepository.InsertOneAsync(shipment, cancellationToken);
-
-            return (shipmentDto as T)!;
-        }
-
-        public async Task<Result<T>> UpdateShipmentAsync<T>(UpdateShipmentRequest request,
-                                                            CancellationToken     cancellationToken = default)
-            where T : class
-        {
-            Shipment? shipment = await ShipmentRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
-
-            if (shipment is null)
-                return (404, "Gönderi bulunamadı.");
-
-            shipment.Order     = request.Order     ?? shipment.Order;
-            shipment.Cargo     = request.Cargo     ?? shipment.Cargo;
-            shipment.Shipper   = request.Shipper   ?? shipment.Shipper;
-            shipment.Recipient = request.Recipient ?? shipment.Recipient;
-
-
-            ShipmentDto shipmentDto = new(shipment);
-
-            await ShipmentRepository.ReplaceOneAsync(x => x.Id == shipment.Id, shipment, cancellationToken);
-
-            return (shipmentDto as T)!;
-        }
-
-        public async Task<Result<T>> DeleteShipmentAsync<T>(DeleteShipmentRequest request,
-                                                            CancellationToken     cancellationToken = default)
-            where T : class
-        {
-            bool isShipmentExist = await ShipmentRepository.ExistsAsync(x => x.Id == request.Id, cancellationToken);
-
-            if (!isShipmentExist)
-                return (404, "Gönderi bulunamadı.");
-
-
-            await ShipmentRepository.SoftDeleteOneAsync(x => x.Id == request.Id, cancellationToken);
-
-            return ("Gönderi başarıyla silindi." as T)!;
-        }
-
-        public Task<Result<T>> CreateOrderAsync<T>(CreateOrderRequest request, CancellationToken cancellationToken = default) where T : class
-        {
-            throw new NotImplementedException();
-        }
 
         public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
                                                                    CancellationToken cancellationToken = default);
 
+
+        public abstract Task<Result<ShipmentDto>> CreateOrderAsync(CreateOrderRequest request,
+                                                                CancellationToken  cancellationToken = default);
+
+        public abstract Task<Result<ShipmentDto>> CancelOrderAsync(CancelOrderRequest request,
+                                                              CancellationToken  cancellationToken = default);
 
     }
 }
