@@ -28,26 +28,8 @@ public static class DependencyInjection {
 
 		services.ConfigureOptions<JwtTokenOptionsSetup>();
 
-        services.AddAuthentication(options =>
-                 {
-                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                     options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
-                 })
-                .AddCookie(options =>
-                 {
-                     options.ExpireTimeSpan    = TimeSpan.FromMinutes(60);
-                     options.SlidingExpiration = true;
-                     options.LoginPath         = "/user/login";
-                 }).AddJwtBearer();
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("JwtAuth", policy =>
-            {
-                policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                policy.RequireAuthenticatedUser();
-            });
-        });
+
 
 		services.Configure<DatabaseSettings>(configuration.GetSection("DatabaseSettings"));
 		services.Configure<SecuritySettings>(configuration.GetSection("SecuritySettings"));

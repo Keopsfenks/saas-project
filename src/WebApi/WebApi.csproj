@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\core\Application\Application.csproj" />
 		<ProjectReference Include="..\external\Infrastructure\Infrastructure.csproj" />
+		<ProjectReference Include="..\external\ServiceDefaults\ServiceDefaults.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

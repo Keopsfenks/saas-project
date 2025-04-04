@@ -1,22 +1,34 @@
+using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 using TS.Result;
 
 namespace WebApi.Middleware;
 
-public sealed class ExceptionHandlingMiddleware(
-    RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+public sealed class ExceptionHandlingMiddleware : IExceptionHandler
 {
-
-    public async Task Invoke(HttpContext context)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        try
+        Result<string> err;
+
+        httpContext.Response.ContentType = "application/json";
+        httpContext.Response.StatusCode  = 500;
+
+        if (exception.GetType() == typeof(ValidationException))
         {
-            await next(context);
+            httpContext.Response.StatusCode = 403;
+
+            err = Result<string>.Failure(
+                403, ((ValidationException)exception).Errors.Select(s => s.PropertyName).ToList());
+
+            await httpContext.Response.WriteAsJsonAsync(err, cancellationToken: cancellationToken);
+
+            return true;
         }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Beklenmeyen bir hata oluştu.");
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(Result<string>.Failure(ex.Message));
-        }
+
+        err = Result<string>.Failure(exception.Message);
+
+        await httpContext.Response.WriteAsJsonAsync(err, cancellationToken: cancellationToken);
+
+        return true;
     }
 }
