@@ -1,7 +1,7 @@
-using Application.Features.Commands.Orders.v1;
 using Domain.Enums;
 using MongoDB.Bson;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 
 namespace Application.Factories
@@ -30,6 +30,21 @@ namespace Application.Factories
             var json = bsonDocument.ToJson();
 
             return JsonSerializer.Deserialize<T>(json);
+        }
+
+        public static string CreateId(string prefix)
+        {
+
+            string id = $"{prefix}_{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
+
+            return id;
+        }
+
+        public static int CreateNumber()
+        {
+            Random random = new Random();
+
+            return random.Next(100000, 1000000);
         }
 
         public static bool Validate<T>(BsonDocument? bsonDocument) where T : class
@@ -73,6 +88,7 @@ namespace Application.Factories
 
             return false;
         }
+
 
     }
 }

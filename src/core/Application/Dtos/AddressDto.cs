@@ -16,8 +16,6 @@ namespace Application.Dtos
             TaxNumber     = address.TaxNumber;
             TaxDepartment = address.TaxDepartment;
 
-            IsSender      = address.IsSender;
-
             CreatedAt = address.CreateAt;
             UpdatedAt = address.UpdateAt;
         }
@@ -33,8 +31,6 @@ namespace Application.Dtos
 
         public string? TaxNumber     { get; set; }
         public string? TaxDepartment { get; set; }
-
-        public bool IsSender { get; set; } = false;
 
         public DateTimeOffset  CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }

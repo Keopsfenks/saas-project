@@ -37,7 +37,6 @@ namespace Application.Features.Commands.Addresses.v1
             address.Residence     = request.Residence     ?? address.Residence;
             address.TaxNumber     = request.TaxNumber     ?? address.TaxNumber;
             address.TaxDepartment = request.TaxDepartment ?? address.TaxDepartment;
-            address.IsSender      = request.IsSender      ?? address.IsSender;
 
             await addressRepository.ReplaceOneAsync(x => x.Id == request.Id, address, cancellationToken);
 

@@ -32,7 +32,5 @@ namespace Domain.Entities.WorkspaceEntities
         public Residence Residence     { get; set; } = new();
         public string?   TaxNumber     { get; set; }
         public string?   TaxDepartment { get; set; }
-
-        public bool IsSender { get; set; } = false;
     }
 }

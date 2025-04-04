@@ -12,7 +12,7 @@ namespace Domain.Entities.WorkspaceEntities
         public decimal Width  { get; set; }
         public decimal Lenght { get; set; }
 
-        public decimal Desi   => (Width * Lenght * Height) / 3000;
+        public decimal Desi   { get; set; }
         public decimal Weight { get; set; }
     }
 

@@ -1,7 +1,6 @@
 using Application.Dtos;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
-using Domain.ValueObject;
 using MediatR;
 using TS.Result;
 
@@ -14,8 +13,7 @@ namespace Application.Features.Commands.Addresses.v1
         string    Phone,
         Residence Residence,
         string?   TaxNumber,
-        string?   TaxDepartment,
-        bool      IsSender) : IRequest<Result<AddressDto>>;
+        string?   TaxDepartment) : IRequest<Result<AddressDto>>;
 
 
 
@@ -39,7 +37,6 @@ namespace Application.Features.Commands.Addresses.v1
                                   Residence     = request.Residence,
                                   TaxNumber     = request.TaxNumber,
                                   TaxDepartment = request.TaxDepartment,
-                                  IsSender      = request.IsSender
                               };
 
             await addressRepository.InsertOneAsync(address, cancellationToken);

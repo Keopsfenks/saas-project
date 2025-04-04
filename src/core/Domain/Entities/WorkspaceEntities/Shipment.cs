@@ -2,30 +2,30 @@ using Domain.Abstractions;
 using Domain.Enums;
 using Domain.Serializers;
 using Domain.ValueObject;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Entities.WorkspaceEntities
 {
     public sealed class Shipment : WorkspaceEntity
     {
-        public string  Name        { get; set; } = string.Empty;
-        public string? Description { get; set; } = null;
+        [BsonSerializer(typeof(SmartEnumBsonSerializer<ShipmentTypeEnum>))]
+        public int Type { get; set; } = ShipmentTypeEnum.Order;
 
         [BsonSerializer(typeof(SmartEnumBsonSerializer<CargoStatusEnum>))]
-        public int Status { get; set; } = CargoStatusEnum.DRAFT;
+        public int Status { get;          set; } = CargoStatusEnum.DRAFT;
+        public string  CargoId     { get; set; } = string.Empty;
+        public int     InvoiceId   { get; set; }
+        public int     WaybillId   { get; set; }
+        public string  Name        { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
-        public Order           Order     { get; set; } = new Order();
-        public List<CargoList> Cargo     { get; set; } = new List<CargoList>();
-        public Member          Recipient { get; set; } = new Member();
-        public Member          Shipper   { get; set; } = new Member();
+        public Dispatch  Dispatch  { get; set; } = new Dispatch();
+        public CargoList Cargo     { get; set; } = new CargoList();
+        public Member    Recipient { get; set; } = new Member();
+        public Member    Shipper   { get; set; } = new Member();
 
-        public BsonDocument? OrderDetail { get; set; } = new BsonDocument();
-
-        [BsonSerializer(typeof(SmartEnumBsonSerializer<ShippingProviderEnum>))]
-        public int ShippingProviderCode { get; set; } = ShippingProviderEnum.None;
-        public string ProviderId { get; set; } = string.Empty;
-        [BsonIgnore]
-        public Provider Provider   { get; set; } = new Provider();
+        public string                     ProviderId   { get; set; } = string.Empty;
+        public Provider                   Provider     { get; set; } = new Provider();
+        public Dictionary<string, string> ProviderInfo { get; set; } = new Dictionary<string, string>();
     }
 }

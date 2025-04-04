@@ -30,11 +30,12 @@ public static class DependencyInjection
         services.AddHttpClient();
 
         services
-           .AddScoped<AProvider<TESTRequestProvider>,
-                TESTProvider<TESTRequestProvider>>();
+           .AddScoped<AProvider<MNGRequest.Provider>,
+                MNGProvider<MNGRequest.Provider>>();
+
         services
-           .AddScoped<AProvider<MNGRequestProvider>,
-                MNGProvider<MNGRequestProvider>>();
+           .AddScoped<AProvider<YURTICIRequest.Provider>,
+                YURTICIProvider<YURTICIRequest.Provider>>();
 
         return services;
     }

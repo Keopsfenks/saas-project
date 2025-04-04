@@ -14,6 +14,6 @@ namespace Domain.Enums
         public static readonly CargoStatusEnum DELIVERED        = new CargoStatusEnum("Teslim Edildi",         6);
         public static readonly CargoStatusEnum RETURNED         = new CargoStatusEnum("İade Edildi",           7);
         public static readonly CargoStatusEnum DAMAGED          = new CargoStatusEnum("Hatalı / Hasarlı",      8);
-        public static readonly CargoStatusEnum CANCELED         = new CargoStatusEnum("İptal Edildi",          9);
+        public static readonly CargoStatusEnum CANCELLED        = new CargoStatusEnum("İptal Edildi",          9);
     }
 }

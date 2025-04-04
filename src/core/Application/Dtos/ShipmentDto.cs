@@ -1,3 +1,4 @@
+using Application.Factories;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
 using Domain.ValueObject;
@@ -12,14 +13,12 @@ namespace Application.Dtos
             Name                 = shipment.Name;
             Description          = shipment.Description;
             Status               = CargoStatusEnum.FromValue(shipment.Status);
-            Order                = shipment.Order;
+            Dispatch                = shipment.Dispatch;
             Cargo                = shipment.Cargo;
             Recipient            = shipment.Recipient;
-            Shipper              = shipment.Shipper;
-            ShippingProviderCode = ShippingProviderEnum.FromValue(shipment.ShippingProviderCode);
             ProviderId           = shipment.ProviderId;
-            OrderDetail          = shipment.OrderDetail;
-
+            ProviderInfo         = shipment.ProviderInfo;
+            ShippingProviderCode = ShippingProviderEnum.FromValue(shipment.Provider.ShippingProvider);
 
             CreatedAt            = shipment.CreateAt;
             UpdatedAt            = shipment.UpdateAt;
@@ -30,15 +29,14 @@ namespace Application.Dtos
         public string? Description { get; set; }
 
         public CargoStatusEnum Status      { get; set; }
-        public object?          OrderDetail { get; set; }
 
-        public Order           Order     { get; set; }
-        public List<CargoList> Cargo     { get; set; }
-        public Member          Recipient { get; set; }
-        public Member          Shipper   { get; set; }
+        public Dispatch  Dispatch  { get; set; }
+        public CargoList Cargo     { get; set; }
+        public Member    Recipient { get; set; }
 
-        public ShippingProviderEnum ShippingProviderCode { get; set; }
-        public string?              ProviderId           { get; set; }
+        public ShippingProviderEnum       ShippingProviderCode { get; set; }
+        public string?                    ProviderId           { get; set; }
+        public Dictionary<string, string> ProviderInfo         { get; set; }
 
 
         public DateTimeOffset  CreatedAt { get; set; }

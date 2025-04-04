@@ -1,121 +1,171 @@
+using Application.Features.Commands.Shipments.v1;
 using Domain.Entities.WorkspaceEntities;
-using Domain.ValueObject;
+using Domain.Enums;
 
 namespace Application.Factories.Parameters.Requests
 {
-    public sealed record MNGRequestProvider(
-        string ClientId,
-        string ClientSecret);
-    
-    public sealed record MNGRequestToken(
-        string CustomerNumber,
-        string Password,
-        int    identityType = 1);
-
-    public sealed class MNGRequestOrderCargo
+    public static class MNGRequest
     {
-        public MNGRequestOrderCargo(string refId, CargoList cargo)
+        public sealed record Provider(
+            string ClientId,
+            string ClientSecret);
+
+        public sealed record APIToken(
+            string CustomerNumber,
+            string Password,
+            int    identityType = 1);
+
+
+        public sealed class APICreateOrder
         {
-            barcode = $"{refId} - {cargo.Id}";
-            desi    = Convert.ToInt32(cargo.Volume.Desi);
-            kg      = Convert.ToInt32(cargo.Volume.Weight);
-            content = cargo.Name;
+            public record Order(
+                string   referenceId,
+                string   barcode,
+                string   billOfLandingId,
+                int      isCOD,
+                decimal? codAmount,
+                int      shipmentServiceType,
+                int      packagingType,
+                string   content,
+                int      smsPreference1,
+                int      smsPreference2,
+                int      smsPreference3,
+                int      paymentType,
+                int      deliveryType,
+                string   description,
+                string   marketPlaceShortCode,
+                string   marketPlaceSaleCode,
+                string   pudoId);
+
+            public record Cargo(
+                string barcode,
+                int    desi,
+                int    kg,
+                string content);
+
+            public record OrderMember
+            {
+                public string? customerId           { get; init; }
+                public string  refCustomerId        { get; init; }
+                public int     cityCode             { get; init; }
+                public int     districtCode         { get; init; }
+                public string  address              { get; init; }
+                public string  bussinessPhoneNumber { get; init; }
+                public string  email                { get; init; }
+                public string  taxOffice            { get; init; }
+                public string  taxNumber            { get; init; }
+                public string  fullName             { get; init; }
+                public string  homePhoneNumber      { get; init; }
+                public string  mobilePhoneNumber    { get; init; }
+            };
+
+            public Order       order          { get; set; }
+            public Cargo orderPieceList { get; set; }
+            public OrderMember recipient      { get; set; }
+
+            public APICreateOrder(CreateShipmentRequest request)
+            {
+                int cod, package, payment;
+
+                cod = CodEnum.FromValue(request.Dispatch.IsCod) switch
+                {
+                    var codEnum when codEnum == CodEnum.COD     => 1,
+                    var codEnum when codEnum == CodEnum.NOT_COD => 0,
+                    _                                           => 0
+                };
+                package = PackagingTypeEnum.FromValue(request.Dispatch.PackagingType) switch
+                {
+                    var packagingTypeEnum when packagingTypeEnum == PackagingTypeEnum.File         => 1,
+                    var packagingTypeEnum when packagingTypeEnum == PackagingTypeEnum.Mini_Package => 2,
+                    var packagingTypeEnum when packagingTypeEnum == PackagingTypeEnum.Package      => 3,
+                    var packagingTypeEnum when packagingTypeEnum == PackagingTypeEnum.Box          => 4,
+                    _                                                                              => 4
+                };
+                payment = PaymentTypeEnum.FromValue(request.Dispatch.PaymentType) switch
+                {
+                    var paymentTypeEnum when paymentTypeEnum == PaymentTypeEnum.Sender     => 1,
+                    var paymentTypeEnum when paymentTypeEnum == PaymentTypeEnum.Receiver   => 2,
+                    var paymentTypeEnum when paymentTypeEnum == PaymentTypeEnum.ThirdParty => 3,
+                    _                                                                      => 1
+                };
+                string refId     = ParametersFactory.CreateId("SHIP");
+                string waybillId = ParametersFactory.CreateNumber().ToString();
+
+                order = new Order(refId, refId, waybillId, cod, request.Dispatch.CodPrice, 1, package,
+                                  $"{refId} numaralı sipariş", 1, 1, 1, payment, 1,
+                                  $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} tarihinde oluşturulan sipariş", "", "", "");
+                orderPieceList = new Cargo($"{refId}: {request.Cargo.Id}", Convert.ToInt32(request.Cargo.Volume.Desi),
+                                           Convert.ToInt32(request.Cargo.Volume.Weight),
+                                           request.Cargo.Name);
+                recipient = new()
+                            {
+                                customerId           = null,
+                                refCustomerId        = request.Recipient.Id ?? "",
+                                cityCode             = request.Recipient.Residence.City.Code,
+                                districtCode         = request.Recipient.Residence.District.Code,
+                                address              = request.Recipient.Residence.Address,
+                                bussinessPhoneNumber = request.Recipient.Phone,
+                                email                = request.Recipient.Email,
+                                taxOffice            = request.Recipient.TaxDepartment ?? "",
+                                taxNumber            = request.Recipient.TaxNumber     ?? "",
+                                fullName             = $"{request.Recipient.Name} {request.Recipient.Surname}",
+                                homePhoneNumber      = request.Recipient.Phone,
+                                mobilePhoneNumber    = request.Recipient.Phone
+                            };
+
+            }
+
+        }
+        public sealed class APIUpdateOrder
+        {
+            public record Cargo(
+                string barcode,
+                int    desi,
+                int    kg,
+                string content);
+
+            public  string      referenceId     { get; set; }
+            public  int         isCOD           { get; set; }
+            public  int         codAmount       { get; set; }
+            private Cargo orderPieceList  { get; set; }
+
+            public APIUpdateOrder(Shipment shipment)
+            {
+                int cod = CodEnum.FromValue(shipment.Dispatch.IsCod) switch
+                {
+                    var codEnum when codEnum == CodEnum.COD     => 1,
+                    var codEnum when codEnum == CodEnum.NOT_COD => 0,
+                    _                                           => 0
+                };
+
+                referenceId     = shipment.CargoId;
+                isCOD           = cod;
+                codAmount       = Convert.ToInt32(shipment.Dispatch.CodPrice);
+                orderPieceList = new Cargo($"{shipment.CargoId}: {shipment.Cargo.Id}", Convert.ToInt32(shipment.Cargo.Volume.Desi),
+                                           Convert.ToInt32(shipment.Cargo.Volume.Weight),
+                                           shipment.Cargo.Name);
+            }
+
         }
 
-        public string barcode { get; set; }
-        public int    desi    { get; set; }
-        public int    kg      { get; set; }
-        public string content { get; set; }
-    }
-
-    public sealed class MNGRequestOrderMember
-    {
-        public MNGRequestOrderMember(Member member)
+        public sealed class APICreateBarcode
         {
-            customerId           = 00000000;
-            refCustomerId        = member.Id ?? "";
-            cityCode             = member.Residence.City.Code;
-            districtCode         = member.Residence.District.Code;
-            address              = member.Residence.Address;
-            email                = member.Email;
-            fullName             = $"{member.Name} {member.Surname}";
-            homePhoneNumber      = member.Phone;
-            mobilePhoneNumber    = member.Phone;
-            bussinessPhoneNumber = member.Phone;
-            taxOffice            = member.TaxDepartment ?? "";
-            taxNumber            = member.TaxNumber ?? "";
-        }
+            public record Cargo(
+                string barcode,
+                int    desi,
+                int    kg,
+                string content);
 
-        public int    customerId           { get; set; }
-        public string refCustomerId        { get; set; }
-        public int    cityCode             { get; set; }
-        public int    districtCode         { get; set; }
-        public string address              { get; set; }
-        public string bussinessPhoneNumber { get; set; }
-        public string email                { get; set; }
-        public string taxOffice            { get; set; }
-        public string taxNumber            { get; set; }
-        public string fullName             { get; set; }
-        public string homePhoneNumber      { get; set; }
-        public string mobilePhoneNumber    { get; set; }
+            public string      referenceId    { get; set; }
+            public Cargo orderPieceList { get; set; }
+
+            public APICreateBarcode(Shipment shipment)
+            {
+                referenceId    = shipment.CargoId;
+                orderPieceList = new Cargo($"{shipment.CargoId}: {shipment.Cargo.Id}", Convert.ToInt32(shipment.Cargo.Volume.Desi),
+                                           Convert.ToInt32(shipment.Cargo.Volume.Weight),
+                                           shipment.Cargo.Name);
+            }
+        };
     }
-
-    public sealed class MNGRequestOrder
-    {
-        public MNGRequestOrder(int Cod, decimal price, int package, int payment)
-        {
-            string refId = "SIP_" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
-
-            referenceId     = refId;
-            barcode         = refId;
-            billOfLandingId = refId;
-
-            isCod               = Cod;
-            codAmount           = price;
-            shipmentServiceType = 1;
-            packagingType       = package;
-            content             = $"{refId} numaralı sipariş";
-
-            smsPreference1 = 1;
-            smsPreference2 = 1;
-            smsPreference3 = 1;
-
-            paymentType  = payment;
-            deliveryType = 1;
-            description  = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} tarihinde oluşturulan sipariş";
-
-            marketPlaceShortCode = "";
-            marketPlaceSaleCode  = "";
-            pudoId               = "";
-        }
-
-        public string   referenceId          { get; set; }
-        public string   barcode              { get; set; }
-        public string   billOfLandingId      { get; set; }
-        public int      isCod                { get; set; }
-        public decimal? codAmount            { get; set; }
-        public int      shipmentServiceType  { get; set; }
-        public int      packagingType        { get; set; }
-        public string   content              { get; set; }
-        public int      smsPreference1       { get; set; }
-        public int      smsPreference2       { get; set; }
-        public int      smsPreference3       { get; set; }
-        public int      paymentType          { get; set; }
-        public int      deliveryType         { get; set; }
-        public string   description          { get; set; }
-        public string   marketPlaceShortCode { get; set; }
-        public string   marketPlaceSaleCode  { get; set; }
-        public string   pudoId               { get; set; }
-    }
-
-    public sealed record MNGRequestFullOrder(
-        MNGRequestOrder            order,
-        List<MNGRequestOrderCargo> orderPieceList,
-        MNGRequestOrderMember      shipper,
-        MNGRequestOrderMember      recipient);
-
-
-    public sealed record MNGRequestCancelOrder(
-        string  ReferenceId,
-        string? Description);
 }

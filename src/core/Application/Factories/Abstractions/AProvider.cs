@@ -1,7 +1,7 @@
 using Application.Dtos;
 using Application.Factories.Interfaces;
-using Application.Features.Commands.Orders.v1;
 using Application.Features.Commands.Providers.v1;
+using Application.Features.Commands.Shipments.v1;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
@@ -25,9 +25,13 @@ namespace Application.Factories.Abstractions
         protected readonly IHttpClientFactory           HttpClientFactory  = httpClientFactory;
         protected readonly IEncryptionService           EncryptionService  = encryptionService;
 
-        public abstract HttpClient GetClient(Provider provider, string? apiVersion = null);
+        public abstract Task<HttpClient> GetClient(Provider          provider, string? apiVersion = null,
+                                                   CancellationToken cancellationToken = default,
+                                                   bool              isRefresh         = true,
+                                                   string?           api               = null);
 
-        public async Task<Result<T>> CreateProviderAsync<T>(CreateProviderRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<T>> CreateProviderAsync<T>(CreateProviderRequest request,
+                                                            CancellationToken     cancellationToken = default)
             where T : class
         {
             bool isProviderExist
@@ -49,8 +53,6 @@ namespace Application.Factories.Abstractions
 
             ProviderDto<TProvider> providerDto = new(provider);
 
-            if (providerDto.ShippingProviderCode != ShippingProviderEnum.TEST)
-                await CreateConnectionAsync(provider, cancellationToken);
 
             provider.Password = EncryptionService.Encrypt(request.Password);
 
@@ -59,7 +61,8 @@ namespace Application.Factories.Abstractions
             return (providerDto as T)!;
         }
 
-        public async Task<Result<T>> UpdateProviderAsync<T>(UpdateProviderRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<T>> UpdateProviderAsync<T>(UpdateProviderRequest request,
+                                                            CancellationToken     cancellationToken = default)
             where T : class
         {
             Provider? provider = await ProviderRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
@@ -68,9 +71,9 @@ namespace Application.Factories.Abstractions
                 return (404, "Kargo sağlayıcısı bulunamadı.");
 
 
-            provider.Username    = request.Username ?? provider.Username;
-            provider.Password    = request.Password ?? provider.Password;
-            provider.Parameters    = ParametersFactory.Serialize(request.Parameters) ?? provider.Parameters;
+            provider.Username   = request.Username                                ?? provider.Username;
+            provider.Password   = request.Password                                ?? provider.Password;
+            provider.Parameters = ParametersFactory.Serialize(request.Parameters) ?? provider.Parameters;
 
             ProviderDto<TProvider> providerDto = new(provider);
 
@@ -82,7 +85,8 @@ namespace Application.Factories.Abstractions
             return (providerDto as T)!;
         }
 
-        public async Task<Result<T>> DeleteProviderAsync<T>(DeleteProviderRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<T>> DeleteProviderAsync<T>(DeleteProviderRequest request,
+                                                            CancellationToken     cancellationToken = default)
             where T : class
         {
             bool isProviderExist = await ProviderRepository.ExistsAsync(x => x.Id == request.Id, cancellationToken);
@@ -96,15 +100,64 @@ namespace Application.Factories.Abstractions
         }
 
 
-        public abstract Task<Result<string>> CreateConnectionAsync(Provider          provider,
-                                                                   CancellationToken cancellationToken = default);
+        public virtual async Task<Result<ShipmentDto>> CreateShipmentAsync(CreateShipmentRequest request,
+                                                                           CancellationToken     cancellationToken = default)
+        {
+            Provider? provider
+                = await ProviderRepository.FindOneAsync(x => x.Id == request.ProviderId, cancellationToken);
 
+            if (provider is null)
+                return (404, "Kargo sağlayıcısı bulunamadı.");
 
-        public abstract Task<Result<ShipmentDto>> CreateOrderAsync(CreateOrderRequest request,
-                                                                CancellationToken  cancellationToken = default);
+            string refId     = ParametersFactory.CreateId("SHIP");
+            int    waybillId = ParametersFactory.CreateNumber();
+            int    invoiceId = ParametersFactory.CreateNumber();
 
-        public abstract Task<Result<ShipmentDto>> CancelOrderAsync(CancelOrderRequest request,
-                                                              CancellationToken  cancellationToken = default);
+            Shipment shipment = new()
+                                {
+                                    Provider    = provider,
+                                    Status      = CargoStatusEnum.DRAFT,
+                                    Name        = $"{refId}: gönderi numaralı kargo.",
+                                    Description = request.Description,
+                                    Dispatch    = request.Dispatch,
+                                    Cargo       = request.Cargo,
+                                    Recipient   = request.Recipient,
+                                    Type        = request.Type,
+                                    ProviderId  = request.ProviderId,
+                                    CargoId     = refId,
+                                    WaybillId   = waybillId,
+                                    InvoiceId   = invoiceId,
+                                };
 
+            await ShipmentRepository.InsertOneAsync(shipment, cancellationToken);
+
+            return (new ShipmentDto(shipment));
+        }
+
+        public abstract Task<Result<ShipmentDto>> UpdateShipmentAsync(UpdateShipmentRequest request,
+                                                                      CancellationToken cancellationToken = default);
+
+        public abstract Task<Result<ShipmentDto>> CancelShipmentAsync(CancelShipmentRequest request,
+                                                                      CancellationToken cancellationToken = default);
+
+        public async Task<Result<string>> DeleteShipmentAsync(DeleteShipmentRequest request,
+                                                              CancellationToken     cancellationToken = default)
+        {
+
+            Shipment? shipment = await ShipmentRepository.FindOneAsync(x => x.Id == request.ShipmentId, cancellationToken);
+
+            if (shipment is null)
+                return (404, "Gönderi bulunamadı.");
+
+            if (shipment.Status != CargoStatusEnum.CANCELLED)
+                return (409, $"Gönderi silinemez. Gönderi durumu: {CargoStatusEnum.FromValue(shipment.Status).Name}");
+
+            await ShipmentRepository.SoftDeleteOneAsync(x => x.Id == request.ShipmentId, cancellationToken);
+
+            return ("Gönderi başarıyla silindi.");
+        }
+
+        public abstract Task<Result<ShipmentDto>> ConfirmShipmentAsync(ConfirmShipmentRequest request,
+                                                                       CancellationToken cancellationToken = default);
     }
 }

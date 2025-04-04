@@ -2,11 +2,12 @@ using Application.Dtos;
 using Application.Factories.Abstractions;
 using Application.Factories.Parameters.Requests;
 using Application.Factories.Parameters.Response;
-using Application.Features.Commands.Orders.v1;
+using Application.Features.Commands.Shipments.v1;
 using Application.Services;
 using Domain.Entities.WorkspaceEntities;
 using Domain.Enums;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.Net.Http.Headers;
 using TS.Result;
 
@@ -27,25 +28,34 @@ namespace Application.Factories.Providers
         {
         }
 
-        public override HttpClient GetClient(Provider provider, string? apiVersion = null)
+        public override async Task<HttpClient> GetClient(Provider provider, string? apiVersion = null, CancellationToken cancellationToken = default, bool isRefresh = true, string? api = null)
         {
             HttpClient client = HttpClientFactory.CreateClient();
 
-            MNGRequestProvider? mngParameterProvider
-                = ParametersFactory.Deserialize<MNGRequestProvider>(provider.Parameters);
+            MNGRequest.Provider? mngParameterProvider
+                = ParametersFactory.Deserialize<MNGRequest.Provider>(provider.Parameters);
 
-            MNGResponseToken? mngResponseToken
-                = ParametersFactory.Deserialize<MNGResponseToken>(provider.Session);
+            MNGResponse.APIToken? mngResponseToken
+                = ParametersFactory.Deserialize<MNGResponse.APIToken>(provider.Session);
 
-
-            if (mngParameterProvider is null)
-                throw new ArgumentNullException(nameof(mngParameterProvider));
+            if (isRefresh)
+            {
+                if (mngResponseToken is not null &&
+                    DateTime.TryParseExact(mngResponseToken.JwtExpireDate, "dd.MM.yyyy HH:mm:ss",
+                                           CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime expireDate) &&
+                    expireDate < DateTime.Now)
+                {
+                    await CreateConnectionAsync(provider, cancellationToken);
+                    mngResponseToken = ParametersFactory.Deserialize<MNGResponse.APIToken>(provider.Session);
+                }
+            }
 
             client.BaseAddress = new Uri("https://testapi.mngkargo.com.tr/mngapi/api/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", EncryptionService.Decrypt(mngResponseToken!.Jwt) ?? "");
-            client.DefaultRequestHeaders.Add("X-IBM-Client-Id",     mngParameterProvider.ClientId);
-            client.DefaultRequestHeaders.Add("X-IBM-Client-Secret", mngParameterProvider.ClientSecret);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer", mngResponseToken is null ? "" : $"{EncryptionService.Decrypt(mngResponseToken.Jwt)}");
+            client.DefaultRequestHeaders.Add("X-IBM-Client-Id",     mngParameterProvider?.ClientId);
+            client.DefaultRequestHeaders.Add("X-IBM-Client-Secret", mngParameterProvider?.ClientSecret);
 
             if (!string.IsNullOrEmpty(apiVersion))
                 client.DefaultRequestHeaders.Add("x-api-version", apiVersion);
@@ -53,11 +63,11 @@ namespace Application.Factories.Providers
             return client;
         }
 
-        public override async Task<Result<string>> CreateConnectionAsync(Provider provider, CancellationToken cancellationToken = default)
+        public async Task<Result<string>> CreateConnectionAsync(Provider provider, CancellationToken cancellationToken = default)
         {
-            HttpClient client = GetClient(provider);
+            HttpClient client = await GetClient(provider, cancellationToken: cancellationToken, isRefresh: false);
 
-            MNGRequestToken request = new(provider.Username, provider.Password);
+            MNGRequest.APIToken request = new(provider.Username, EncryptionService.Decrypt(provider.Password));
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
 
@@ -68,11 +78,12 @@ namespace Application.Factories.Providers
 
             string contentResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            MNGResponseToken? mngResponse = JsonConvert.DeserializeObject<MNGResponseToken>(contentResponse);
+            MNGResponse.APIToken? mngResponse = JsonConvert.DeserializeObject<MNGResponse.APIToken>(contentResponse);
 
             if (mngResponse is null)
                 return (500, "Beklenmeyen bir hata oluştu.");
 
+            token                    = mngResponse.Jwt;
             mngResponse.Jwt          = EncryptionService.Encrypt(mngResponse.Jwt);
             mngResponse.RefreshToken = EncryptionService.Encrypt(mngResponse.RefreshToken);
 
@@ -83,7 +94,7 @@ namespace Application.Factories.Providers
             return "İşlem başarılı";
         }
 
-        public override async Task<Result<ShipmentDto>> CreateOrderAsync(CreateOrderRequest request, CancellationToken cancellationToken = default)
+        public override async Task<Result<ShipmentDto>> CreateShipmentAsync(CreateShipmentRequest request, CancellationToken cancellationToken = default)
         {
             Provider? provider
                 = await ProviderRepository.FindOneAsync(x => x.Id == request.ProviderId, cancellationToken);
@@ -91,108 +102,145 @@ namespace Application.Factories.Providers
             if (provider is null)
                 return (404, "Kargo sağlayıcısı bulunamadı.");
 
-            await CreateConnectionAsync(provider, cancellationToken);
+            MNGRequest.APICreateOrder order = new(request);
 
-            int cod;
-            int package;
-            int payment;
+            HttpClient client = await GetClient(provider, cancellationToken: cancellationToken);
 
-            if (request.Order.IsCod == CodEnum.COD)
-                cod = 1;
-            else
-                cod = 0;
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
 
-            if (request.Order.PackagingType == PackagingTypeEnum.File)
-                package = 1;
-            else if (request.Order.PackagingType == PackagingTypeEnum.Package)
-                package = 3;
-            else
-                package = 4;
-
-            if (request.Order.PaymentType == PaymentTypeEnum.Sender)
-                payment = 1;
-            else if (request.Order.PaymentType == PaymentTypeEnum.Receiver)
-                payment = 2;
-            else
-                payment = 3;
-
-            MNGRequestOrder            order  = new(cod, cod == 0 ? 0 : request.Order.CodPrice, package, payment);
-            List<MNGRequestOrderCargo> cargos = new();
-            foreach (var cargoList in request.Cargo)
-            {
-                MNGRequestOrderCargo cargo = new(order.referenceId, cargoList);
-                cargos.Add(cargo);
-            }
-            MNGRequestOrderMember shipper   = new(request.Shipper);
-            MNGRequestOrderMember recipient = new(request.Recipient);
-            MNGRequestFullOrder fullOrder = new(order, cargos, shipper, recipient);
-
-
-            object     orderTest = JsonConvert.SerializeObject(fullOrder);
-            HttpClient client    = GetClient(provider);
-
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(fullOrder), System.Text.Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync("createDetailedOrder", content, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-                return (response.StatusCode.GetHashCode(), response.ReasonPhrase);
+            HttpResponseMessage response = await client.PostAsync("standardcmdapi/createOrder", content, cancellationToken);
 
             string contentResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            MNGResponseOrder? mngResponse = JsonConvert.DeserializeObject<MNGResponseOrder>(contentResponse);
+            if (!response.IsSuccessStatusCode)
+                return (response.StatusCode.GetHashCode(),
+                        $"MNG Kargo Hatası: {response.Content.ReadAsStringAsync(cancellationToken).Result}");
+
+            MNGResponse.APICreateOrder? mngResponse = JsonConvert.DeserializeObject<List<MNGResponse.APICreateOrder>>(contentResponse)!.FirstOrDefault();
 
             if (mngResponse is null)
                 return (500, "Beklenmeyen bir hata oluştu.");
 
             Shipment shipment = new()
                                 {
-                                    Name = order.referenceId,
-                                    Description
-                                        = $"MNG Kargo {mngResponse.OrderInvoiceId} - {mngResponse.OrderInvoiceDetailId} fatura numaralı kargo",
-                                    Order                = request.Order,
-                                    Cargo                = request.Cargo,
-                                    Status               = CargoStatusEnum.SEND_TO_PROVIDER,
-                                    Recipient            = request.Recipient,
-                                    Shipper              = request.Shipper,
-                                    ShippingProviderCode = ShippingProviderEnum.MNG,
-                                    ProviderId           = provider.Id,
-                                    OrderDetail          = ParametersFactory.Serialize(mngResponse),
-                                    Provider             = provider
+                                    Name        = $"{order.order.referenceId}: gönderi numaralı kargo",
+                                    CargoId     = order.order.referenceId,
+                                    WaybillId   = Convert.ToInt32(order.order.billOfLandingId),
+                                    Type        = request.Type,
+                                    Description = request.Description,
+                                    Dispatch    = request.Dispatch,
+                                    Cargo       = request.Cargo,
+                                    Status      = CargoStatusEnum.DRAFT,
+                                    Recipient   = request.Recipient,
+                                    ProviderId  = provider.Id,
+                                    Provider    = provider,
+                                    ProviderInfo =
+                                    {
+                                        { "orderInvoiceId", mngResponse.orderInvoiceId },
+                                        { "orderInvoiceDetailId", mngResponse.orderInvoiceDetailId },
+                                        { "shipperBranchCode", mngResponse.shipperBranchCode }
+                                    },
                                 };
 
             await ShipmentRepository.InsertOneAsync(shipment, cancellationToken);
+            return new ShipmentDto(shipment);
+        }
+
+        public override async Task<Result<ShipmentDto>> UpdateShipmentAsync(UpdateShipmentRequest request, CancellationToken cancellationToken = default)
+        {
+            Shipment? shipment
+                = await ShipmentRepository.FindOneAsync(x => x.Id == request.ShipmentId, cancellationToken);
+
+            if (shipment is null)
+                return (404, "Gönderi Bulanamadı");
+
+
+            shipment.Dispatch = request.Dispatch ?? shipment.Dispatch;
+            shipment.Cargo    = request.Cargo ?? shipment.Cargo;
+
+
+            HttpClient client = await GetClient(shipment.Provider, cancellationToken: cancellationToken);
+
+            MNGRequest.APIUpdateOrder order = new(shipment);
+
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PutAsync("standardcmdapi/updateorder", content, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+                return (response.StatusCode.GetHashCode(),
+                        $"MNG Kargo Hatası: {response.Content.ReadAsStringAsync(cancellationToken).Result}");
+
+
+            if (shipment.Status != CargoStatusEnum.DRAFT)
+            {
+                //DOLDUR
+            }
+
+            await ShipmentRepository.ReplaceOneAsync(x => x.Id == shipment.Id, shipment, cancellationToken);
+            return new ShipmentDto(shipment);
+        }
+
+        public override async Task<Result<ShipmentDto>> CancelShipmentAsync(CancelShipmentRequest request, CancellationToken cancellationToken = default)
+        {
+            Shipment? shipment
+                = await ShipmentRepository.FindOneAsync(x => x.Id == request.ShipmentId, cancellationToken);
+
+            if (shipment is null)
+                return (404, "Gönderi Bulanamadı");
+
+            HttpClient client = await GetClient(shipment.Provider, cancellationToken: cancellationToken);
+
+            HttpResponseMessage response
+                = await client.PutAsync($"standardcmdapi/cancelorder/{shipment.CargoId}", null, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+                return (response.StatusCode.GetHashCode(),
+                        $"MNG Kargo Hatası: {response.Content.ReadAsStringAsync(cancellationToken).Result}");
+
+            if (shipment.Status != CargoStatusEnum.DRAFT)
+            {
+                //DOLDUR
+            }
+
+            shipment.Status = CargoStatusEnum.CANCELLED;
+
+            await ShipmentRepository.ReplaceOneAsync(x => x.Id == shipment.Id, shipment, cancellationToken);
 
             return new ShipmentDto(shipment);
         }
 
-        public override async Task<Result<ShipmentDto>> CancelOrderAsync(CancelOrderRequest request, CancellationToken cancellationToken = default)
+        public override async Task<Result<ShipmentDto>> ConfirmShipmentAsync(ConfirmShipmentRequest request, CancellationToken cancellationToken = default)
         {
-            Shipment? shipment = await ShipmentRepository.FindOneAsync(x => x.Id == request.Id, cancellationToken);
+            Shipment? shipment
+                = await ShipmentRepository.FindOneAsync(x => x.Id == request.ShipmentId, cancellationToken);
 
             if (shipment is null)
-                return (404, "Kargo bulunamadı.");
+                return (404, "Gönderi Bulanamadı.");
 
+            HttpClient client = await GetClient(shipment.Provider, cancellationToken: cancellationToken);
 
-            HttpClient client = GetClient(shipment.Provider);
-
-            MNGRequestCancelOrder cancelOrder = new(shipment.Name, "Kargo iptal edildi.");
-
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(cancelOrder), System.Text.Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync("cancelOrderDelivery", content, cancellationToken);
-
+            MNGRequest.APICreateBarcode order = new(shipment);
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response
+                = await client.PostAsync("barcodecmdapi/createbarcode", content, cancellationToken);
             if (!response.IsSuccessStatusCode)
-                return (response.StatusCode.GetHashCode(), response.ReasonPhrase);
+                return (response.StatusCode.GetHashCode(),
+                        $"MNG Kargo Hatası: {response.Content.ReadAsStringAsync(cancellationToken).Result}");
 
             string contentResponse = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            MNGResponseCancelOrder? mngResponse = JsonConvert.DeserializeObject<MNGResponseCancelOrder>(contentResponse);
+            MNGResponse.APICreateBarcode? mngResponse = JsonConvert.DeserializeObject<MNGResponse.APICreateBarcode>(contentResponse);
 
             if (mngResponse is null)
                 return (500, "Beklenmeyen bir hata oluştu.");
 
-            shipment.Status = CargoStatusEnum.CANCELED;
+            shipment.Status    = CargoStatusEnum.SEND_TO_PROVIDER;
+            shipment.InvoiceId = Convert.ToInt32(mngResponse.invoiceId);
+
+            shipment.ProviderInfo.TryAdd("_referenceId", mngResponse.referenceId);
+            shipment.ProviderInfo.TryAdd("_invoiceId", mngResponse.invoiceId);
+            shipment.ProviderInfo.TryAdd("_shipmentId", mngResponse.shipmentId);
+            shipment.ProviderInfo.TryAdd("_barcodes", string.Join(",", mngResponse.barcodes.Select(x => x.value)));
 
             await ShipmentRepository.ReplaceOneAsync(x => x.Id == shipment.Id, shipment, cancellationToken);
 

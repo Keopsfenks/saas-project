@@ -8,16 +8,19 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Application.Factories
 {
     public sealed class ProviderFactory(
-        ShippingProviderEnum shippingProviderEnum,
+        int shippingProviderEnum,
         IServiceProvider     serviceProvider)
     {
-        public IProvider GetProvider() {
-            return shippingProviderEnum switch {
-                var provider when provider == ShippingProviderEnum.TEST =>
-                    serviceProvider.GetRequiredService<AProvider<TESTRequestProvider>>(),
+        public IProvider GetProvider()
+        {
+            ShippingProviderEnum providerEnum = ShippingProviderEnum.FromValue(shippingProviderEnum);
 
+            return providerEnum switch {
                 var provider when provider == ShippingProviderEnum.MNG =>
-                    serviceProvider.GetRequiredService<AProvider<MNGRequestProvider>>(),
+                    serviceProvider.GetRequiredService<AProvider<MNGRequest.Provider>>(),
+
+                var provider when provider == ShippingProviderEnum.YURTICI =>
+                    serviceProvider.GetRequiredService<AProvider<YURTICIRequest.Provider>>(),
 
                 _ => throw new ArgumentException($"Desteklenmeyen kargo sağlayıcısı: {shippingProviderEnum}")
             };
