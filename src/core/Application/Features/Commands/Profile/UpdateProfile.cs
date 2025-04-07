@@ -15,6 +15,36 @@ public sealed record UpdateProfileRequest(
 	string? Email    = null,
 	string? Password = null) : IRequest<Result<UserDto>>;
 
+
+public sealed class UpdateProfileValidator : AbstractValidator<UpdateProfileRequest>
+{
+    public UpdateProfileValidator()
+    {
+        RuleFor(x => x.Name)
+           .MaximumLength(50).WithMessage("İsim en fazla 50 karakter olabilir.")
+           .When(x => !string.IsNullOrWhiteSpace(x.Name));
+
+        RuleFor(x => x.Surname)
+           .MaximumLength(50).WithMessage("Soyisim en fazla 50 karakter olabilir.")
+           .When(x => !string.IsNullOrWhiteSpace(x.Surname));
+
+        RuleFor(x => x.Email)
+           .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz.")
+           .When(x => !string.IsNullOrWhiteSpace(x.Email));
+
+        RuleFor(x => x.Password)
+           .NotEmpty().WithMessage("Şifre boş olamaz.")
+           .MinimumLength(6).WithMessage("Şifre en az 6 karakter olmalıdır.")
+           .MaximumLength(100).WithMessage("Şifre en fazla 100 karakter olabilir.")
+           .Matches(@"[A-Z]").WithMessage("Şifre en az bir büyük harf içermelidir.")
+           .Matches(@"[a-z]").WithMessage("Şifre en az bir küçük harf içermelidir.")
+           .Matches(@"[0-9]").WithMessage("Şifre en az bir rakam içermelidir.")
+           .Matches(@"[\W_]").WithMessage("Şifre en az bir özel karakter içermelidir.")
+           .When(x => !string.IsNullOrWhiteSpace(x.Password));
+    }
+}
+
+
 internal sealed record UpdateProfileHandler(
 	IRepositoryService<User>    userRepository,
 	IRepositoryService<Session> sessionRepository,

@@ -14,6 +14,21 @@ public sealed record CreateWorkspaceRequest(
     string Description) : IRequest<Result<WorkspaceDto>>;
 
 
+public sealed class CreateWorkspaceValidator : AbstractValidator<CreateWorkspaceRequest>
+{
+    public CreateWorkspaceValidator()
+    {
+        RuleFor(x => x.Title)
+           .NotEmpty().WithMessage("Başlık alanı boş olamaz.")
+           .MaximumLength(25).WithMessage("Başlık alanı maksimum 25 karakter olabilir");
+
+        RuleFor(x => x.Description)
+           .NotEmpty().WithMessage("Şifre boş olamaz.")
+           .MaximumLength(500).WithMessage("Başlık alanı maksimum 500 karakter olabilir");
+    }
+}
+
+
 internal sealed record CreateWorkspaceHandler(
     IRepositoryService<Workspace> workspaceRepository,
     IAuthorizeService AuthorizeService,

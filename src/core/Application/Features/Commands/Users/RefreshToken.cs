@@ -11,6 +11,15 @@ public sealed record RefreshTokenRequest(
     string RefreshToken) : IRequest<Result<string>>;
 
 
+public sealed class RefreshTokenValidator : AbstractValidator<RefreshTokenRequest>
+{
+    public RefreshTokenValidator()
+    {
+        RuleFor(x => x.RefreshToken)
+           .NotEmpty().WithMessage("Token alanı boş olamaz.");
+    }
+}
+
 internal sealed record RefreshTokenHandler(
     IRepositoryService<User> userRepository,
     IRepositoryService<Session> sessionRepository,

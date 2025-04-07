@@ -10,6 +10,17 @@ namespace Application.Features.Commands.Users;
 public sealed record ForgotPasswordRequest(
     string Email) : IRequest<Result<string>>;
 
+
+public sealed class ForgotPasswordValidator : AbstractValidator<ForgotPasswordRequest>
+{
+    public ForgotPasswordValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("Email alanı boş olamaz.")
+           .EmailAddress().WithMessage("Girdiğiniz email hatalı.");
+    }
+}
+
 internal sealed record ForgotPasswordHandler(
     IEmailService emailService,
     ICacheService cacheService,

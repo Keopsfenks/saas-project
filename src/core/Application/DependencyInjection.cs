@@ -1,7 +1,5 @@
 ﻿using Application.Behaviors;
 using Application.Factories.Abstractions;
-using Application.Factories.Interfaces;
-using Application.Factories.Parameters;
 using Application.Factories.Parameters.Requests;
 using Application.Factories.Providers;
 using FluentValidation;

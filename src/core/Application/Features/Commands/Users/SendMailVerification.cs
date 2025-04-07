@@ -10,6 +10,16 @@ namespace Application.Features.Commands.Users;
 public sealed record SendMailVerificationRequest(
     string Email) : IRequest<Result<string>>;
 
+public sealed class SendMailVerificationValidator : AbstractValidator<SendMailVerificationRequest>
+{
+    public SendMailVerificationValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("Email alanı boş olamaz.")
+           .EmailAddress().WithMessage("Girdiğiniz email hatalı.");
+    }
+}
+
 
 internal sealed record SendMailVerificationHandler(
     IEmailService emailService,

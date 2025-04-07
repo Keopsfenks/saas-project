@@ -11,6 +11,20 @@ public sealed record AccountVerificationRequest(
     string otp) : IRequest<Result<string>>;
 
 
+public sealed class AccountVerificationValidator : AbstractValidator<AccountVerificationRequest>
+{
+    public AccountVerificationValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("Email alanı boş olamaz.")
+           .EmailAddress().WithMessage("Girdiğiniz email hatalı.");
+
+        RuleFor(x => x.otp)
+           .NotEmpty().WithMessage("Tek kullanımlık şifre boş olamaz");
+    }
+}
+
+
 internal sealed record AccountVerificationHandler(
     ICacheService cacheService,
     IRepositoryService<User> userRepository) : IRequestHandler<AccountVerificationRequest, Result<string>>

@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using Domain.Entities;
+using System.Linq.Expressions;
+using TS.Result;
 
 namespace Application.Services;
 
@@ -14,6 +16,7 @@ public interface IRepositoryService<TEntity>
                                           string? orderByDescending = null,
                                           string? thenByDescending = null,
                                           CancellationToken cancellationToken = default);
+
 	Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default);
 	Task           InsertOneAsync(TEntity                       entity, CancellationToken cancellationToken = default);
 	Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filter, TEntity entity,

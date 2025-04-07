@@ -9,9 +9,22 @@ using TS.Result;
 namespace Application.Features.Commands.Users;
 
 public sealed record LoginUserRequest(
-	string email,
-	string password
+	string Email,
+	string Password
 	) : IRequest<Result<TokenDto>> {
+}
+
+public sealed class LoginUserValidator : AbstractValidator<LoginUserRequest>
+{
+    public LoginUserValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("Email alanı boş olamaz.")
+           .EmailAddress().WithMessage("Girdiğiniz email hatalı.");
+
+        RuleFor(x => x.Password)
+           .NotEmpty().WithMessage("Şifre alanı boş olamaz.");
+    }
 }
 
 internal sealed record LoginUserHandler(
@@ -22,12 +35,12 @@ internal sealed record LoginUserHandler(
 	IHttpContextAccessor          httpContextAccessor,
 	IJwtProvider                  jwtProvider) : IRequestHandler<LoginUserRequest, Result<TokenDto>> {
 	public async Task<Result<TokenDto>> Handle(LoginUserRequest request, CancellationToken cancellationToken) {
-		User? user = await userRepository.FindOneAsync(x => x.Email == request.email, cancellationToken);
+		User? user = await userRepository.FindOneAsync(x => x.Email == request.Email, cancellationToken);
 
 		if (user == null)
 			return (404, "Kullanıcı bulunamadı.");
 
-		if (encryptionService.Decrypt(user.Password) != request.password)
+		if (encryptionService.Decrypt(user.Password) != request.Password)
 			return (400, "Şifre hatalı.");
 
 		if (user.EmailConfirmed == false)

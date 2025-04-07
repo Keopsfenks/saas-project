@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using System.IO.Compression;
 using System.Threading.RateLimiting;
+using WebApi.Abstractions;
 
 namespace WebApi.Installers
 {
@@ -24,15 +26,19 @@ namespace WebApi.Installers
                     scheme.Description  = "JWT Authorization header using the Bearer scheme.";
                 });
             });
+
             services
                .AddControllers()
                .AddOData(opt =>
-                             opt.Select()
-                                .Filter()
-                                .Count()
-                                .Expand()
-                                .OrderBy()
-                                .SetMaxTop(null)
+                    {
+
+                        opt.Select()
+                           .Filter()
+                           .Count()
+                           .Expand()
+                           .OrderBy()
+                           .SetMaxTop(null);
+                    }
                 );
 
             // Rate Limiting Ayarları

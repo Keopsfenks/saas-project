@@ -9,7 +9,14 @@ namespace Application.Features.Commands.Users;
 public sealed record LogoutUserRequest(
 	string Token) : IRequest<Result<string>>;
 
-
+public sealed class LogoutUserValidator : AbstractValidator<LogoutUserRequest>
+{
+    public LogoutUserValidator()
+    {
+        RuleFor(x => x.Token)
+           .NotEmpty().WithMessage("Token alanı boş olamaz.");
+    }
+}
 
 internal sealed record LogoutUserHandler(
     IRepositoryService<User> userRepository,

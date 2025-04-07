@@ -12,6 +12,28 @@ public sealed record ResetPasswordRequest(
     string Password) : IRequest<Result<string>>;
 
 
+public sealed class ResetPasswordValidator : AbstractValidator<ResetPasswordRequest>
+{
+    public ResetPasswordValidator()
+    {
+        RuleFor(x => x.Email)
+           .NotEmpty().WithMessage("Email alanı boş olamaz.")
+           .EmailAddress().WithMessage("Girdiğiniz email hatalı.");
+
+        RuleFor(x => x.Otp)
+           .NotEmpty().WithMessage("Tek kullanımlık şifre boş olamaz");
+
+        RuleFor(x => x.Password)
+           .NotEmpty().WithMessage("Şifre boş olamaz.")
+           .MinimumLength(6).WithMessage("Şifre en az 6 karakter olmalıdır.")
+           .MaximumLength(100).WithMessage("Şifre en fazla 100 karakter olabilir.")
+           .Matches(@"[A-Z]").WithMessage("Şifre en az bir büyük harf içermelidir.")
+           .Matches(@"[a-z]").WithMessage("Şifre en az bir küçük harf içermelidir.")
+           .Matches(@"[0-9]").WithMessage("Şifre en az bir rakam içermelidir.")
+           .Matches(@"[\W_]").WithMessage("Şifre en az bir özel karakter içermelidir.");
+    }
+}
+
 internal sealed record ResetPasswordHandler(
     IRepositoryService<User> userRepository,
     ICacheService cacheService,
